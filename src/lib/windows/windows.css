@@ -26,7 +26,6 @@
 .rd-win-button:hover { border-color: var(--rd-win-border); }
 .rd-win-button:active, .rd-win-button[data-push] { background: var(--rd-win-surface-hover); }
 .rd-win-button[data-accent] { background: var(--rd-win-accent); color: #fff; }
-.rd-win-button:focus-visible { outline: 1px dotted var(--rd-win-fg); outline-offset: 2px; }
 .rd-win-button[data-disabled], .rd-win-button:disabled { opacity: .4; pointer-events: none; }
 
 /* checkbox + radio */
@@ -37,7 +36,6 @@
 .rd-win-checkbox[aria-checked="true"] { background: var(--rd-win-accent); border-color: var(--rd-win-accent); color: #fff; }
 .rd-win-radio[aria-checked="true"] { border-color: var(--rd-win-fg); }
 .rd-win-radio__dot { width: 10px; height: 10px; border-radius: 50%; background: var(--rd-win-fg); }
-.rd-win-checkbox:focus-visible, .rd-win-radio:focus-visible { outline: 1px dotted var(--rd-win-fg); outline-offset: 2px; }
 .rd-win-radiogroup { display: flex; flex-direction: column; gap: 8px; }
 
 /* text input */
@@ -81,3 +79,30 @@
 .rd-win-mdv__master[aria-selected="true"] { background: var(--rd-win-accent); color: #fff; }
 .rd-win-mdv__details { flex: 1; min-width: 0; overflow: auto; }
 .rd-win-mdv__panel { padding: 12px 16px; height: 100%; }
+
+/* ---------- focus animation ----------
+   The dotted focus rectangle fades in while tightening towards the control; text fields ease their
+   border to the accent colour. Customise with --rd-win-focus-ms. Keyboard focus only (:focus-visible). */
+:root { --rd-win-focus-ms: 150ms; }
+
+.rd-win-button, .rd-win-checkbox, .rd-win-radio, .rd-win-tb, .rd-win-navpane__toggle,
+.rd-win-navpane__item, .rd-win-mdv__master {
+  outline: 1px dotted transparent;
+  outline-offset: 6px;
+  transition: outline-color var(--rd-win-focus-ms) ease, outline-offset var(--rd-win-focus-ms) ease,
+              border-color var(--rd-win-focus-ms) ease, background-color 100ms ease;
+}
+.rd-win-button:focus-visible, .rd-win-checkbox:focus-visible, .rd-win-radio:focus-visible,
+.rd-win-tb:focus-visible, .rd-win-navpane__toggle:focus-visible, .rd-win-navpane__item:focus-visible,
+.rd-win-mdv__master:focus-visible {
+  outline-color: var(--rd-win-fg);
+  outline-offset: 2px;
+}
+/* items that fill their container get the rectangle inside */
+.rd-win-tb, .rd-win-navpane__toggle, .rd-win-navpane__item, .rd-win-mdv__master { outline-offset: -2px; }
+.rd-win-tb:focus-visible, .rd-win-navpane__toggle:focus-visible, .rd-win-navpane__item:focus-visible,
+.rd-win-mdv__master:focus-visible { outline-offset: -6px; }
+
+.rd-win-input { transition: border-color var(--rd-win-focus-ms) ease, background-color var(--rd-win-focus-ms) ease; }
+
+@media (prefers-reduced-motion: reduce) { :root { --rd-win-focus-ms: 0ms; } }
