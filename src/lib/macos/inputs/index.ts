@@ -7,3 +7,4 @@ export * from './Switch';
 export * from './ToggleButton';
 export * from './ToggleGroup';
 export * from './ToggleGroupItem';
+export * from './OTPField';

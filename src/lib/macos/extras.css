@@ -251,3 +251,26 @@
   outline-offset: 0;
   animation: rd-mac-focus-in var(--rd-mac-focus-ms) ease-out;
 }
+
+/* ───────── OTP field + preview card ───────── */
+.rd-mac-otp { display: inline-flex; align-items: center; gap: 6px; }
+.rd-mac-otp[data-disabled] { opacity: .5; }
+.rd-mac-otp__input {
+  box-sizing: border-box; width: 36px; height: 42px; padding: 0; text-align: center; font: var(--rd-mac-font); font-size: 18px;
+  color: var(--rd-mac-fg); background: var(--rd-mac-input-bg); border: var(--rd-mac-ctl-bw) solid var(--rd-mac-border);
+  border-radius: var(--rd-mac-ctl-radius); outline: none; caret-color: var(--rd-mac-accent); transition: border-color .15s ease, background-color .15s ease;
+}
+.rd-mac-otp[data-invalid] .rd-mac-otp__input { border-color: #d13438; }
+.rd-mac-otp__separator { padding: 0 2px; color: var(--rd-mac-muted); user-select: none; }
+.rd-mac-previewlink { color: var(--rd-mac-accent); text-decoration: none; cursor: pointer; }
+.rd-mac-previewlink:hover { text-decoration: underline; }
+.rd-mac-previewcard { width: 280px; padding: 12px; }
+.rd-mac-otp__input:focus {
+  border-color: rgb(var(--rd-mac-focus));
+  outline: 3px solid rgba(var(--rd-mac-focus), .55); outline-offset: 0;
+  animation: rd-mac-focus-in var(--rd-mac-focus-ms) ease-out;
+}
+.rd-mac-previewlink:focus-visible {
+  outline: 3px solid rgba(var(--rd-mac-focus), .55); outline-offset: 1px; border-radius: 3px;
+  animation: rd-mac-focus-in var(--rd-mac-focus-ms) ease-out;
+}

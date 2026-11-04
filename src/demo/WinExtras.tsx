@@ -68,6 +68,8 @@ export function WinExtras({ theme }: { theme: UI.Theme }) {
               <UI.FieldControl type="email" placeholder="you@example.com" />
             </UI.Field>
           </UI.Fieldset>
+          <UI.OTPField theme={theme} label="Verification code" groupSize={3} />
+          <p style={{ margin: 0 }}>Read the <UI.PreviewCard theme={theme} href="https://base-ui.com" content="Base UI is an unstyled React component library.">Base UI docs</UI.PreviewCard> for details.</p>
           <UI.Separator theme={theme} />
           <UI.ContextMenu theme={theme} items={[{ label: 'Back' }, { label: 'Reload' }, { type: 'submenu', label: 'More', items: [{ label: 'Inspect' }] }]}>
             <div style={{ padding: 16, border: '1px dashed currentColor', opacity: .8 }}>Right-click here</div>

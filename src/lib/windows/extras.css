@@ -272,3 +272,21 @@
 .rd-win-number__group:hover { border-color: var(--rd-win-fg); }
 .rd-win-number__group:focus-within { border-color: var(--rd-win-accent); background: var(--rd-win-bg); }
 .rd-win-number__btn:hover { background: var(--rd-win-hover); }
+
+/* ───────── OTP field + preview card ───────── */
+.rd-win-otp { display: inline-flex; align-items: center; gap: 6px; }
+.rd-win-otp[data-disabled] { opacity: .5; }
+.rd-win-otp__input {
+  box-sizing: border-box; width: 36px; height: 42px; padding: 0; text-align: center; font: var(--rd-win-font); font-size: 18px;
+  color: var(--rd-win-fg); background: var(--rd-win-input-bg); border: var(--rd-win-ctl-bw) solid var(--rd-win-border);
+  border-radius: var(--rd-win-ctl-radius); outline: none; caret-color: var(--rd-win-accent); transition: border-color .15s ease, background-color .15s ease;
+}
+.rd-win-otp[data-invalid] .rd-win-otp__input { border-color: #d13438; }
+.rd-win-otp__separator { padding: 0 2px; color: var(--rd-win-muted); user-select: none; }
+.rd-win-previewlink { color: var(--rd-win-accent); text-decoration: none; cursor: pointer; }
+.rd-win-previewlink:hover { text-decoration: underline; }
+.rd-win-previewcard { width: 280px; padding: 12px; }
+.rd-win-otp__input:hover { border-color: var(--rd-win-fg); }
+.rd-win-otp__input:focus { border-color: var(--rd-win-accent); background: var(--rd-win-bg); }
+.rd-win-previewlink { outline: 1px dotted transparent; outline-offset: 5px; transition: outline-color var(--rd-win-focus-ms) ease, outline-offset var(--rd-win-focus-ms) ease; }
+.rd-win-previewlink:focus-visible { outline-color: var(--rd-win-fg); outline-offset: 2px; }

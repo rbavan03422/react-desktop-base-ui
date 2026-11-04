@@ -68,6 +68,8 @@ export function MacExtras() {
               <UI.FieldControl type="email" placeholder="you@example.com" />
             </UI.Field>
           </UI.Fieldset>
+          <UI.OTPField label="Verification code" groupSize={3} />
+          <p style={{ margin: 0 }}>Read the <UI.PreviewCard href="https://base-ui.com" content="Base UI is an unstyled React component library.">Base UI docs</UI.PreviewCard> for details.</p>
           <UI.Separator />
           <UI.ContextMenu items={[{ label: 'Back' }, { label: 'Reload' }, { type: 'submenu', label: 'More', items: [{ label: 'Inspect' }] }]}>
             <div style={{ padding: 16, border: '1px dashed currentColor', opacity: .8 }}>Right-click here</div>
