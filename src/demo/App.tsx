@@ -4,13 +4,13 @@ import * as Win from '../lib/windows';
 import { MacExtras } from './MacExtras';
 import { WinExtras } from './WinExtras';
 
-function MacDemo() {
+function MacDemo({ theme }: { theme: Mac.Theme }) {
   const [tab, setTab] = React.useState(0);
   const [nav, setNav] = React.useState('files');
   const [row, setRow] = React.useState(0);
   const [open, setOpen] = React.useState(false);
   return (
-    <Mac.Window chrome width={460} height={520}>
+    <Mac.Window chrome theme={theme} width={460} height={520}>
       <Mac.TitleBar title="Finder" controls inset>
         <Mac.Toolbar height="36px" horizontalAlignment="center" layout="horizontal" verticalAlignment="center">
           <Mac.ToolbarNav>
@@ -52,6 +52,7 @@ function MacDemo() {
         </Mac.ListView>
       </Mac.View>
       <Mac.Dialog
+        theme={theme}
         open={open}
         onOpenChange={setOpen}
         icon="⚠️"
@@ -105,12 +106,12 @@ export function App() {
   return (
     <div style={{ display: 'flex', gap: 32, padding: 32, background: '#8b9bb4', minHeight: '100vh', flexWrap: 'wrap' }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
-        <MacDemo />
-        <MacExtras />
+        <MacDemo theme={theme} />
+        <MacExtras theme={theme} />
       </div>
       <div>
         <button onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')} style={{ marginBottom: 12 }}>
-          Windows theme: {theme}
+          Theme (macOS + Windows): {theme}
         </button>
         <WinDemo theme={theme} />
         <div style={{ height: 32 }} />

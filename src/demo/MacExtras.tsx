@@ -14,12 +14,12 @@ function ToastButton() {
   );
 }
 
-export function MacExtras() {
+export function MacExtras({ theme }: { theme: UI.Theme }) {
   const [volume, setVolume] = React.useState(40);
   return (
-    <UI.ToastProvider>
-      <UI.Window chrome width={520} padding="0 0 16px">
-        <UI.Menubar menus={[
+    <UI.ToastProvider theme={theme}>
+      <UI.Window chrome theme={theme} width={520} padding="0 0 16px">
+        <UI.Menubar theme={theme} menus={[
           { label: 'File', items: [
             { label: 'New', shortcut: 'Ctrl+N' }, { label: 'Open…' }, { type: 'separator' },
             { type: 'checkbox', label: 'Autosave', defaultChecked: true },
@@ -35,46 +35,46 @@ export function MacExtras() {
           <UI.ToolbarSeparator />
           <UI.ToolbarGroup><UI.ToolbarButton>Left</UI.ToolbarButton><UI.ToolbarButton>Right</UI.ToolbarButton></UI.ToolbarGroup>
         </UI.Toolbar>
-        <div style={{ padding: '14px 16px 0' }}><UI.Meter value={72} warning={60} critical={90} label="Battery" showValue /></div>
+        <div style={{ padding: '14px 16px 0' }}><UI.Meter theme={theme} value={72} warning={60} critical={90} label="Battery" showValue /></div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14, padding: '14px 16px 0' }}>
           <div style={row}>
-            <UI.Switch label="Wi-Fi" defaultChecked />
-            <UI.ToggleButton>Bold</UI.ToggleButton>
-            <UI.ToggleGroup defaultValue={['left']}>
+            <UI.Switch theme={theme} label="Wi-Fi" defaultChecked />
+            <UI.ToggleButton theme={theme}>Bold</UI.ToggleButton>
+            <UI.ToggleGroup theme={theme} defaultValue={['left']}>
               <UI.ToggleGroupItem value="left">Left</UI.ToggleGroupItem>
               <UI.ToggleGroupItem value="center">Center</UI.ToggleGroupItem>
               <UI.ToggleGroupItem value="right">Right</UI.ToggleGroupItem>
             </UI.ToggleGroup>
           </div>
-          <UI.Slider value={volume} onValueChange={(v) => setVolume(Array.isArray(v) ? v[0] : v)} thumbLabels={['Volume']} />
-          <UI.Slider defaultValue={[20, 70]} thumbLabels={['Minimum', 'Maximum']} />
+          <UI.Slider theme={theme} value={volume} onValueChange={(v) => setVolume(Array.isArray(v) ? v[0] : v)} thumbLabels={['Volume']} />
+          <UI.Slider theme={theme} defaultValue={[20, 70]} thumbLabels={['Minimum', 'Maximum']} />
           <div style={row}>
-            <UI.NumberField label="Quantity" defaultValue={1} min={0} max={10} />
-            <UI.Select items={sizes} defaultValue="m" />
-            <UI.Combobox items={fruits} placeholder="Fruit" />
-            <UI.Autocomplete items={fruits} placeholder="Search…" />
+            <UI.NumberField theme={theme} label="Quantity" defaultValue={1} min={0} max={10} />
+            <UI.Select theme={theme} items={sizes} defaultValue="m" />
+            <UI.Combobox theme={theme} items={fruits} placeholder="Fruit" />
+            <UI.Autocomplete theme={theme} items={fruits} placeholder="Search…" />
           </div>
-          <UI.ProgressBar value={60} label="Uploading" showValue />
-          <UI.ProgressBar value={null} label="Working…" />
+          <UI.ProgressBar theme={theme} value={60} label="Uploading" showValue />
+          <UI.ProgressBar theme={theme} value={null} label="Working…" />
           <div style={row}>
-            <UI.Tooltip content="A helpful hint"><UI.Button>Hover me</UI.Button></UI.Tooltip>
-            <UI.Popover trigger={<UI.Button>Popover</UI.Button>} title="Details">Some popover content.</UI.Popover>
-            <UI.Menu trigger={<UI.Button>Menu</UI.Button>} items={[{ label: 'Rename' }, { label: 'Duplicate' }, { type: 'separator' }, { label: 'Delete', disabled: true }]} />
-            <UI.Drawer trigger={<UI.Button>Drawer</UI.Button>} title="Drawer" description="Slides in from the edge.">Drawer content.</UI.Drawer>
+            <UI.Tooltip theme={theme} content="A helpful hint"><UI.Button>Hover me</UI.Button></UI.Tooltip>
+            <UI.Popover theme={theme} trigger={<UI.Button>Popover</UI.Button>} title="Details">Some popover content.</UI.Popover>
+            <UI.Menu theme={theme} trigger={<UI.Button>Menu</UI.Button>} items={[{ label: 'Rename' }, { label: 'Duplicate' }, { type: 'separator' }, { label: 'Delete', disabled: true }]} />
+            <UI.Drawer theme={theme} trigger={<UI.Button>Drawer</UI.Button>} title="Drawer" description="Slides in from the edge.">Drawer content.</UI.Drawer>
             <ToastButton />
           </div>
-          <UI.Fieldset legend="Account">
-            <UI.Field label="Email" description="We never share it.">
+          <UI.Fieldset theme={theme} legend="Account">
+            <UI.Field theme={theme} label="Email" description="We never share it.">
               <UI.FieldControl type="email" placeholder="you@example.com" />
             </UI.Field>
           </UI.Fieldset>
-          <UI.OTPField label="Verification code" groupSize={3} />
-          <p style={{ margin: 0 }}>Read the <UI.PreviewCard href="https://base-ui.com" content="Base UI is an unstyled React component library.">Base UI docs</UI.PreviewCard> for details.</p>
-          <UI.Separator />
-          <UI.ContextMenu items={[{ label: 'Back' }, { label: 'Reload' }, { type: 'submenu', label: 'More', items: [{ label: 'Inspect' }] }]}>
+          <UI.OTPField theme={theme} label="Verification code" groupSize={3} />
+          <p style={{ margin: 0 }}>Read the <UI.PreviewCard theme={theme} href="https://base-ui.com" content="Base UI is an unstyled React component library.">Base UI docs</UI.PreviewCard> for details.</p>
+          <UI.Separator theme={theme} />
+          <UI.ContextMenu theme={theme} items={[{ label: 'Back' }, { label: 'Reload' }, { type: 'submenu', label: 'More', items: [{ label: 'Inspect' }] }]}>
             <div style={{ padding: 16, border: '1px dashed currentColor', opacity: .8 }}>Right-click here</div>
           </UI.ContextMenu>
-          <UI.ScrollArea style={{ height: 80 }}>
+          <UI.ScrollArea theme={theme} style={{ height: 80 }}>
             {Array.from({ length: 12 }, (_, i) => <div key={i} style={{ padding: '2px 4px' }}>Scrollable line {i + 1}</div>)}
           </UI.ScrollArea>
         </div>

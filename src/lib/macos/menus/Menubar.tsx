@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Menu as BaseMenu } from '@base-ui/react/menu';
 import { Menubar as BaseMenubar } from '@base-ui/react/menubar';
 import { cx } from '../../common';
+import { themed, type Themed } from '../shared';
 import { renderEntries, type MenuEntry } from './entries';
 
 export type MenubarMenu = { label: React.ReactNode; items: MenuEntry[] };
@@ -9,10 +10,10 @@ export type MenubarMenu = { label: React.ReactNode; items: MenuEntry[] };
 export type MenubarProps = Omit<React.ComponentPropsWithoutRef<typeof BaseMenubar>, 'className' | 'children'> & {
   menus: MenubarMenu[];
   className?: string;
-};
+} & Themed;
 
-export function Menubar({ menus, className, ...rest }: MenubarProps) {
-  const tp = {};
+export function Menubar({ theme, menus, className, ...rest }: MenubarProps) {
+  const tp = themed(theme);
   return (
     <BaseMenubar className={cx('rd-mac rd-mac-menubar', className)} {...tp} {...rest}>
       {menus.map((menu, i) => (

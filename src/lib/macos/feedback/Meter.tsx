@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Meter as BaseMeter } from '@base-ui/react/meter';
 import { cx } from '../../common';
+import { themed, type Themed } from '../shared';
 
 export type MeterProps = Omit<React.ComponentPropsWithoutRef<typeof BaseMeter.Root>, 'className' | 'children'> & {
   label?: React.ReactNode;
@@ -9,14 +10,14 @@ export type MeterProps = Omit<React.ComponentPropsWithoutRef<typeof BaseMeter.Ro
   warning?: number;
   critical?: number;
   className?: string;
-};
+} & Themed;
 
 /** macOS level indicator. */
-export function Meter({ label, showValue, warning, critical, className, ...rest }: MeterProps) {
+export function Meter({ theme, label, showValue, warning, critical, className, ...rest }: MeterProps) {
   const level = critical !== undefined && rest.value >= critical ? 'critical'
     : warning !== undefined && rest.value >= warning ? 'warning' : 'ok';
   return (
-    <BaseMeter.Root className={cx('rd-mac rd-mac-meter', className)} data-level={level} {...rest}>
+    <BaseMeter.Root className={cx('rd-mac rd-mac-meter', className)} data-level={level} {...themed(theme)} {...rest}>
       {(label != null || showValue) && (
         <div className="rd-mac-meter__header">
           {label != null && <BaseMeter.Label className="rd-mac-meter__label">{label}</BaseMeter.Label>}

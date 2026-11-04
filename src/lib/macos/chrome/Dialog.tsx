@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Dialog as BaseDialog } from '@base-ui/react/dialog';
 import { cx } from '../../common';
+import { themed, type Theme } from '../shared';
 
 export interface DialogProps {
   open?: boolean;
@@ -12,14 +13,16 @@ export interface DialogProps {
   buttons?: React.ReactNode;
   container?: React.ComponentPropsWithoutRef<typeof BaseDialog.Portal>['container'];
   className?: string;
+  /** The dialog renders in a portal, so it needs its own theme. */
+  theme?: Theme;
 }
 
-export function Dialog({ open, hidden, onOpenChange, title, message, icon, buttons, container, className }: DialogProps) {
+export function Dialog({ open, hidden, onOpenChange, title, message, icon, buttons, container, className, theme }: DialogProps) {
   return (
     <BaseDialog.Root open={open ?? !hidden} onOpenChange={onOpenChange}>
       <BaseDialog.Portal container={container}>
         <BaseDialog.Backdrop className="rd-mac-dialog__backdrop" />
-        <BaseDialog.Popup className={cx('rd-mac rd-mac-dialog', className)}>
+        <BaseDialog.Popup className={cx('rd-mac rd-mac-dialog', className)} {...themed(theme)}>
           {icon && <div className="rd-mac-dialog__icon">{icon}</div>}
           <div className="rd-mac-dialog__body">
             {title != null && <BaseDialog.Title className="rd-mac-dialog__title">{title}</BaseDialog.Title>}

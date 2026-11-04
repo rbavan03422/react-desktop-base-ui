@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { NumberField as BaseNumberField } from '@base-ui/react/number-field';
 import { cx } from '../../common';
-
+import { themed, type Themed } from '../shared';
 
 export type NumberFieldProps = Omit<React.ComponentPropsWithoutRef<typeof BaseNumberField.Root>, 'className' | 'children'> & {
   label?: React.ReactNode;
   placeholder?: string;
   className?: string;
-};
+} & Themed;
 
-export function NumberField({ label, placeholder, className, ...rest }: NumberFieldProps) {
+export function NumberField({ theme, label, placeholder, className, ...rest }: NumberFieldProps) {
   const field = (
-    <BaseNumberField.Root className={cx('rd-mac rd-mac-number', className)}  {...rest}>
+    <BaseNumberField.Root className={cx('rd-mac rd-mac-number', className)} {...themed(theme)} {...rest}>
       <BaseNumberField.Group className="rd-mac-number__group">
         <BaseNumberField.Input className="rd-mac-number__input" placeholder={placeholder} />
         <div className="rd-mac-number__spin">
@@ -23,7 +23,7 @@ export function NumberField({ label, placeholder, className, ...rest }: NumberFi
   );
   if (label == null) return field;
   return (
-    <label className="rd-mac rd-mac-field" >
+    <label className="rd-mac rd-mac-field" {...themed(theme)}>
       <span className="rd-mac-field__label">{label}</span>
       {field}
     </label>

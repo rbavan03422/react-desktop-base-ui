@@ -1,5 +1,14 @@
-/* macOS design tokens for the extra controls (override in your own CSS). */
-:root {
+/* macOS design tokens (override in your own CSS). Light is the default; dark applies under [data-rd-theme="dark"]. */
+:root, [data-rd-theme="light"] {
+  --rd-mac-window-shadow: 0 0 0 1px rgba(0,0,0,.18), 0 18px 40px rgba(0,0,0,.28); --rd-mac-box-border: rgba(0,0,0,.12); --rd-mac-box-bg: rgba(0,0,0,.03);
+  --rd-mac-link: #0b62d6; --rd-mac-btn-border: #b8b8b8; --rd-mac-btn-active: linear-gradient(#eaeaea, #dcdcdc); --rd-mac-pressed: linear-gradient(#cfcfcf, #bdbdbd);
+  --rd-mac-check-border: #a5a5a5; --rd-mac-check-bg: linear-gradient(#fff, #f2f2f2); --rd-mac-check-inactive-bg: linear-gradient(#e9e9e9, #d4d4d4);
+  --rd-mac-check-inactive-border: #b0b0b0; --rd-mac-check-inactive-fg: #666; --rd-mac-label: #6b6b6b;
+  --rd-mac-input-border: #c3c3c3; --rd-mac-input-border-top: #a9a9a9; --rd-mac-clear: #a0a0a0; --rd-mac-panel-border: rgba(0,0,0,.15);
+  --rd-mac-tb-bg: linear-gradient(#ebebeb, #d3d3d3); --rd-mac-tb-border: #b1b1b1; --rd-mac-tb-title: #4d4d4d;
+  --rd-mac-dialog-bg: #ececec; --rd-mac-dialog-text2: #4a4a4a;
+  --rd-mac-lv-border: #d0d0d0; --rd-mac-lv-bar: linear-gradient(#fafafa, #ececec); --rd-mac-lv-bar-fg: #555; --rd-mac-lv-sep: #e4e4e4; --rd-mac-lv-stripe: #f5f5f5;
+  --rd-mac-focus: 59, 153, 252;
   --rd-mac-fg: #262626; --rd-mac-bg: #fff; --rd-mac-surface: #ececec; --rd-mac-hover: rgba(0,0,0,.07);
   --rd-mac-border: #b8b8b8; --rd-mac-muted: #8a8a8a; --rd-mac-accent: #1a7bff; --rd-mac-accent-fg: #fff;
   --rd-mac-popup-bg: rgba(246,246,246,.97); --rd-mac-radius: 6px; --rd-mac-item-radius: 4px; --rd-mac-popup-pad: 4px;
@@ -14,6 +23,27 @@
   --rd-mac-sl-thumb-radius: 50%; --rd-mac-sl-thumb-bg: #fff; --rd-mac-sl-thumb-shadow: 0 0 0 1px rgba(0,0,0,.2), 0 1px 3px rgba(0,0,0,.3);
   --rd-mac-pb-h: 6px; --rd-mac-pb-radius: 3px; --rd-mac-pb-track: #dcdcdc;
   --rd-mac-sb-w: 8px; --rd-mac-sb-radius: 4px; --rd-mac-sb-thumb: rgba(0,0,0,.4); --rd-mac-sb-idle: 0;
+}
+
+/* Dark theme: only the theme-dependent tokens are redefined. */
+[data-rd-theme="dark"] {
+  color-scheme: dark;
+  --rd-mac-fg: #e8e8e8; --rd-mac-bg: #2b2b2d; --rd-mac-surface: #3a3a3c; --rd-mac-hover: rgba(255,255,255,.10);
+  --rd-mac-border: #1d1d1f; --rd-mac-muted: #98989d; --rd-mac-accent: #0a84ff; --rd-mac-focus: 10, 132, 255;
+  --rd-mac-popup-bg: rgba(44,44,46,.97); --rd-mac-shadow: 0 0 0 1px rgba(255,255,255,.12), 0 10px 28px rgba(0,0,0,.6);
+  --rd-mac-ctl-bg: linear-gradient(#6a6a6c, #5c5c5e); --rd-mac-input-bg: #1e1e20; --rd-mac-item-hl-bg: #0a84ff; --rd-mac-item-hl-fg: #fff;
+  --rd-mac-tt-bg: #3a3a3c; --rd-mac-tt-fg: #e8e8e8;
+  --rd-mac-sw-off: #5a5a5c; --rd-mac-sl-track: #5a5a5c; --rd-mac-sl-thumb-bg: #e0e0e0;
+  --rd-mac-sl-thumb-shadow: 0 0 0 1px rgba(0,0,0,.5), 0 1px 3px rgba(0,0,0,.6);
+  --rd-mac-pb-track: #4a4a4c; --rd-mac-sb-thumb: rgba(255,255,255,.4);
+  --rd-mac-window-shadow: 0 0 0 1px rgba(255,255,255,.14), 0 18px 40px rgba(0,0,0,.6); --rd-mac-box-border: rgba(255,255,255,.12); --rd-mac-box-bg: rgba(255,255,255,.04);
+  --rd-mac-link: #4da3ff; --rd-mac-btn-border: #1d1d1f; --rd-mac-btn-active: linear-gradient(#58585a, #4c4c4e); --rd-mac-pressed: linear-gradient(#4c4c4e, #3e3e40);
+  --rd-mac-check-border: #1d1d1f; --rd-mac-check-bg: linear-gradient(#6a6a6c, #5c5c5e); --rd-mac-check-inactive-bg: linear-gradient(#5a5a5c, #4c4c4e);
+  --rd-mac-check-inactive-border: #3a3a3c; --rd-mac-check-inactive-fg: #a0a0a0; --rd-mac-label: #a0a0a5;
+  --rd-mac-input-border: rgba(255,255,255,.15); --rd-mac-input-border-top: rgba(0,0,0,.5); --rd-mac-clear: #8e8e93; --rd-mac-panel-border: rgba(255,255,255,.15);
+  --rd-mac-tb-bg: linear-gradient(#4a4a4c, #3a3a3c); --rd-mac-tb-border: #1a1a1a; --rd-mac-tb-title: #dcdcdc;
+  --rd-mac-dialog-bg: #3a3a3c; --rd-mac-dialog-text2: #b8b8bd;
+  --rd-mac-lv-border: rgba(255,255,255,.15); --rd-mac-lv-bar: linear-gradient(#3e3e40, #353537); --rd-mac-lv-bar-fg: #b0b0b5; --rd-mac-lv-sep: rgba(255,255,255,.1); --rd-mac-lv-stripe: rgba(255,255,255,.04);
 }
 
 /* ───────── popups, lists, items ───────── */
@@ -207,14 +237,14 @@
 
 /* ───────── macOS specifics ───────── */
 .rd-mac-popup { -webkit-backdrop-filter: blur(20px) saturate(1.8); backdrop-filter: blur(20px) saturate(1.8); }
-.rd-mac-togglebutton[aria-pressed="true"], .rd-mac-togglegroup__item[aria-pressed="true"] { background: linear-gradient(#cfcfcf, #bdbdbd); }
-.rd-mac-select[data-popup-open] { background: linear-gradient(#e6e6e6, #d6d6d6); }
+.rd-mac-togglebutton[aria-pressed="true"], .rd-mac-togglegroup__item[aria-pressed="true"] { background: var(--rd-mac-pressed); }
+.rd-mac-select[data-popup-open] { background: var(--rd-mac-btn-active); }
 .rd-mac-menubar { font-weight: 500; }
 
 /* level indicator (Meter) */
 .rd-mac-meter { display: block; min-width: 160px; }
 .rd-mac-meter__header { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 12px; }
-.rd-mac-meter__track { overflow: hidden; height: 10px; border-radius: 3px; background: #dcdcdc; box-shadow: inset 0 1px 1px rgba(0,0,0,.25); }
+.rd-mac-meter__track { overflow: hidden; height: 10px; border-radius: 3px; background: var(--rd-mac-pb-track); box-shadow: inset 0 1px 1px rgba(0,0,0,.25); }
 .rd-mac-meter__indicator {
   display: block; height: 100%; background-color: #34c84a; transition: width .2s ease, background-color .2s ease;
   background-image: repeating-linear-gradient(90deg, transparent 0 8px, rgba(255,255,255,.55) 8px 10px);

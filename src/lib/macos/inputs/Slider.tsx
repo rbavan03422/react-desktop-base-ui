@@ -1,19 +1,19 @@
 import * as React from 'react';
 import { Slider as BaseSlider } from '@base-ui/react/slider';
 import { cx } from '../../common';
-
+import { themed, type Themed } from '../shared';
 
 export type SliderProps = Omit<React.ComponentPropsWithoutRef<typeof BaseSlider.Root>, 'className' | 'children'> & {
   className?: string;
   /** Accessible names for each thumb (a range slider has two). */
   thumbLabels?: string[];
-};
+} & Themed;
 
-export function Slider({ className, thumbLabels, ...rest }: SliderProps) {
+export function Slider({ theme, className, thumbLabels, ...rest }: SliderProps) {
   const initial = rest.value ?? rest.defaultValue;
   const count = Array.isArray(initial) ? initial.length : 1;
   return (
-    <BaseSlider.Root className={cx('rd-mac rd-mac-slider', className)}  {...rest}>
+    <BaseSlider.Root className={cx('rd-mac rd-mac-slider', className)} {...themed(theme)} {...rest}>
       <BaseSlider.Control className="rd-mac-slider__control">
         <BaseSlider.Track className="rd-mac-slider__track">
           <BaseSlider.Indicator className="rd-mac-slider__indicator" />

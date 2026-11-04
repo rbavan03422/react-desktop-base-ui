@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Menu as BaseMenu } from '@base-ui/react/menu';
 import { cx } from '../../common';
+import { themed, type Themed } from '../shared';
 import { renderEntries, type MenuEntry } from './entries';
 
 export type MenuProps = {
@@ -12,10 +13,10 @@ export type MenuProps = {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   className?: string;
-};
+} & Themed;
 
-export function Menu({ trigger, items, side, align, open, onOpenChange, className }: MenuProps) {
-  const tp = {};
+export function Menu({ theme, trigger, items, side, align, open, onOpenChange, className }: MenuProps) {
+  const tp = themed(theme);
   return (
     <BaseMenu.Root open={open} onOpenChange={onOpenChange}>
       <BaseMenu.Trigger render={trigger} />

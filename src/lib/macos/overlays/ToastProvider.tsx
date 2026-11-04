@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Toast as BaseToast } from '@base-ui/react/toast';
 import { cx } from '../../common';
-
+import { themed, type Themed } from '../shared';
 
 export type ToastProviderProps = {
   children?: React.ReactNode;
@@ -10,7 +10,7 @@ export type ToastProviderProps = {
   /** Maximum number of toasts shown at once. */
   limit?: number;
   className?: string;
-};
+} & Themed;
 
 function ToastList({ className }: { className?: string }) {
   const { toasts } = BaseToast.useToastManager();
@@ -30,12 +30,12 @@ function ToastList({ className }: { className?: string }) {
 }
 
 /** Wrap your app once; call useToast().add({ title, description }) anywhere below it. */
-export function ToastProvider({ children, timeout, limit, className }: ToastProviderProps) {
+export function ToastProvider({ theme, children, timeout, limit, className }: ToastProviderProps) {
   return (
     <BaseToast.Provider timeout={timeout} limit={limit}>
       {children}
       <BaseToast.Portal>
-        <BaseToast.Viewport className="rd-mac-toast__viewport" >
+        <BaseToast.Viewport className="rd-mac-toast__viewport" {...themed(theme)}>
           <ToastList className={className} />
         </BaseToast.Viewport>
       </BaseToast.Portal>

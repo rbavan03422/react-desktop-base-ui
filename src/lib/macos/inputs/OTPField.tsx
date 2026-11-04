@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { OTPField as BaseOTPField } from '@base-ui/react/otp-field';
 import { cx } from '../../common';
-
+import { themed, type Themed } from '../shared';
 
 export type OTPFieldProps = Omit<React.ComponentPropsWithoutRef<typeof BaseOTPField.Root>, 'className' | 'children' | 'length'> & {
   /** Number of character slots (default 6). */
@@ -11,12 +11,12 @@ export type OTPFieldProps = Omit<React.ComponentPropsWithoutRef<typeof BaseOTPFi
   /** Accessible name for the first slot (not needed inside <Field> or with a <label htmlFor>). */
   label?: string;
   className?: string;
-};
+} & Themed;
 
 /** One-time code input: one box per character, with paste and SMS autofill support. */
-export function OTPField({ length = 6, groupSize, label, className, ...rest }: OTPFieldProps) {
+export function OTPField({ theme, length = 6, groupSize, label, className, ...rest }: OTPFieldProps) {
   return (
-    <BaseOTPField.Root length={length} className={cx('rd-mac rd-mac-otp', className)}  {...rest}>
+    <BaseOTPField.Root length={length} className={cx('rd-mac rd-mac-otp', className)} {...themed(theme)} {...rest}>
       {Array.from({ length }, (_, i) => (
         <React.Fragment key={i}>
           {groupSize !== undefined && i > 0 && i % groupSize === 0 && (

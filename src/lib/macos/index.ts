@@ -9,3 +9,4 @@ export * from './forms';
 export * from './menus';
 export * from './overlays';
 export * from './feedback';
+export type { Theme } from './shared';

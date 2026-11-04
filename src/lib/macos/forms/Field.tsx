@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Field as BaseField } from '@base-ui/react/field';
 import { cx } from '../../common';
-
+import { themed, type Themed } from '../shared';
 
 export type FieldProps = Omit<React.ComponentPropsWithoutRef<typeof BaseField.Root>, 'className' | 'children'> & {
   label?: React.ReactNode;
@@ -10,11 +10,11 @@ export type FieldProps = Omit<React.ComponentPropsWithoutRef<typeof BaseField.Ro
   error?: React.ReactNode;
   className?: string;
   children?: React.ReactNode;
-};
+} & Themed;
 
-export function Field({ label, description, error, className, children, ...rest }: FieldProps) {
+export function Field({ theme, label, description, error, className, children, ...rest }: FieldProps) {
   return (
-    <BaseField.Root className={cx('rd-mac rd-mac-field', className)}  {...rest}>
+    <BaseField.Root className={cx('rd-mac rd-mac-field', className)} {...themed(theme)} {...rest}>
       {label != null && <BaseField.Label className="rd-mac-field__label">{label}</BaseField.Label>}
       {children}
       {description != null && <BaseField.Description className="rd-mac-field__description">{description}</BaseField.Description>}

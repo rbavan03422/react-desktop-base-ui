@@ -1,20 +1,20 @@
 /* macOS High Sierra look. State is styled via ARIA attributes set by Base UI. */
-.rd-mac { font: 13px/1.3 -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif; color: #262626; -webkit-font-smoothing: antialiased; }
+.rd-mac { font: 13px/1.3 -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif; color: var(--rd-mac-fg); -webkit-font-smoothing: antialiased; }
 .rd-mac, .rd-mac *, .rd-mac *::before, .rd-mac *::after { box-sizing: border-box; }
 
 /* layout */
-.rd-mac-window { display: flex; flex-direction: column; background: #fff; border-radius: 5px; overflow: hidden; outline: none; }
-.rd-mac-window--chrome { box-shadow: 0 0 0 1px rgba(0,0,0,.18), 0 18px 40px rgba(0,0,0,.28); }
+.rd-mac-window { display: flex; flex-direction: column; background: var(--rd-mac-bg); border-radius: 5px; overflow: hidden; outline: none; }
+.rd-mac-window--chrome { box-shadow: var(--rd-mac-window-shadow); }
 .rd-mac-view { display: flex; flex-direction: column; }
-.rd-mac-box { border: 1px solid rgba(0,0,0,.12); border-radius: 4px; background: rgba(0,0,0,.03); padding: 12px; margin: 0; min-width: 0; }
+.rd-mac-box { border: 1px solid var(--rd-mac-box-border); border-radius: 4px; background: var(--rd-mac-box-bg); padding: 12px; margin: 0; min-width: 0; }
 .rd-mac-box__label { padding: 0 4px; font-weight: 600; }
-.rd-mac-link { color: #0b62d6; text-decoration: none; cursor: pointer; }
+.rd-mac-link { color: var(--rd-mac-link); text-decoration: none; cursor: pointer; }
 .rd-mac-link:hover { text-decoration: underline; }
 .rd-mac-pin { position: absolute; }
 
 /* button */
-.rd-mac-button { padding: 3px 14px; min-height: 22px; border: 1px solid #b8b8b8; border-radius: 5px; background: linear-gradient(#fff, #f1f1f1); box-shadow: 0 1px 1px rgba(0,0,0,.08); cursor: default; color: inherit; }
-.rd-mac-button:active, .rd-mac-button[data-push] { background: linear-gradient(#eaeaea, #dcdcdc); }
+.rd-mac-button { padding: 3px 14px; min-height: 22px; border: 1px solid var(--rd-mac-btn-border); border-radius: 5px; background: var(--rd-mac-ctl-bg); box-shadow: 0 1px 1px rgba(0,0,0,.08); cursor: default; color: inherit; }
+.rd-mac-button:active, .rd-mac-button[data-push] { background: var(--rd-mac-btn-active); }
 .rd-mac-button[data-color="blue"] { color: #fff; border-color: #1767c9; background: linear-gradient(#6fb1ff, #1a7bff); }
 .rd-mac-button[data-color="blue"]:active, .rd-mac-button[data-color="blue"][data-push] { background: linear-gradient(#3b8bf0, #0f62d8); }
 .rd-mac-button[data-color="red"] { color: #fff; border-color: #b12a2a; background: linear-gradient(#ff7b72, #e5453b); }
@@ -22,46 +22,46 @@
 
 /* checkbox + radio */
 .rd-mac-choice { display: inline-flex; align-items: center; gap: 6px; cursor: default; }
-.rd-mac-checkbox, .rd-mac-radio { all: unset; box-sizing: border-box; width: 14px; height: 14px; border: 1px solid #a5a5a5; background: linear-gradient(#fff, #f2f2f2); display: inline-flex; align-items: center; justify-content: center; flex: none; color: #fff; }
+.rd-mac-checkbox, .rd-mac-radio { all: unset; box-sizing: border-box; width: 14px; height: 14px; border: 1px solid var(--rd-mac-check-border); background: var(--rd-mac-check-bg); display: inline-flex; align-items: center; justify-content: center; flex: none; color: #fff; }
 .rd-mac-checkbox { border-radius: 3px; }
 .rd-mac-radio { border-radius: 50%; }
 .rd-mac-checkbox[aria-checked="true"], .rd-mac-radio[aria-checked="true"] { background: linear-gradient(#6fb1ff, #1a7bff); border-color: #1767c9; }
 .rd-mac-radio__dot { width: 6px; height: 6px; border-radius: 50%; background: #fff; box-shadow: 0 0 1px rgba(0,0,0,.4); }
 .rd-mac-window:not(:focus-within) .rd-mac-checkbox[aria-checked="true"],
-.rd-mac-window:not(:focus-within) .rd-mac-radio[aria-checked="true"] { background: linear-gradient(#e9e9e9, #d4d4d4); border-color: #b0b0b0; color: #666; }
+.rd-mac-window:not(:focus-within) .rd-mac-radio[aria-checked="true"] { background: var(--rd-mac-check-inactive-bg); border-color: var(--rd-mac-check-inactive-border); color: var(--rd-mac-check-inactive-fg); }
 .rd-mac-checkbox[aria-disabled="true"], .rd-mac-radio[aria-disabled="true"], [data-disabled] { opacity: .5; }
 .rd-mac-radiogroup { display: flex; flex-direction: column; gap: 6px; }
 
 /* text input + search */
 .rd-mac-field { display: inline-flex; flex-direction: column; gap: 3px; }
-.rd-mac-field__label { font-size: 11px; color: #6b6b6b; }
-.rd-mac-input, .rd-mac-search__input { font: inherit; color: inherit; background: #fff; border: 1px solid #c3c3c3; border-top-color: #a9a9a9; border-radius: 3px; padding: 3px 6px; min-height: 22px; outline: none; width: 100%; box-shadow: inset 0 1px 1px rgba(0,0,0,.06); }
+.rd-mac-field__label { font-size: 11px; color: var(--rd-mac-label); }
+.rd-mac-input, .rd-mac-search__input { font: inherit; color: inherit; background: var(--rd-mac-input-bg); border: 1px solid var(--rd-mac-input-border); border-top-color: var(--rd-mac-input-border-top); border-radius: 3px; padding: 3px 6px; min-height: 22px; outline: none; width: 100%; box-shadow: inset 0 1px 1px rgba(0,0,0,.06); }
 .rd-mac-input[data-size="small"] { min-height: 19px; font-size: 11px; padding: 1px 5px; }
 .rd-mac-input[data-size="large"] { min-height: 28px; font-size: 15px; padding: 5px 8px; }
 .rd-mac-input--rounded { border-radius: 999px; padding-inline: 10px; }
 .rd-mac-inputwrap { display: inline-flex; }
 .rd-mac-search { position: relative; display: inline-flex; align-items: center; }
 .rd-mac-search__input { border-radius: 999px; padding-left: 22px; padding-right: 20px; }
-.rd-mac-search__icon { position: absolute; left: 8px; color: #8a8a8a; pointer-events: none; }
-.rd-mac-search__clear { all: unset; position: absolute; right: 6px; width: 13px; height: 13px; border-radius: 50%; background: #a0a0a0; color: #fff; font-size: 11px; line-height: 13px; text-align: center; cursor: default; }
+.rd-mac-search__icon { position: absolute; left: 8px; color: var(--rd-mac-muted); pointer-events: none; }
+.rd-mac-search__clear { all: unset; position: absolute; right: 6px; width: 13px; height: 13px; border-radius: 50%; background: var(--rd-mac-clear); color: #fff; font-size: 11px; line-height: 13px; text-align: center; cursor: default; }
 
 /* segmented control */
 .rd-mac-segmented { display: inline-flex; flex-direction: column; align-items: stretch; }
 .rd-mac-segmented__bar { display: inline-flex; align-self: center; }
-.rd-mac-segment { all: unset; box-sizing: border-box; padding: 2px 14px; min-height: 22px; border: 1px solid #b8b8b8; margin-left: -1px; background: linear-gradient(#fff, #f1f1f1); cursor: default; }
+.rd-mac-segment { all: unset; box-sizing: border-box; padding: 2px 14px; min-height: 22px; border: 1px solid var(--rd-mac-btn-border); margin-left: -1px; background: var(--rd-mac-ctl-bg); cursor: default; }
 .rd-mac-segment:first-child { border-radius: 5px 0 0 5px; margin-left: 0; }
 .rd-mac-segment:last-child { border-radius: 0 5px 5px 0; }
 .rd-mac-segment[aria-pressed="true"] { background: linear-gradient(#6fb1ff, #1a7bff); border-color: #1767c9; color: #fff; position: relative; }
 .rd-mac-segmented--box .rd-mac-segmented__bar { position: relative; z-index: 1; margin-bottom: -11px; }
-.rd-mac-segmented__box { border: 1px solid rgba(0,0,0,.15); border-radius: 5px; background: #fff; padding: 22px 14px 14px; }
+.rd-mac-segmented__box { border: 1px solid var(--rd-mac-panel-border); border-radius: 5px; background: var(--rd-mac-bg); padding: 22px 14px 14px; }
 
 /* progress circle */
-.rd-mac-progress { display: inline-block; color: #6b6b6b; }
+.rd-mac-progress { display: inline-block; color: var(--rd-mac-label); }
 @keyframes rd-mac-fade { from { opacity: 1; } to { opacity: .15; } }
 .rd-mac-progress__tick { animation: rd-mac-fade 1s linear infinite; }
 
 /* titlebar / toolbar */
-.rd-mac-titlebar { background: linear-gradient(#ebebeb, #d3d3d3); border-bottom: 1px solid #b1b1b1; user-select: none; }
+.rd-mac-titlebar { background: var(--rd-mac-tb-bg); border-bottom: 1px solid var(--rd-mac-tb-border); user-select: none; }
 .rd-mac-titlebar--transparent { background: transparent; border-bottom-color: transparent; }
 .rd-mac-titlebar__row { position: relative; display: flex; align-items: center; justify-content: center; height: 22px; padding: 0 8px; }
 .rd-mac-titlebar--inset .rd-mac-titlebar__row { height: 38px; }
@@ -69,38 +69,38 @@
 .rd-mac-light { all: unset; width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(0,0,0,.2); cursor: default; }
 .rd-mac-light--close { background: #fc605c; } .rd-mac-light--min { background: #fdbc40; } .rd-mac-light--max { background: #34c84a; }
 .rd-mac-light:active { filter: brightness(.8); }
-.rd-mac-titlebar__title { font-weight: 600; font-size: 13px; color: #4d4d4d; }
+.rd-mac-titlebar__title { font-weight: 600; font-size: 13px; color: var(--rd-mac-tb-title); }
 .rd-mac-titlebar__extra { padding: 0 8px; }
 .rd-mac-toolbar { display: flex; align-items: center; gap: 8px; min-height: 36px; }
 .rd-mac-toolbarnav { display: inline-flex; }
-.rd-mac-toolbarnav__item { all: unset; box-sizing: border-box; display: inline-flex; align-items: center; gap: 4px; padding: 3px 12px; border: 1px solid #b8b8b8; margin-left: -1px; background: linear-gradient(#fff, #f1f1f1); cursor: default; }
+.rd-mac-toolbarnav__item { all: unset; box-sizing: border-box; display: inline-flex; align-items: center; gap: 4px; padding: 3px 12px; border: 1px solid var(--rd-mac-btn-border); margin-left: -1px; background: var(--rd-mac-ctl-bg); cursor: default; }
 .rd-mac-toolbarnav__item:first-child { border-radius: 5px 0 0 5px; margin-left: 0; }
 .rd-mac-toolbarnav__item:last-child { border-radius: 0 5px 5px 0; }
-.rd-mac-toolbarnav__item[data-selected] { background: linear-gradient(#cfcfcf, #bdbdbd); }
+.rd-mac-toolbarnav__item[data-selected] { background: var(--rd-mac-pressed); }
 
 /* dialog */
 .rd-mac-dialog__backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.25); }
-.rd-mac-dialog { position: fixed; top: 20%; left: 50%; transform: translateX(-50%); width: 320px; display: flex; gap: 14px; padding: 18px; background: #ececec; border-radius: 8px; box-shadow: 0 0 0 1px rgba(0,0,0,.2), 0 20px 50px rgba(0,0,0,.35); }
+.rd-mac-dialog { position: fixed; top: 20%; left: 50%; transform: translateX(-50%); width: 320px; display: flex; gap: 14px; padding: 18px; background: var(--rd-mac-dialog-bg); border-radius: 8px; box-shadow: 0 0 0 1px rgba(0,0,0,.2), 0 20px 50px rgba(0,0,0,.35); }
 .rd-mac-dialog__icon { flex: none; font-size: 40px; line-height: 1; }
 .rd-mac-dialog__body { flex: 1; min-width: 0; }
 .rd-mac-dialog__title { margin: 0 0 6px; font-size: 13px; font-weight: 700; }
-.rd-mac-dialog__message { margin: 0 0 14px; font-size: 11px; color: #4a4a4a; }
+.rd-mac-dialog__message { margin: 0 0 14px; font-size: 11px; color: var(--rd-mac-dialog-text2); }
 .rd-mac-dialog__buttons { display: flex; justify-content: flex-end; gap: 8px; }
 
 /* list view */
-.rd-mac-lv { display: flex; flex-direction: column; background: #fff; border: 1px solid #d0d0d0; overflow: auto; outline: none; }
-.rd-mac-lv__header, .rd-mac-lv__footer { flex: none; padding: 3px 10px; background: linear-gradient(#fafafa, #ececec); font-size: 11px; color: #555; }
-.rd-mac-lv__header { border-bottom: 1px solid #d0d0d0; } .rd-mac-lv__footer { border-top: 1px solid #d0d0d0; }
-.rd-mac-lv__separator { height: 1px; background: #e4e4e4; flex: none; }
-.rd-mac-lv__sectionheader { padding: 4px 10px; font-size: 11px; font-weight: 600; color: #8a8a8a; }
+.rd-mac-lv { display: flex; flex-direction: column; background: var(--rd-mac-bg); border: 1px solid var(--rd-mac-lv-border); overflow: auto; outline: none; }
+.rd-mac-lv__header, .rd-mac-lv__footer { flex: none; padding: 3px 10px; background: var(--rd-mac-lv-bar); font-size: 11px; color: var(--rd-mac-lv-bar-fg); }
+.rd-mac-lv__header { border-bottom: 1px solid var(--rd-mac-lv-border); } .rd-mac-lv__footer { border-top: 1px solid var(--rd-mac-lv-border); }
+.rd-mac-lv__separator { height: 1px; background: var(--rd-mac-lv-sep); flex: none; }
+.rd-mac-lv__sectionheader { padding: 4px 10px; font-size: 11px; font-weight: 600; color: var(--rd-mac-muted); }
 .rd-mac-lv__row { display: flex; align-items: center; padding: 4px 10px; outline: none; cursor: default; }
-.rd-mac-lv__row:nth-child(even) { background: #f5f5f5; }
-.rd-mac-lv__row[aria-selected="true"] { background: #1a7bff; color: #fff; }
+.rd-mac-lv__row:nth-child(even) { background: var(--rd-mac-lv-stripe); }
+.rd-mac-lv__row[aria-selected="true"] { background: var(--rd-mac-accent); color: #fff; }
 
 /* ---------- focus animation ----------
    Customise with --rd-mac-focus (r,g,b) and --rd-mac-focus-ms. Keyboard focus only (:focus-visible),
    except text fields, which always animate. */
-:root { --rd-mac-focus: 59, 153, 252; --rd-mac-focus-ms: 180ms; }
+:root { --rd-mac-focus-ms: 180ms; }
 
 @keyframes rd-mac-focus-in {
   from { outline-color: rgba(var(--rd-mac-focus), 0);   outline-width: 8px; outline-offset: 2px; }

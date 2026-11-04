@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ContextMenu as BaseContextMenu } from '@base-ui/react/context-menu';
 import { cx } from '../../common';
+import { themed, type Themed } from '../shared';
 import { renderEntries, type MenuEntry, type MenuParts } from './entries';
 
 export type ContextMenuProps = {
@@ -10,10 +11,10 @@ export type ContextMenuProps = {
   className?: string;
   /** Class for the popup itself. */
   popupClassName?: string;
-};
+} & Themed;
 
-export function ContextMenu({ children, items, className, popupClassName }: ContextMenuProps) {
-  const tp = {};
+export function ContextMenu({ theme, children, items, className, popupClassName }: ContextMenuProps) {
+  const tp = themed(theme);
   return (
     <BaseContextMenu.Root>
       <BaseContextMenu.Trigger className={cx('rd-mac-contextarea', className)}>{children}</BaseContextMenu.Trigger>
