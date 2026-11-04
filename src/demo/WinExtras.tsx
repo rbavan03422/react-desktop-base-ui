@@ -1,0 +1,82 @@
+import * as React from 'react';
+import * as UI from '../lib/windows';
+
+const fruits = ['Apple', 'Banana', 'Cherry', 'Grape', 'Mango'];
+const sizes = [{ value: 's', label: 'Small' }, { value: 'm', label: 'Medium' }, { value: 'l', label: 'Large' }];
+const row: React.CSSProperties = { display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' };
+
+function ToastButton() {
+  const toast = UI.useToast();
+  return (
+    <UI.Button onClick={() => toast.add({ title: 'Saved', description: 'Your changes were saved.' })}>
+      Show toast
+    </UI.Button>
+  );
+}
+
+export function WinExtras({ theme }: { theme: UI.Theme }) {
+  const [volume, setVolume] = React.useState(40);
+  return (
+    <UI.ToastProvider theme={theme}>
+      <UI.Window chrome background theme={theme} width={520} padding="0 0 16px">
+        <UI.Menubar theme={theme} menus={[
+          { label: 'File', items: [
+            { label: 'New', shortcut: 'Ctrl+N' }, { label: 'Open…' }, { type: 'separator' },
+            { type: 'checkbox', label: 'Autosave', defaultChecked: true },
+            { type: 'submenu', label: 'Export', items: [{ label: 'PDF' }, { label: 'PNG' }] },
+          ] },
+          { label: 'View', items: [
+            { type: 'radio-group', defaultValue: 'list', items: [{ value: 'list', label: 'List' }, { value: 'grid', label: 'Grid' }] },
+          ] },
+        ]} />
+        <UI.Toolbar theme={theme}>
+          <UI.ToolbarButton>Cut</UI.ToolbarButton>
+          <UI.ToolbarButton>Copy</UI.ToolbarButton>
+          <UI.ToolbarSeparator />
+          <UI.ToolbarGroup><UI.ToolbarButton>Left</UI.ToolbarButton><UI.ToolbarButton>Right</UI.ToolbarButton></UI.ToolbarGroup>
+        </UI.Toolbar>
+        <UI.NavigationMenu theme={theme} items={[{ label: 'Home', href: '#' }, { label: 'Docs', links: [{ label: 'Guide', href: '#', description: 'Get started' }, { label: 'API', href: '#' }] }]} />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 14, padding: '14px 16px 0' }}>
+          <div style={row}>
+            <UI.Switch theme={theme} label="Wi-Fi" defaultChecked />
+            <UI.ToggleButton theme={theme}>Bold</UI.ToggleButton>
+            <UI.ToggleGroup theme={theme} defaultValue={['left']}>
+              <UI.ToggleGroupItem value="left">Left</UI.ToggleGroupItem>
+              <UI.ToggleGroupItem value="center">Center</UI.ToggleGroupItem>
+              <UI.ToggleGroupItem value="right">Right</UI.ToggleGroupItem>
+            </UI.ToggleGroup>
+          </div>
+          <UI.Slider theme={theme} value={volume} onValueChange={(v) => setVolume(Array.isArray(v) ? v[0] : v)} thumbLabels={['Volume']} />
+          <UI.Slider theme={theme} defaultValue={[20, 70]} thumbLabels={['Minimum', 'Maximum']} />
+          <div style={row}>
+            <UI.NumberField theme={theme} label="Quantity" defaultValue={1} min={0} max={10} />
+            <UI.Select theme={theme} items={sizes} defaultValue="m" />
+            <UI.Combobox theme={theme} items={fruits} placeholder="Fruit" />
+            <UI.Autocomplete theme={theme} items={fruits} placeholder="Search…" />
+          </div>
+          <UI.ProgressBar theme={theme} value={60} label="Uploading" showValue />
+          <UI.ProgressBar theme={theme} value={null} label="Working…" />
+          <div style={row}>
+            <UI.Tooltip theme={theme} content="A helpful hint"><UI.Button>Hover me</UI.Button></UI.Tooltip>
+            <UI.Popover theme={theme} trigger={<UI.Button>Popover</UI.Button>} title="Details">Some popover content.</UI.Popover>
+            <UI.Menu theme={theme} trigger={<UI.Button>Menu</UI.Button>} items={[{ label: 'Rename' }, { label: 'Duplicate' }, { type: 'separator' }, { label: 'Delete', disabled: true }]} />
+            <UI.Drawer theme={theme} trigger={<UI.Button>Drawer</UI.Button>} title="Drawer" description="Slides in from the edge.">Drawer content.</UI.Drawer>
+            <ToastButton />
+          </div>
+          <UI.Fieldset theme={theme} legend="Account">
+            <UI.Field theme={theme} label="Email" description="We never share it.">
+              <UI.FieldControl type="email" placeholder="you@example.com" />
+            </UI.Field>
+          </UI.Fieldset>
+          <UI.Separator theme={theme} />
+          <UI.ContextMenu theme={theme} items={[{ label: 'Back' }, { label: 'Reload' }, { type: 'submenu', label: 'More', items: [{ label: 'Inspect' }] }]}>
+            <div style={{ padding: 16, border: '1px dashed currentColor', opacity: .8 }}>Right-click here</div>
+          </UI.ContextMenu>
+          <UI.ScrollArea theme={theme} style={{ height: 80 }}>
+            {Array.from({ length: 12 }, (_, i) => <div key={i} style={{ padding: '2px 4px' }}>Scrollable line {i + 1}</div>)}
+          </UI.ScrollArea>
+        </div>
+      </UI.Window>
+    </UI.ToastProvider>
+  );
+}

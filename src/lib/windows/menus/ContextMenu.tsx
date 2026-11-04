@@ -1,0 +1,31 @@
+import * as React from 'react';
+import { ContextMenu as BaseContextMenu } from '@base-ui/react/context-menu';
+import { cx } from '../../common';
+import { themed, type Themed } from '../shared';
+import { renderEntries, type MenuEntry, type MenuParts } from './entries';
+
+export type ContextMenuProps = {
+  /** Right-click (or long-press) this area to open the menu. */
+  children?: React.ReactNode;
+  items: MenuEntry[];
+  className?: string;
+  /** Class for the popup itself. */
+  popupClassName?: string;
+} & Themed;
+
+export function ContextMenu({ theme, color, children, items, className, popupClassName }: ContextMenuProps) {
+  const tp = themed(theme, color);
+  return (
+    <BaseContextMenu.Root>
+      <BaseContextMenu.Trigger className={cx('rd-win-contextarea', className)}>{children}</BaseContextMenu.Trigger>
+      <BaseContextMenu.Portal>
+        <BaseContextMenu.Positioner className="rd-win-positioner">
+          <BaseContextMenu.Popup className={cx('rd-win rd-win-popup rd-win-menu', popupClassName)} {...tp}>
+            {/* ContextMenu parts share the Menu part API */}
+            {renderEntries(BaseContextMenu as unknown as MenuParts, items, tp)}
+          </BaseContextMenu.Popup>
+        </BaseContextMenu.Positioner>
+      </BaseContextMenu.Portal>
+    </BaseContextMenu.Root>
+  );
+}

@@ -5,3 +5,5 @@ export * from './Text';
 export * from './Label';
 export * from './Link';
 export * from './Pin';
+export * from './ScrollArea';
+export * from './Separator';

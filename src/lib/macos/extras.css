@@ -1,0 +1,253 @@
+/* macOS design tokens for the extra controls (override in your own CSS). */
+:root {
+  --rd-mac-fg: #262626; --rd-mac-bg: #fff; --rd-mac-surface: #ececec; --rd-mac-hover: rgba(0,0,0,.07);
+  --rd-mac-border: #b8b8b8; --rd-mac-muted: #8a8a8a; --rd-mac-accent: #1a7bff; --rd-mac-accent-fg: #fff;
+  --rd-mac-popup-bg: rgba(246,246,246,.97); --rd-mac-radius: 6px; --rd-mac-item-radius: 4px; --rd-mac-popup-pad: 4px;
+  --rd-mac-shadow: 0 0 0 1px rgba(0,0,0,.15), 0 10px 28px rgba(0,0,0,.28);
+  --rd-mac-font: 13px/1.3 -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --rd-mac-ctl-bg: linear-gradient(#fff, #f1f1f1); --rd-mac-ctl-bw: 1px; --rd-mac-ctl-radius: 5px; --rd-mac-ctl-pad: 3px 8px 3px 10px;
+  --rd-mac-input-bg: #fff; --rd-mac-item-hl-bg: #1a7bff; --rd-mac-item-hl-fg: #fff;
+  --rd-mac-tt-bg: #fffbd5; --rd-mac-tt-fg: #262626; --rd-mac-bar-bg: transparent;
+  --rd-mac-sw-w: 38px; --rd-mac-sw-h: 22px; --rd-mac-sw-bw: 0px; --rd-mac-sw-off: #d4d4d4; --rd-mac-sw-border: transparent;
+  --rd-mac-sw-thumb: #fff; --rd-mac-sw-thumb-on: #fff; --rd-mac-sw-shadow: 0 1px 3px rgba(0,0,0,.4);
+  --rd-mac-sl-track-h: 4px; --rd-mac-sl-track: #d4d4d4; --rd-mac-sl-thumb-w: 16px; --rd-mac-sl-thumb-h: 16px;
+  --rd-mac-sl-thumb-radius: 50%; --rd-mac-sl-thumb-bg: #fff; --rd-mac-sl-thumb-shadow: 0 0 0 1px rgba(0,0,0,.2), 0 1px 3px rgba(0,0,0,.3);
+  --rd-mac-pb-h: 6px; --rd-mac-pb-radius: 3px; --rd-mac-pb-track: #dcdcdc;
+  --rd-mac-sb-w: 8px; --rd-mac-sb-radius: 4px; --rd-mac-sb-thumb: rgba(0,0,0,.4); --rd-mac-sb-idle: 0;
+}
+
+/* ───────── popups, lists, items ───────── */
+.rd-mac-positioner { z-index: 1000; outline: none; }
+.rd-mac-popup {
+  box-sizing: border-box; min-width: 120px; padding: var(--rd-mac-popup-pad); background: var(--rd-mac-popup-bg);
+  color: var(--rd-mac-fg); border-radius: var(--rd-mac-radius); box-shadow: var(--rd-mac-shadow); font: var(--rd-mac-font); outline: none;
+  transform-origin: var(--transform-origin, center); transition: opacity 120ms ease, transform 120ms ease;
+}
+.rd-mac-popup[data-starting-style], .rd-mac-popup[data-ending-style] { opacity: 0; transform: scale(.97); }
+.rd-mac-list { display: flex; flex-direction: column; max-height: min(320px, var(--available-height, 320px)); overflow-y: auto; outline: none; }
+.rd-mac-item {
+  position: relative; display: flex; align-items: center; gap: 6px; padding: 4px 12px 4px 24px; color: inherit;
+  border-radius: var(--rd-mac-item-radius); cursor: default; user-select: none; outline: none;
+}
+.rd-mac-item--plain { padding-left: 12px; }
+.rd-mac-item[data-highlighted] { background: var(--rd-mac-item-hl-bg); color: var(--rd-mac-item-hl-fg); }
+.rd-mac-item[data-disabled] { opacity: .4; pointer-events: none; }
+.rd-mac-item__indicator { position: absolute; left: 7px; display: inline-flex; width: 12px; justify-content: center; }
+.rd-mac-item__label { flex: 1; }
+.rd-mac-item__shortcut { margin-left: 28px; opacity: .6; font-size: .92em; }
+.rd-mac-item__chevron { opacity: .7; }
+.rd-mac-menu__grouplabel { padding: 4px 12px; font-size: 11px; color: var(--rd-mac-muted); }
+.rd-mac-empty { padding: 6px 12px; color: var(--rd-mac-muted); }
+.rd-mac-empty:empty { display: none; }
+.rd-mac-contextarea { display: block; }
+
+.rd-mac-separator { flex: none; background: var(--rd-mac-border); }
+.rd-mac-separator[data-orientation="vertical"] { width: 1px; align-self: stretch; }
+.rd-mac-separator:not([data-orientation="vertical"]) { height: 1px; width: 100%; }
+.rd-mac-popup .rd-mac-separator { margin: 4px 0; }
+
+/* ───────── select / combobox / number ───────── */
+.rd-mac-select {
+  all: unset; box-sizing: border-box; display: inline-flex; align-items: center; justify-content: space-between; gap: 10px;
+  min-width: 130px; padding: var(--rd-mac-ctl-pad); border: var(--rd-mac-ctl-bw) solid var(--rd-mac-border);
+  border-radius: var(--rd-mac-ctl-radius); background: var(--rd-mac-ctl-bg); color: var(--rd-mac-fg); font: var(--rd-mac-font); cursor: default;
+}
+.rd-mac-select__icon { display: inline-flex; opacity: .7; }
+.rd-mac-select [data-placeholder] { opacity: .55; }
+.rd-mac-select[data-disabled] { opacity: .5; pointer-events: none; }
+
+.rd-mac-combobox { position: relative; display: inline-flex; align-items: center; }
+.rd-mac-combobox__input {
+  box-sizing: border-box; font: var(--rd-mac-font); color: var(--rd-mac-fg); background: var(--rd-mac-input-bg);
+  border: var(--rd-mac-ctl-bw) solid var(--rd-mac-border); border-radius: var(--rd-mac-ctl-radius);
+  padding: var(--rd-mac-ctl-pad); min-height: 24px; outline: none;
+}
+.rd-mac-combobox__input { width: 100%; padding-right: 46px; }
+.rd-mac-combobox__input:focus-visible { border-color: var(--rd-mac-accent); }
+.rd-mac-combobox__clear, .rd-mac-combobox__trigger {
+  all: unset; position: absolute; top: 50%; transform: translateY(-50%); display: inline-flex; align-items: center;
+  justify-content: center; width: 18px; height: 18px; cursor: default; opacity: .7; color: var(--rd-mac-fg);
+}
+.rd-mac-combobox__trigger { right: 6px; }
+.rd-mac-combobox__clear { right: 26px; }
+
+/* One frame around the whole control: the group carries border, background and focus ring. */
+.rd-mac-number { display: inline-flex; }
+.rd-mac-number__group {
+  box-sizing: border-box; display: inline-flex; align-items: stretch; overflow: hidden;
+  border: var(--rd-mac-ctl-bw) solid var(--rd-mac-border); border-radius: var(--rd-mac-ctl-radius);
+  background: var(--rd-mac-input-bg); transition: border-color .15s ease, background-color .15s ease;
+}
+.rd-mac-number__input {
+  box-sizing: border-box; width: 80px; min-height: 24px; padding: var(--rd-mac-ctl-pad); border: 0; border-radius: 0;
+  background: transparent; color: var(--rd-mac-fg); font: var(--rd-mac-font); outline: none; box-shadow: none;
+}
+.rd-mac-number__spin { display: flex; flex-direction: column; border-left: var(--rd-mac-ctl-bw) solid var(--rd-mac-border); }
+.rd-mac-number__btn {
+  all: unset; box-sizing: border-box; flex: 1; width: 22px; display: flex; align-items: center; justify-content: center;
+  background: var(--rd-mac-ctl-bg); color: var(--rd-mac-fg); cursor: default;
+}
+.rd-mac-number__btn + .rd-mac-number__btn { border-top: var(--rd-mac-ctl-bw) solid var(--rd-mac-border); }
+.rd-mac-number__btn:active { background: var(--rd-mac-hover); }
+.rd-mac-number__btn[data-disabled] { opacity: .4; pointer-events: none; }
+
+/* ───────── switch / toggles / slider ───────── */
+.rd-mac-switch {
+  all: unset; box-sizing: border-box; flex: none; display: inline-flex; align-items: center; padding: 2px;
+  width: var(--rd-mac-sw-w); height: var(--rd-mac-sw-h); border-radius: 999px; background: var(--rd-mac-sw-off);
+  border: var(--rd-mac-sw-bw) solid var(--rd-mac-sw-border); transition: background-color .15s ease, border-color .15s ease; cursor: default;
+}
+.rd-mac-switch[aria-checked="true"] { background: var(--rd-mac-accent); border-color: var(--rd-mac-accent); }
+.rd-mac-switch[data-disabled] { opacity: .5; }
+.rd-mac-switch__thumb {
+  width: calc(var(--rd-mac-sw-h) - 4px - 2 * var(--rd-mac-sw-bw)); height: calc(var(--rd-mac-sw-h) - 4px - 2 * var(--rd-mac-sw-bw));
+  border-radius: 50%; background: var(--rd-mac-sw-thumb); box-shadow: var(--rd-mac-sw-shadow); transition: transform .15s ease, background-color .15s ease;
+}
+.rd-mac-switch[aria-checked="true"] .rd-mac-switch__thumb { transform: translateX(calc(var(--rd-mac-sw-w) - var(--rd-mac-sw-h))); background: var(--rd-mac-sw-thumb-on); }
+
+.rd-mac-togglebutton, .rd-mac-togglegroup__item {
+  all: unset; box-sizing: border-box; display: inline-flex; align-items: center; justify-content: center; min-height: 24px;
+  padding: var(--rd-mac-ctl-pad); border: var(--rd-mac-ctl-bw) solid var(--rd-mac-border); background: var(--rd-mac-ctl-bg);
+  color: var(--rd-mac-fg); font: var(--rd-mac-font); cursor: default; transition: background-color .12s ease, border-color .12s ease;
+}
+.rd-mac-togglebutton { border-radius: var(--rd-mac-ctl-radius); }
+.rd-mac-togglegroup { display: inline-flex; }
+.rd-mac-togglegroup__item { margin-left: calc(var(--rd-mac-ctl-bw) * -1); }
+.rd-mac-togglegroup__item:first-child { margin-left: 0; border-radius: var(--rd-mac-ctl-radius) 0 0 var(--rd-mac-ctl-radius); }
+.rd-mac-togglegroup__item:last-child { border-radius: 0 var(--rd-mac-ctl-radius) var(--rd-mac-ctl-radius) 0; }
+.rd-mac-togglebutton[data-disabled], .rd-mac-togglegroup__item[data-disabled] { opacity: .5; pointer-events: none; }
+
+.rd-mac-slider { display: inline-block; min-width: 160px; width: 100%; }
+.rd-mac-slider__control { box-sizing: border-box; display: flex; align-items: center; width: 100%; padding-block: 8px; touch-action: none; user-select: none; }
+.rd-mac-slider__track { position: relative; width: 100%; height: var(--rd-mac-sl-track-h); background: var(--rd-mac-sl-track); border-radius: 999px; }
+.rd-mac-slider__indicator { height: 100%; background: var(--rd-mac-accent); border-radius: inherit; }
+.rd-mac-slider__thumb {
+  box-sizing: border-box; width: var(--rd-mac-sl-thumb-w); height: var(--rd-mac-sl-thumb-h); border-radius: var(--rd-mac-sl-thumb-radius);
+  background: var(--rd-mac-sl-thumb-bg); box-shadow: var(--rd-mac-sl-thumb-shadow); outline: none;
+}
+.rd-mac-slider[data-disabled] { opacity: .5; }
+
+/* ───────── progress bar ───────── */
+.rd-mac-pbar { display: block; min-width: 160px; }
+.rd-mac-pbar__header { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 12px; }
+.rd-mac-pbar__track { position: relative; overflow: hidden; height: var(--rd-mac-pb-h); background: var(--rd-mac-pb-track); border-radius: var(--rd-mac-pb-radius); }
+.rd-mac-pbar__indicator { display: block; height: 100%; background: var(--rd-mac-accent); border-radius: inherit; transition: width .2s ease; }
+.rd-mac-pbar__indicator[data-indeterminate] { width: 30%; animation: rd-mac-pbar-slide 1.4s ease-in-out infinite; }
+@keyframes rd-mac-pbar-slide { from { transform: translateX(-100%); } to { transform: translateX(350%); } }
+
+/* ───────── tooltip / popover / drawer / toast ───────── */
+.rd-mac-tooltip { min-width: 0; max-width: 280px; padding: 4px 8px; background: var(--rd-mac-tt-bg); color: var(--rd-mac-tt-fg); font-size: 12px; }
+.rd-mac-popover { min-width: 220px; padding: 12px; }
+.rd-mac-popover__title { margin: 0 0 6px; font-size: 13px; font-weight: 600; }
+
+.rd-mac-drawer__backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.28); transition: opacity .2s ease; }
+.rd-mac-drawer__backdrop[data-starting-style], .rd-mac-drawer__backdrop[data-ending-style] { opacity: 0; }
+.rd-mac-drawer__viewport { position: fixed; inset: 0; display: flex; z-index: 1001; }
+.rd-mac-drawer__viewport--left { justify-content: flex-start; }
+.rd-mac-drawer__viewport--right { justify-content: flex-end; }
+.rd-mac-drawer__viewport--top { align-items: flex-start; }
+.rd-mac-drawer__viewport--bottom { align-items: flex-end; }
+.rd-mac-drawer {
+  box-sizing: border-box; display: flex; background: var(--rd-mac-popup-bg); color: var(--rd-mac-fg);
+  box-shadow: var(--rd-mac-shadow); font: var(--rd-mac-font); outline: none; transition: transform .22s ease;
+}
+.rd-mac-drawer[data-side="left"], .rd-mac-drawer[data-side="right"] { width: 300px; max-width: 100%; height: 100%; }
+.rd-mac-drawer[data-side="top"], .rd-mac-drawer[data-side="bottom"] { height: 260px; max-height: 100%; width: 100%; }
+.rd-mac-drawer[data-side="left"][data-starting-style], .rd-mac-drawer[data-side="left"][data-ending-style] { transform: translateX(-100%); }
+.rd-mac-drawer[data-side="right"][data-starting-style], .rd-mac-drawer[data-side="right"][data-ending-style] { transform: translateX(100%); }
+.rd-mac-drawer[data-side="top"][data-starting-style], .rd-mac-drawer[data-side="top"][data-ending-style] { transform: translateY(-100%); }
+.rd-mac-drawer[data-side="bottom"][data-starting-style], .rd-mac-drawer[data-side="bottom"][data-ending-style] { transform: translateY(100%); }
+.rd-mac-drawer__content { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; padding: 16px; overflow: auto; }
+.rd-mac-drawer__title { margin: 0; font-size: 15px; font-weight: 600; }
+.rd-mac-drawer__description { margin: 0; color: var(--rd-mac-muted); }
+
+.rd-mac-toast__viewport { position: fixed; right: 16px; bottom: 16px; z-index: 1100; display: flex; flex-direction: column; gap: 8px; width: 320px; max-width: calc(100vw - 32px); }
+.rd-mac-toast {
+  position: relative; box-sizing: border-box; padding: 10px 34px 10px 14px; background: var(--rd-mac-popup-bg); color: var(--rd-mac-fg);
+  border-radius: var(--rd-mac-radius); box-shadow: var(--rd-mac-shadow); font: var(--rd-mac-font); transition: opacity .2s ease, transform .2s ease;
+}
+.rd-mac-toast[data-starting-style], .rd-mac-toast[data-ending-style] { opacity: 0; transform: translateY(12px); }
+.rd-mac-toast[data-type="error"] { border-left: 4px solid #d13438; }
+.rd-mac-toast[data-type="success"] { border-left: 4px solid #2e9e44; }
+.rd-mac-toast__title { margin: 0; font-size: inherit; font-weight: 600; }
+.rd-mac-toast__description { margin: 2px 0 0; font-size: 12px; color: var(--rd-mac-muted); }
+.rd-mac-toast__close { all: unset; position: absolute; top: 6px; right: 8px; font-size: 16px; line-height: 1; opacity: .6; cursor: default; }
+.rd-mac-toast__close:hover { opacity: 1; }
+
+/* ───────── menubar / toolbar parts ───────── */
+.rd-mac-menubar { display: flex; align-items: center; padding: 2px 4px; background: var(--rd-mac-bar-bg); color: var(--rd-mac-fg); font: var(--rd-mac-font); }
+.rd-mac-menubar__trigger { all: unset; padding: 2px 10px; border-radius: var(--rd-mac-item-radius); cursor: default; }
+.rd-mac-menubar__trigger:hover { background: var(--rd-mac-hover); }
+.rd-mac-menubar__trigger[data-popup-open], .rd-mac-menubar__trigger[aria-expanded="true"] { background: var(--rd-mac-item-hl-bg); color: var(--rd-mac-item-hl-fg); }
+.rd-mac-toolbar__group { display: inline-flex; align-items: center; gap: 2px; }
+.rd-mac-toolbar__button {
+  all: unset; box-sizing: border-box; display: inline-flex; align-items: center; gap: 6px; min-height: 24px; padding: 3px 10px;
+  border-radius: var(--rd-mac-item-radius); cursor: default; color: var(--rd-mac-fg); font: var(--rd-mac-font);
+}
+.rd-mac-toolbar__button:hover { background: var(--rd-mac-hover); }
+.rd-mac-toolbar__button[aria-pressed="true"] { background: var(--rd-mac-hover); box-shadow: inset 0 0 0 1px var(--rd-mac-border); }
+.rd-mac-toolbar__button[data-disabled] { opacity: .4; pointer-events: none; }
+.rd-mac-toolbar__separator { width: 1px; align-self: stretch; margin: 4px 6px; background: var(--rd-mac-border); }
+
+/* ───────── scroll area ───────── */
+.rd-mac-scroll { position: relative; overflow: hidden; }
+.rd-mac-scroll__viewport { width: 100%; height: 100%; overscroll-behavior: contain; outline: none; }
+.rd-mac-scroll__bar { display: flex; position: absolute; box-sizing: border-box; padding: 2px; touch-action: none; user-select: none; opacity: var(--rd-mac-sb-idle); transition: opacity .2s ease; }
+.rd-mac-scroll__bar[data-hovering], .rd-mac-scroll__bar[data-scrolling] { opacity: 1; }
+.rd-mac-scroll__bar[data-orientation="vertical"] { top: 0; right: 0; bottom: 0; width: calc(var(--rd-mac-sb-w) + 4px); }
+.rd-mac-scroll__bar[data-orientation="horizontal"] { left: 0; right: 0; bottom: 0; height: calc(var(--rd-mac-sb-w) + 4px); }
+.rd-mac-scroll__thumb { flex: 1; border-radius: var(--rd-mac-sb-radius); background: var(--rd-mac-sb-thumb); }
+
+/* ───────── field / fieldset / form ───────── */
+.rd-mac-field__description { font-size: 11px; color: var(--rd-mac-muted); }
+.rd-mac-field__error { font-size: 11px; color: #d13438; }
+.rd-mac-fieldset { display: flex; flex-direction: column; gap: 10px; min-width: 0; margin: 0; padding: 10px 12px; border: 1px solid var(--rd-mac-border); border-radius: var(--rd-mac-radius); }
+.rd-mac-fieldset__legend { padding: 0 4px; font-weight: 600; }
+.rd-mac-form { display: flex; flex-direction: column; gap: 12px; }
+
+/* ───────── macOS specifics ───────── */
+.rd-mac-popup { -webkit-backdrop-filter: blur(20px) saturate(1.8); backdrop-filter: blur(20px) saturate(1.8); }
+.rd-mac-togglebutton[aria-pressed="true"], .rd-mac-togglegroup__item[aria-pressed="true"] { background: linear-gradient(#cfcfcf, #bdbdbd); }
+.rd-mac-select[data-popup-open] { background: linear-gradient(#e6e6e6, #d6d6d6); }
+.rd-mac-menubar { font-weight: 500; }
+
+/* level indicator (Meter) */
+.rd-mac-meter { display: block; min-width: 160px; }
+.rd-mac-meter__header { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 12px; }
+.rd-mac-meter__track { overflow: hidden; height: 10px; border-radius: 3px; background: #dcdcdc; box-shadow: inset 0 1px 1px rgba(0,0,0,.25); }
+.rd-mac-meter__indicator {
+  display: block; height: 100%; background-color: #34c84a; transition: width .2s ease, background-color .2s ease;
+  background-image: repeating-linear-gradient(90deg, transparent 0 8px, rgba(255,255,255,.55) 8px 10px);
+}
+.rd-mac-meter[data-level="warning"] .rd-mac-meter__indicator { background-color: #fdbc40; }
+.rd-mac-meter[data-level="critical"] .rd-mac-meter__indicator { background-color: #fc605c; }
+
+/* ───────── focus animation (same ring as the core controls) ───────── */
+.rd-mac-switch:focus-visible,
+.rd-mac-select:focus-visible,
+.rd-mac-combobox__input:focus-visible,
+.rd-mac-combobox__trigger:focus-visible,
+.rd-mac-combobox__clear:focus-visible,
+.rd-mac-togglebutton:focus-visible,
+.rd-mac-togglegroup__item:focus-visible,
+.rd-mac-toolbar__button:focus-visible,
+.rd-mac-menubar__trigger:focus-visible,
+.rd-mac-toast__close:focus-visible,
+.rd-mac-combobox__input:focus-visible {
+  outline: 3px solid rgba(var(--rd-mac-focus), .55);
+  outline-offset: 0;
+  animation: rd-mac-focus-in var(--rd-mac-focus-ms) ease-out;
+}
+.rd-mac-slider__thumb:focus-within {
+  outline: 3px solid rgba(var(--rd-mac-focus), .55); animation: rd-mac-focus-in var(--rd-mac-focus-ms) ease-out;
+}
+.rd-mac-togglegroup__item:focus-visible, .rd-mac-toolbar__button:focus-visible { position: relative; z-index: 2; }
+.rd-mac-combobox__input { transition: border-color var(--rd-mac-focus-ms) ease; }
+
+/* number field: the focus ring wraps the whole control (input + stepper) */
+.rd-mac-number__group:focus-within {
+  border-color: rgb(var(--rd-mac-focus));
+  outline: 3px solid rgba(var(--rd-mac-focus), .55);
+  outline-offset: 0;
+  animation: rd-mac-focus-in var(--rd-mac-focus-ms) ease-out;
+}

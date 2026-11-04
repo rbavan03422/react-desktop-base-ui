@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as Mac from '../lib/macos';
 import * as Win from '../lib/windows';
+import { MacExtras } from './MacExtras';
+import { WinExtras } from './WinExtras';
 
 function MacDemo() {
   const [tab, setTab] = React.useState(0);
@@ -102,12 +104,17 @@ export function App() {
   const [theme, setTheme] = React.useState<Win.Theme>('light');
   return (
     <div style={{ display: 'flex', gap: 32, padding: 32, background: '#8b9bb4', minHeight: '100vh', flexWrap: 'wrap' }}>
-      <MacDemo />
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+        <MacDemo />
+        <MacExtras />
+      </div>
       <div>
         <button onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')} style={{ marginBottom: 12 }}>
           Windows theme: {theme}
         </button>
         <WinDemo theme={theme} />
+        <div style={{ height: 32 }} />
+        <WinExtras theme={theme} />
       </div>
     </div>
   );
