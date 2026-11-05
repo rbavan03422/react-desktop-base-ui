@@ -1,0 +1,62 @@
+/* Data grid with an inline row editor (ExtJS 4 RowEditing style). */
+.rd-mac-grid {
+  box-sizing: border-box; display: flex; flex-direction: column; min-height: 120px; overflow: hidden; outline: none;
+  color: var(--rd-mac-fg); background: var(--rd-mac-bg); font: var(--rd-mac-font); border: 1px solid var(--rd-mac-grid-border);
+}
+.rd-mac-grid__scroller { position: relative; flex: 1; min-height: 0; overflow: auto; }
+.rd-mac-grid__inner { position: relative; }
+.rd-mac-grid__header {
+  position: sticky; top: 0; z-index: 4; display: grid; grid-template-columns: var(--rd-mac-grid-cols);
+  height: var(--rd-mac-grid-row-h); background: var(--rd-mac-grid-head-bg); border-bottom: 1px solid var(--rd-mac-grid-border); user-select: none;
+}
+.rd-mac-grid__hcell { display: flex; align-items: center; min-width: 0; padding: 0 8px; border-right: 1px solid var(--rd-mac-grid-sep); }
+.rd-mac-grid__headbtn { all: unset; box-sizing: border-box; display: flex; align-items: center; justify-content: inherit; gap: 4px; width: 100%; height: 100%; cursor: default; }
+.rd-mac-grid__headtext { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rd-mac-grid__sort { flex: none; font-size: 8px; opacity: .7; }
+
+.rd-mac-grid__rows { position: relative; }
+.rd-mac-grid__row { display: grid; grid-template-columns: var(--rd-mac-grid-cols); min-height: var(--rd-mac-grid-row-h); outline: none; cursor: default; }
+.rd-mac-grid__row:nth-child(even) { background: var(--rd-mac-grid-stripe); }
+.rd-mac-grid__row[aria-selected="true"] { background: var(--rd-mac-grid-sel-bg); color: var(--rd-mac-grid-sel-fg); }
+.rd-mac-grid__cell { display: flex; align-items: center; min-width: 0; padding: 0 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rd-mac-grid__empty { padding: 16px; text-align: center; color: var(--rd-mac-muted); }
+
+/* the row turns into the floating editor */
+.rd-mac-grid__row.rd-mac-grid__row--editing {
+  position: relative; z-index: 3; background: var(--rd-mac-grid-edit-bg); color: var(--rd-mac-fg);
+  box-shadow: var(--rd-mac-grid-edit-shadow); outline: 1px solid var(--rd-mac-grid-edit-border); outline-offset: -1px;
+}
+.rd-mac-grid__cell--editor { padding: 2px 4px; overflow: visible; }
+.rd-mac-grid__input {
+  box-sizing: border-box; width: 100%; min-width: 0; height: calc(var(--rd-mac-grid-row-h) - 6px); padding: 0 6px; font: inherit;
+  color: var(--rd-mac-fg); background: var(--rd-mac-input-bg); border: var(--rd-mac-ctl-bw) solid var(--rd-mac-border);
+  border-radius: var(--rd-mac-ctl-radius); outline: none; transition: border-color .15s ease, background-color .15s ease;
+}
+.rd-mac-grid__input:focus { border-color: var(--rd-mac-accent); }
+.rd-mac-grid__input[data-invalid] { border-color: #d13438; }
+.rd-mac-grid__select { min-width: 0; width: 100%; height: calc(var(--rd-mac-grid-row-h) - 6px); padding: 0 6px; }
+
+/* Update / Cancel bar under (or above) the editing row */
+.rd-mac-grid__editbar {
+  position: absolute; top: 100%; left: 50%; z-index: 5; transform: translateX(-50%); display: flex; flex-direction: column; gap: 6px;
+  padding: 8px 12px; background: var(--rd-mac-grid-edit-bg); color: var(--rd-mac-fg); border: 1px solid var(--rd-mac-grid-edit-border);
+  box-shadow: var(--rd-mac-grid-edit-shadow); border-radius: 0 0 var(--rd-mac-radius) var(--rd-mac-radius);
+}
+.rd-mac-grid__editbar[data-flip="true"] { top: auto; bottom: 100%; border-radius: var(--rd-mac-radius) var(--rd-mac-radius) 0 0; }
+.rd-mac-grid__editbtns { display: flex; justify-content: center; gap: 8px; }
+.rd-mac-grid__errors { max-width: 320px; margin: 0; padding: 0 0 0 16px; font-size: 11px; color: #d13438; white-space: normal; }
+
+.rd-mac-grid {
+  --rd-mac-grid-row-h: 22px; --rd-mac-grid-border: var(--rd-mac-lv-border); --rd-mac-grid-sep: var(--rd-mac-lv-sep);
+  --rd-mac-grid-head-bg: var(--rd-mac-lv-bar); --rd-mac-grid-stripe: var(--rd-mac-lv-stripe);
+  --rd-mac-grid-sel-bg: var(--rd-mac-accent); --rd-mac-grid-sel-fg: #fff;
+  --rd-mac-grid-edit-bg: var(--rd-mac-dialog-bg); --rd-mac-grid-edit-border: var(--rd-mac-btn-border);
+  --rd-mac-grid-edit-shadow: var(--rd-mac-shadow);
+}
+.rd-mac-grid__hcell { font-size: 11px; font-weight: 500; }
+.rd-mac-grid__row:focus-visible { box-shadow: inset 0 0 0 2px rgba(var(--rd-mac-focus), .8); }
+.rd-mac-grid__input:focus {
+  border-color: rgb(var(--rd-mac-focus)); outline: 3px solid rgba(var(--rd-mac-focus), .55); outline-offset: 0;
+  animation: rd-mac-focus-in var(--rd-mac-focus-ms) ease-out;
+}
+.rd-mac-grid__headbtn:focus-visible { outline: 2px solid rgba(var(--rd-mac-focus), .8); outline-offset: -2px; }

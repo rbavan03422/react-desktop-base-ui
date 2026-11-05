@@ -3,6 +3,8 @@ import * as Mac from '../lib/macos';
 import * as Win from '../lib/windows';
 import { MacExtras } from './MacExtras';
 import { WinExtras } from './WinExtras';
+import { MacGrid } from './MacGrid';
+import { WinGrid } from './WinGrid';
 
 function MacDemo({ theme }: { theme: Mac.Theme }) {
   const [tab, setTab] = React.useState(0);
@@ -108,6 +110,7 @@ export function App() {
       <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
         <MacDemo theme={theme} />
         <MacExtras theme={theme} />
+        <MacGrid theme={theme} />
       </div>
       <div>
         <button onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')} style={{ marginBottom: 12 }}>
@@ -116,6 +119,8 @@ export function App() {
         <WinDemo theme={theme} />
         <div style={{ height: 32 }} />
         <WinExtras theme={theme} />
+        <div style={{ height: 32 }} />
+        <WinGrid theme={theme} />
       </div>
     </div>
   );

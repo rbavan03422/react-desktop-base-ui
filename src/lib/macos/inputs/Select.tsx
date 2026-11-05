@@ -9,12 +9,13 @@ export type SelectProps = Omit<React.ComponentPropsWithoutRef<typeof BaseSelect.
   items: SelectOption[];
   placeholder?: React.ReactNode;
   className?: string;
+  'aria-label'?: string;
 } & Themed;
 
-export function Select({ theme, items, placeholder, className, ...rest }: SelectProps) {
+export function Select({ theme, items, placeholder, className, 'aria-label': ariaLabel, ...rest }: SelectProps) {
   return (
     <BaseSelect.Root items={items} {...rest}>
-      <BaseSelect.Trigger className={cx('rd-mac rd-mac-select', className)} {...themed(theme)}>
+      <BaseSelect.Trigger className={cx('rd-mac rd-mac-select', className)} aria-label={ariaLabel} {...themed(theme)}>
         <BaseSelect.Value placeholder={placeholder} />
         <BaseSelect.Icon className="rd-mac-select__icon"><svg viewBox="0 0 10 14" width="9" height="12" aria-hidden><path d="M2 5.2L5 2.2l3 3M2 8.8l3 3 3-3" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" /></svg></BaseSelect.Icon>
       </BaseSelect.Trigger>

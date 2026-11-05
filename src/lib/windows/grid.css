@@ -1,0 +1,61 @@
+/* Data grid with an inline row editor (ExtJS 4 RowEditing style). */
+.rd-win-grid {
+  box-sizing: border-box; display: flex; flex-direction: column; min-height: 120px; overflow: hidden; outline: none;
+  color: var(--rd-win-fg); background: var(--rd-win-bg); font: var(--rd-win-font); border: 1px solid var(--rd-win-grid-border);
+}
+.rd-win-grid__scroller { position: relative; flex: 1; min-height: 0; overflow: auto; }
+.rd-win-grid__inner { position: relative; }
+.rd-win-grid__header {
+  position: sticky; top: 0; z-index: 4; display: grid; grid-template-columns: var(--rd-win-grid-cols);
+  height: var(--rd-win-grid-row-h); background: var(--rd-win-grid-head-bg); border-bottom: 1px solid var(--rd-win-grid-border); user-select: none;
+}
+.rd-win-grid__hcell { display: flex; align-items: center; min-width: 0; padding: 0 8px; border-right: 1px solid var(--rd-win-grid-sep); }
+.rd-win-grid__headbtn { all: unset; box-sizing: border-box; display: flex; align-items: center; justify-content: inherit; gap: 4px; width: 100%; height: 100%; cursor: default; }
+.rd-win-grid__headtext { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rd-win-grid__sort { flex: none; font-size: 8px; opacity: .7; }
+
+.rd-win-grid__rows { position: relative; }
+.rd-win-grid__row { display: grid; grid-template-columns: var(--rd-win-grid-cols); min-height: var(--rd-win-grid-row-h); outline: none; cursor: default; }
+.rd-win-grid__row:nth-child(even) { background: var(--rd-win-grid-stripe); }
+.rd-win-grid__row[aria-selected="true"] { background: var(--rd-win-grid-sel-bg); color: var(--rd-win-grid-sel-fg); }
+.rd-win-grid__cell { display: flex; align-items: center; min-width: 0; padding: 0 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rd-win-grid__empty { padding: 16px; text-align: center; color: var(--rd-win-muted); }
+
+/* the row turns into the floating editor */
+.rd-win-grid__row.rd-win-grid__row--editing {
+  position: relative; z-index: 3; background: var(--rd-win-grid-edit-bg); color: var(--rd-win-fg);
+  box-shadow: var(--rd-win-grid-edit-shadow); outline: 1px solid var(--rd-win-grid-edit-border); outline-offset: -1px;
+}
+.rd-win-grid__cell--editor { padding: 2px 4px; overflow: visible; }
+.rd-win-grid__input {
+  box-sizing: border-box; width: 100%; min-width: 0; height: calc(var(--rd-win-grid-row-h) - 6px); padding: 0 6px; font: inherit;
+  color: var(--rd-win-fg); background: var(--rd-win-input-bg); border: var(--rd-win-ctl-bw) solid var(--rd-win-border);
+  border-radius: var(--rd-win-ctl-radius); outline: none; transition: border-color .15s ease, background-color .15s ease;
+}
+.rd-win-grid__input:focus { border-color: var(--rd-win-accent); }
+.rd-win-grid__input[data-invalid] { border-color: #d13438; }
+.rd-win-grid__select { min-width: 0; width: 100%; height: calc(var(--rd-win-grid-row-h) - 6px); padding: 0 6px; }
+
+/* Update / Cancel bar under (or above) the editing row */
+.rd-win-grid__editbar {
+  position: absolute; top: 100%; left: 50%; z-index: 5; transform: translateX(-50%); display: flex; flex-direction: column; gap: 6px;
+  padding: 8px 12px; background: var(--rd-win-grid-edit-bg); color: var(--rd-win-fg); border: 1px solid var(--rd-win-grid-edit-border);
+  box-shadow: var(--rd-win-grid-edit-shadow); border-radius: 0 0 var(--rd-win-radius) var(--rd-win-radius);
+}
+.rd-win-grid__editbar[data-flip="true"] { top: auto; bottom: 100%; border-radius: var(--rd-win-radius) var(--rd-win-radius) 0 0; }
+.rd-win-grid__editbtns { display: flex; justify-content: center; gap: 8px; }
+.rd-win-grid__errors { max-width: 320px; margin: 0; padding: 0 0 0 16px; font-size: 11px; color: #d13438; white-space: normal; }
+
+.rd-win-grid {
+  --rd-win-grid-row-h: 34px; --rd-win-grid-border: var(--rd-win-border); --rd-win-grid-sep: var(--rd-win-hover);
+  --rd-win-grid-head-bg: var(--rd-win-bar-bg); --rd-win-grid-stripe: rgba(128,128,128,.08);
+  --rd-win-grid-sel-bg: var(--rd-win-item-hl-bg); --rd-win-grid-sel-fg: var(--rd-win-item-hl-fg);
+  --rd-win-grid-edit-bg: var(--rd-win-popup-bg); --rd-win-grid-edit-border: var(--rd-win-accent);
+  --rd-win-grid-edit-shadow: var(--rd-win-shadow);
+}
+.rd-win-grid__hcell { font-weight: 600; }
+.rd-win-grid__headbtn:hover { background: var(--rd-win-hover); }
+.rd-win-grid__row:hover:not([aria-selected="true"]) { background: var(--rd-win-hover); }
+.rd-win-grid__row:focus-visible, .rd-win-grid__headbtn:focus-visible { outline: 1px dotted var(--rd-win-fg); outline-offset: -3px; }
+.rd-win-grid__input:hover { border-color: var(--rd-win-fg); }
+.rd-win-grid__input:focus { border-color: var(--rd-win-accent); background: var(--rd-win-bg); }
