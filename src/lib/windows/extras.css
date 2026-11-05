@@ -1,26 +1,31 @@
-/* Windows 10 design tokens for the extra controls. Theme-dependent values live under [data-rd-theme]. */
+/* Windows 11 design tokens for the extra controls. Theme-dependent values live under [data-rd-theme]. */
 :root, [data-rd-theme="light"] {
-  --rd-win-hover: #d4d4d4; --rd-win-popup-bg: #f2f2f2; --rd-win-item-hl-bg: #d4d4d4; --rd-win-item-hl-fg: #000;
-  --rd-win-tt-bg: #f2f2f2; --rd-win-tt-fg: #000; --rd-win-bar-bg: #e6e6e6; --rd-win-pb-track: #cccccc;
-  --rd-win-sl-track: #999999; --rd-win-sb-thumb: rgba(0,0,0,.45);
+  --rd-win-hover: #eaeaea; --rd-win-popup-bg: #f9f9f9; --rd-win-item-hl-bg: #e8f1fb; --rd-win-item-hl-fg: #1b1b1b;
+  --rd-win-tt-bg: #f9f9f9; --rd-win-tt-fg: #1b1b1b; --rd-win-bar-bg: #f3f3f3; --rd-win-pb-track: #e5e5e5;
+  --rd-win-sl-track: #d1d1d1; --rd-win-sb-thumb: rgba(0,0,0,.35);
 }
 [data-rd-theme="dark"] {
-  --rd-win-hover: #4a4a4a; --rd-win-popup-bg: #2b2b2b; --rd-win-item-hl-bg: #4a4a4a; --rd-win-item-hl-fg: #fff;
-  --rd-win-tt-bg: #2b2b2b; --rd-win-tt-fg: #fff; --rd-win-bar-bg: #333333; --rd-win-pb-track: #555555;
-  --rd-win-sl-track: #777777; --rd-win-sb-thumb: rgba(255,255,255,.5);
+  --rd-win-hover: #383838; --rd-win-popup-bg: #2b2b2b; --rd-win-item-hl-bg: #383838; --rd-win-item-hl-fg: #f3f3f3;
+  --rd-win-tt-bg: #2b2b2b; --rd-win-tt-fg: #f3f3f3; --rd-win-bar-bg: #2b2b2b; --rd-win-pb-track: #484848;
+  --rd-win-sl-track: #555; --rd-win-sl-thumb-bg: var(--rd-win-accent);
+  --rd-win-sb-thumb: rgba(255,255,255,.4); --rd-win-shadow: 0 8px 24px rgba(0,0,0,.5);
 }
 :root {
-  --rd-win-accent-fg: #fff; --rd-win-radius: 0; --rd-win-item-radius: 0; --rd-win-popup-pad: 2px;
-  --rd-win-shadow: 0 4px 14px rgba(0,0,0,.35);
-  --rd-win-font: 14px/1.3 "Segoe UI", "Segoe UI Web", system-ui, sans-serif;
-  --rd-win-ctl-bg: transparent; --rd-win-ctl-bw: 2px; --rd-win-ctl-radius: 0; --rd-win-ctl-pad: 4px 8px 4px 10px;
-  --rd-win-input-bg: transparent;
+  --rd-win-radius: 8px; --rd-win-item-radius: 4px; --rd-win-popup-pad: 4px;
+  --rd-win-shadow: 0 8px 24px rgba(0,0,0,.16);
+  --rd-win-font: 14px/1.4 "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
+  --rd-win-ctl-bg: var(--rd-win-bg); --rd-win-ctl-bw: 1px; --rd-win-ctl-radius: 4px; --rd-win-ctl-pad: 6px 10px;
+  --rd-win-input-bg: var(--rd-win-bg);
   --rd-win-sw-w: 40px; --rd-win-sw-h: 20px; --rd-win-sw-bw: 2px; --rd-win-sw-off: transparent; --rd-win-sw-border: currentColor;
   --rd-win-sw-thumb: currentColor; --rd-win-sw-thumb-on: #fff; --rd-win-sw-shadow: none;
   --rd-win-sl-track-h: 4px; --rd-win-sl-thumb-w: 10px; --rd-win-sl-thumb-h: 24px; --rd-win-sl-thumb-radius: 5px;
-  --rd-win-sl-thumb-bg: #0078d7; --rd-win-sl-thumb-shadow: none;
-  --rd-win-pb-h: 4px; --rd-win-pb-radius: 0;
-  --rd-win-sb-w: 6px; --rd-win-sb-radius: 0; --rd-win-sb-idle: 1;
+  --rd-win-sl-thumb-bg: var(--rd-win-accent); --rd-win-sl-thumb-shadow: none;
+  --rd-win-pb-h: 4px; --rd-win-pb-radius: 999px;
+  --rd-win-sb-w: 4px; --rd-win-sb-radius: 999px; --rd-win-sb-idle: .75;
+}
+[data-rd-theme="dark"] {
+  --rd-win-ctl-bg: #303030;
+  --rd-win-input-bg: #181818;
 }
 
 /* ───────── popups, lists, items ───────── */
@@ -28,6 +33,7 @@
 .rd-win-popup {
   box-sizing: border-box; min-width: 120px; padding: var(--rd-win-popup-pad); background: var(--rd-win-popup-bg);
   color: var(--rd-win-fg); border-radius: var(--rd-win-radius); box-shadow: var(--rd-win-shadow); font: var(--rd-win-font); outline: none;
+  border: 1px solid var(--rd-win-border); backdrop-filter: blur(20px);
   transform-origin: var(--transform-origin, center); transition: opacity 120ms ease, transform 120ms ease;
 }
 .rd-win-popup[data-starting-style], .rd-win-popup[data-ending-style] { opacity: 0; transform: scale(.97); }
@@ -66,11 +72,11 @@
 .rd-win-combobox { position: relative; display: inline-flex; align-items: center; }
 .rd-win-combobox__input {
   box-sizing: border-box; font: var(--rd-win-font); color: var(--rd-win-fg); background: var(--rd-win-input-bg);
-  border: var(--rd-win-ctl-bw) solid var(--rd-win-border); border-radius: var(--rd-win-ctl-radius);
+  border: 0; border-bottom: 1px solid var(--rd-win-border); border-radius: 4px 4px 0 0;
   padding: var(--rd-win-ctl-pad); min-height: 24px; outline: none;
 }
 .rd-win-combobox__input { width: 100%; padding-right: 46px; }
-.rd-win-combobox__input:focus-visible { border-color: var(--rd-win-accent); }
+.rd-win-combobox__input:focus-visible { border-bottom: 2px solid var(--rd-win-accent); }
 .rd-win-combobox__clear, .rd-win-combobox__trigger {
   all: unset; position: absolute; top: 50%; transform: translateY(-50%); display: inline-flex; align-items: center;
   justify-content: center; width: 18px; height: 18px; cursor: default; opacity: .7; color: var(--rd-win-fg);
@@ -213,10 +219,9 @@
 .rd-win-form { display: flex; flex-direction: column; gap: 12px; }
 
 /* ───────── Windows specifics ───────── */
-.rd-win-togglebutton[aria-pressed="true"], .rd-win-togglegroup__item[aria-pressed="true"] { background: var(--rd-win-accent); border-color: var(--rd-win-accent); color: #fff; }
+.rd-win-togglebutton[aria-pressed="true"], .rd-win-togglegroup__item[aria-pressed="true"] { background: var(--rd-win-accent); border-color: var(--rd-win-accent); color: var(--rd-win-accent-fg); }
 .rd-win-select:hover, .rd-win-togglebutton:hover, .rd-win-togglegroup__item:hover { border-color: var(--rd-win-fg); }
-.rd-win-combobox__input:hover { border-color: var(--rd-win-fg); }
-.rd-win-popup { border: 1px solid var(--rd-win-border); }
+.rd-win-combobox__input:hover { border-bottom-color: var(--rd-win-fg); }
 .rd-win-scroll__bar:hover { --rd-win-sb-w: 10px; }
 
 /* command bar */
@@ -266,7 +271,7 @@
 .rd-win-slider__thumb { outline: 1px dotted transparent; outline-offset: 4px; transition: outline-color var(--rd-win-focus-ms) ease, outline-offset var(--rd-win-focus-ms) ease; }
 .rd-win-slider__thumb:focus-within { outline-color: var(--rd-win-fg); outline-offset: 2px; }
 .rd-win-combobox__input { transition: border-color var(--rd-win-focus-ms) ease, background-color var(--rd-win-focus-ms) ease; }
-.rd-win-combobox__input:focus-visible { background: var(--rd-win-bg); }
+.rd-win-combobox__input:focus-visible { background: var(--rd-win-bg); border-bottom: 2px solid var(--rd-win-accent); }
 
 /* number field: hover / focus frame wraps the whole control (input + spin buttons) */
 .rd-win-number__group:hover { border-color: var(--rd-win-fg); }

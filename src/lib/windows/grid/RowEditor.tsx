@@ -163,7 +163,7 @@ export function RowEditor<T>({
           </ul>
         )}
         <div className="rd-win-grid__editbtns">
-          <Button theme={theme} color={color ?? '#0078d7'} disabled={invalid} onClick={onUpdate}>{updateText}</Button>
+          <Button theme={theme} color={color ?? '#0067c0'} disabled={invalid} onClick={onUpdate}>{updateText}</Button>
           <Button theme={theme} onClick={onCancel}>{cancelText}</Button>
         </div>
       </div>

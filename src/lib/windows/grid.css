@@ -1,7 +1,7 @@
 /* Data grid with an inline row editor (ExtJS 4 RowEditing style). */
 .rd-win-grid {
   box-sizing: border-box; display: flex; flex-direction: column; min-height: 120px; overflow: hidden; outline: none;
-  color: var(--rd-win-fg); background: var(--rd-win-bg); font: var(--rd-win-font); border: 1px solid var(--rd-win-grid-border);
+  color: var(--rd-win-fg); background: var(--rd-win-bg); font: var(--rd-win-font); border: 1px solid var(--rd-win-grid-border); border-radius: var(--rd-win-radius);
 }
 .rd-win-grid__scroller { position: relative; flex: 1; min-height: 0; overflow: auto; }
 .rd-win-grid__inner { position: relative; }
@@ -29,11 +29,11 @@
 .rd-win-grid__cell--editor { padding: 2px 4px; overflow: visible; }
 .rd-win-grid__input {
   box-sizing: border-box; width: 100%; min-width: 0; height: calc(var(--rd-win-grid-row-h) - 6px); padding: 0 6px; font: inherit;
-  color: var(--rd-win-fg); background: var(--rd-win-input-bg); border: var(--rd-win-ctl-bw) solid var(--rd-win-border);
-  border-radius: var(--rd-win-ctl-radius); outline: none; transition: border-color .15s ease, background-color .15s ease;
+  color: var(--rd-win-fg); background: var(--rd-win-input-bg); border: 0; border-bottom: 1px solid var(--rd-win-border);
+  border-radius: 4px 4px 0 0; outline: none; transition: border-color .15s ease, background-color .15s ease;
 }
-.rd-win-grid__input:focus { border-color: var(--rd-win-accent); }
-.rd-win-grid__input[data-invalid] { border-color: #d13438; }
+.rd-win-grid__input:focus { border-bottom: 2px solid var(--rd-win-accent); }
+.rd-win-grid__input[data-invalid] { border-bottom-color: #d13438; }
 .rd-win-grid__select { min-width: 0; width: 100%; height: calc(var(--rd-win-grid-row-h) - 6px); padding: 0 6px; }
 
 /* Update / Cancel bar under (or above) the editing row */
@@ -114,9 +114,9 @@
 @supports (background: color-mix(in srgb, red, blue)) {
   .rd-win-grid { --rd-win-grid-check-bg: color-mix(in srgb, var(--rd-win-accent) 15%, transparent); }
 }
-.rd-win-checkbox[aria-checked="mixed"] { background: var(--rd-win-accent); border-color: var(--rd-win-accent); color: #fff; }
+.rd-win-checkbox[aria-checked="mixed"] { background: var(--rd-win-accent); border-color: var(--rd-win-accent); color: var(--rd-win-accent-fg); }
 .rd-win-checkbox[aria-checked="mixed"] svg { display: none; }
-.rd-win-checkbox[aria-checked="mixed"] .rd-win-checkbox__mark::before { content: ""; display: block; width: 8px; height: 2px; background: #fff; }
+.rd-win-checkbox[aria-checked="mixed"] .rd-win-checkbox__mark::before { content: ""; display: block; width: 8px; height: 2px; background: var(--rd-win-accent-fg); }
 .rd-win-grid__pageinput:hover { border-color: var(--rd-win-fg); }
 .rd-win-grid__pageinput:focus { border-color: var(--rd-win-accent); background: var(--rd-win-bg); }
 .rd-win-grid__pagebtn:focus-visible, .rd-win-grid__ratingstar:focus-visible, .rd-win-grid__ratingclear:focus-visible { outline: 1px dotted var(--rd-win-fg); outline-offset: 1px; }

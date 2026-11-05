@@ -67,15 +67,16 @@ function MacDemo({ theme }: { theme: Mac.Theme }) {
 }
 
 function WinDemo({ theme }: { theme: Win.Theme }) {
+  const accent = theme === 'dark' ? '#60cdff' : '#0067c0';
   return (
-    <Win.Window chrome background theme={theme} color="#0078d7" width={560} height={520}>
+    <Win.Window chrome background theme={theme} color={accent} width={560} height={520}>
       <Win.TitleBar title="Settings" controls />
       <div style={{ flex: 1, minHeight: 0 }}>
         <Win.NavPane paneExpandedLength={160}>
           <Win.NavPaneItem title="Controls" icon="🎛">
             <Win.View layout="vertical" style={{ gap: 12 }}>
               <Win.Button>Default</Win.Button>
-              <Win.Button color="#0078d7">Accent</Win.Button>
+              <Win.Button color={accent}>Accent</Win.Button>
               <Win.Checkbox label="Checkbox" defaultChecked />
               <Win.RadioGroup defaultValue="a">
                 <Win.Radio value="a" label="Option A" />
