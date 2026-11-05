@@ -126,18 +126,27 @@
 .rd-material-breadcrumbs__expand { border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer; }
 .rd-material-speed-dial { position: relative; display: inline-flex; flex-direction: column; align-items: center; }
 .rd-material-speed-dial__fab, .rd-material-speed-dial__action { display: inline-flex; width: 56px; height: 56px; align-items: center; justify-content: center; border: 0; border-radius: 50%; background: var(--rd-mac-primary); color: var(--rd-mac-primary-fg); box-shadow: 0 3px 8px rgba(0,0,0,.25); font: inherit; cursor: pointer; }
-.rd-material-speed-dial__actions { order: -1; display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 12px; }
+.rd-material-speed-dial__actions { order: -1; display: flex; flex-direction: column; align-items: center; gap: 12px; max-height: 0; margin-bottom: 0; overflow: hidden; opacity: 0; pointer-events: none; visibility: hidden; transition: max-height .22s ease, max-width .22s ease, margin .22s ease, opacity .16s ease, visibility 0s linear .22s; }
+.rd-material-speed-dial__actions--open { max-height: 1000px; margin-bottom: 12px; opacity: 1; pointer-events: auto; visibility: visible; transition-delay: 0s; }
+.rd-material-speed-dial__action { opacity: 0; transform: translateY(12px) scale(.8); transition: opacity .16s ease var(--rd-speed-dial-delay, 0ms), transform .22s ease var(--rd-speed-dial-delay, 0ms); }
+.rd-material-speed-dial__actions--open .rd-material-speed-dial__action { opacity: 1; transform: translate(0) scale(1); }
 .rd-material-speed-dial__action { width: 40px; height: 40px; background: var(--rd-mac-surface); color: var(--rd-mac-fg); }
 .rd-material-speed-dial__tooltip { position: absolute; right: calc(100% + 10px); padding: 4px 8px; border-radius: 4px; background: var(--rd-mac-popup-bg); box-shadow: var(--rd-mac-shadow); white-space: nowrap; }
 .rd-material-speed-dial__fab-icon { display: inline-flex; align-items: center; justify-content: center; transition: transform .16s ease; }
 .rd-material-speed-dial__fab-icon svg, .rd-material-speed-dial__action svg { display: block; flex: none; }
 .rd-material-speed-dial__fab-icon--open { transform: rotate(45deg); }
 .rd-material-speed-dial--down { flex-direction: column; }
-.rd-material-speed-dial--down .rd-material-speed-dial__actions { order: 0; margin: 12px 0 0; }
+.rd-material-speed-dial--down .rd-material-speed-dial__actions { order: 0; margin: 0; }
+.rd-material-speed-dial--down .rd-material-speed-dial__actions--open { margin: 12px 0 0; }
 .rd-material-speed-dial--left, .rd-material-speed-dial--right { flex-direction: row; }
-.rd-material-speed-dial--left .rd-material-speed-dial__actions, .rd-material-speed-dial--right .rd-material-speed-dial__actions { order: 0; flex-direction: row; margin: 0 0 0 12px; }
+.rd-material-speed-dial--left .rd-material-speed-dial__actions, .rd-material-speed-dial--right .rd-material-speed-dial__actions { order: 0; flex-direction: row; max-width: 0; max-height: none; margin: 0; }
+.rd-material-speed-dial--left .rd-material-speed-dial__actions--open, .rd-material-speed-dial--right .rd-material-speed-dial__actions--open { max-width: 1000px; margin: 0 0 0 12px; }
 .rd-material-speed-dial--left { flex-direction: row-reverse; }
-.rd-material-speed-dial--left .rd-material-speed-dial__actions { margin: 0 12px 0 0; }
+.rd-material-speed-dial--left .rd-material-speed-dial__actions--open { margin: 0 12px 0 0; }
+.rd-material-speed-dial--down .rd-material-speed-dial__action { transform: translateY(-12px) scale(.8); }
+.rd-material-speed-dial--left .rd-material-speed-dial__action { transform: translateX(12px) scale(.8); }
+.rd-material-speed-dial--right .rd-material-speed-dial__action { transform: translateX(-12px) scale(.8); }
+@media (prefers-reduced-motion: reduce) { .rd-material-speed-dial__actions, .rd-material-speed-dial__action, .rd-material-speed-dial__fab-icon { transition-duration: .01ms; } }
 .rd-material-stepper { display: flex; align-items: center; color: var(--rd-mac-muted); }
 .rd-material-stepper--vertical { flex-direction: column; align-items: stretch; }
 .rd-material-stepper__step { position: relative; display: flex; flex: 1; align-items: center; min-width: 0; }

@@ -506,30 +506,30 @@ export function SpeedDial({
           )}
         </span>
       </button>
-      {open && (
-        <div className="rd-material-speed-dial__actions">
-          {actions.map((action) => (
-            <button
-              key={action.name}
-              type="button"
-              className="rd-material-speed-dial__action"
-              aria-label={action.name}
-              title={action.tooltipTitle == null ? action.name : String(action.tooltipTitle)}
-              disabled={action.disabled}
-              onClick={(event) => {
-                action.onClick?.(event);
-                if (!event.defaultPrevented) {
-                  if (controlledOpen === undefined) setUncontrolledOpen(false);
-                  onClose?.(event);
-                }
-              }}
-            >
-              {action.icon}
-              {action.tooltipOpen && <span className="rd-material-speed-dial__tooltip">{action.tooltipTitle ?? action.name}</span>}
-            </button>
-          ))}
-        </div>
-      )}
+      <div className={cx('rd-material-speed-dial__actions', open && 'rd-material-speed-dial__actions--open')} aria-hidden={!open}>
+        {actions.map((action, index) => (
+          <button
+            key={action.name}
+            type="button"
+            className="rd-material-speed-dial__action"
+            aria-label={action.name}
+            tabIndex={open ? 0 : -1}
+            style={{ '--rd-speed-dial-delay': `${(open ? index : actions.length - index - 1) * 35}ms` } as React.CSSProperties}
+            title={action.tooltipTitle == null ? action.name : String(action.tooltipTitle)}
+            disabled={action.disabled}
+            onClick={(event) => {
+              action.onClick?.(event);
+              if (!event.defaultPrevented) {
+                if (controlledOpen === undefined) setUncontrolledOpen(false);
+                onClose?.(event);
+              }
+            }}
+          >
+            {action.icon}
+            {action.tooltipOpen && <span className="rd-material-speed-dial__tooltip">{action.tooltipTitle ?? action.name}</span>}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
