@@ -127,6 +127,7 @@ const columns: GridColumnItem<Person>[] = [
 ```
 - **Resizing:** drag the right edge of a header (or focus it and use Left / Right, Shift for bigger steps; double-click or Home resets). `minWidth` / `maxWidth` limit it and `resizable: false` turns it off. Widths are kept inside the grid; seed them with `defaultColumnWidths` and persist them from `onColumnResize`.
 - **Checkbox column:** `checkboxSelection` adds a leading column with a select-all header (applies to the current page, with an indeterminate state). Space toggles the focused row. Control it with `checkedIds` / `onCheckedChange`.
+- **Cell spans:** set `colSpan` / `rowSpan` on a `GridColumn` to a positive integer or `(row, rowIndex) => span`. Spans apply to the currently displayed page after sorting; spans extending beyond the page are clipped.
 - **Percent column:** `type: 'percent'` shows a bar with a centred label; `max` is the value that equals 100% and `decimals` sets label precision. Edit it with `editor: { type: 'percent' }` (0 to max).
 - **Rating column:** `type: 'rating'` shows stars (`max`, default 5). `editor: { type: 'rating' }` is a radio group: arrow keys, click or Space pick a value, and a small × clears it.
 - **Paging:** set `pageSize` or `defaultPageSize` to show the toolbar (first, previous, "Page n of N", next, last, rows per page, "Displaying a - b of N"). Control it with `page` / `onPageChange` / `onPageSizeChange`, or pass `total` for server-side paging (then `rows` is the current page and is not sliced).

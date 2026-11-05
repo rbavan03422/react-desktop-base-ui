@@ -15,6 +15,16 @@ import {
 
 const JUSTIFY = { left: 'flex-start', center: 'center', right: 'flex-end' } as const;
 
+type CellSpan = { column: GridColumn<any>; columnIndex: number; colSpan: number; rowSpan: number };
+
+function spanSize<T>(span: GridColumn<T>['colSpan'] | GridColumn<T>['rowSpan'], row: T, rowIndex: number, name: string, remaining: number) {
+  const value = typeof span === 'function' ? span(row, rowIndex) : span ?? 1;
+  if (!Number.isInteger(value) || value < 1) {
+    throw new RangeError(`GridColumn.${name} must resolve to a positive integer`);
+  }
+  return Math.min(value, remaining);
+}
+
 export type DataGridProps<T> = {
   /** Columns, optionally nested in groups for multi-level headers. */
   columns: GridColumnItem<T>[];
@@ -121,6 +131,27 @@ function DataGridInner<T extends object>(
   const page = Math.min(Math.max(1, pageProp ?? innerPage), pageCount);
   const visibleRows = paged && !server ? sortedRows.slice((page - 1) * size, page * size) : sortedRows;
   const rowOffset = paged && !server ? (page - 1) * size : 0;
+  const cellSpans = React.useMemo(() => {
+    const occupied = visibleRows.map(() => columns.map(() => false));
+    return visibleRows.map((row, rowIndex) => {
+      const cells: CellSpan[] = [];
+      columns.forEach((column, columnIndex) => {
+        if (occupied[rowIndex][columnIndex]) return;
+        const colSpan = edit ? 1 : spanSize(column.colSpan, row, rowIndex, 'colSpan', columns.length - columnIndex);
+        const rowSpan = edit ? 1 : spanSize(column.rowSpan, row, rowIndex, 'rowSpan', visibleRows.length - rowIndex);
+        for (let r = rowIndex; r < rowIndex + rowSpan; r++) {
+          for (let c = columnIndex; c < columnIndex + colSpan; c++) {
+            if (occupied[r][c]) {
+              throw new RangeError(`Grid cell "${column.field}" overlaps another cell span`);
+            }
+            occupied[r][c] = true;
+          }
+        }
+        cells.push({ column, columnIndex, colSpan, rowSpan });
+      });
+      return cells;
+    });
+  }, [visibleRows, columns, edit]);
 
   const errors = React.useMemo(() => (edit ? computeErrors(columns, edit.draft, edit.row) : {}), [edit, columns]);
 
@@ -327,7 +358,7 @@ function DataGridInner<T extends object>(
                 return (
                   <RowEditor<T>
                     key={id}
-                    theme={theme} color={color} columns={columns} row={edit.row} rowIndex={rowIndex} draft={edit.draft} errors={errors} blockError={blockError}
+                    theme={theme} color={color} columns={columns} row={edit.row} rowIndex={rowIndex} displayRow={i + 1} draft={edit.draft} errors={errors} blockError={blockError}
                     focusKey={edit.focusKey} updateText={updateText} cancelText={cancelText} renderCell={renderDisplay}
                     onChange={(field, value) => { setEdit((s) => (s ? { ...s, draft: { ...s.draft, [field]: value } } : s)); setBlockError(null); }}
                     onUpdate={completeEdit} onCancel={cancelEdit}
@@ -349,20 +380,35 @@ function DataGridInner<T extends object>(
                   onClick={(e) => { select(id); if (clicksToEdit === 1) startEdit(id, colFromEvent(e)); }}
                   onDoubleClick={(e) => { if (clicksToEdit === 2) startEdit(id, colFromEvent(e)); }}
                 >
-                  {columns.map((c) =>
+                  {cellSpans[i].map(({ column: c, columnIndex, colSpan, rowSpan }) =>
                     c.field === CHECK_FIELD ? (
                       <div
                         key={c.field}
                         role="gridcell"
                         data-col={c.field}
+                        aria-colspan={colSpan > 1 ? colSpan : undefined}
+                        aria-rowspan={rowSpan > 1 ? rowSpan : undefined}
                         className="rd-win-grid__cell rd-win-grid__cell--check"
+                        style={{ gridColumn: `${columnIndex + 1} / span ${colSpan}`, gridRow: `${i + 1} / span ${rowSpan}` }}
                         onClick={(e) => e.stopPropagation()}
                         onDoubleClick={(e) => e.stopPropagation()}
                       >
                         <Checkbox theme={theme} color={color} aria-label="Select row" checked={isChecked} onCheckedChange={() => toggleChecked(id)} />
                       </div>
                     ) : (
-                      <div key={c.field} role="gridcell" data-col={c.field} className="rd-win-grid__cell" style={{ justifyContent: JUSTIFY[c.align ?? 'left'] }}>
+                      <div
+                        key={c.field}
+                        role="gridcell"
+                        data-col={c.field}
+                        aria-colspan={colSpan > 1 ? colSpan : undefined}
+                        aria-rowspan={rowSpan > 1 ? rowSpan : undefined}
+                        className="rd-win-grid__cell"
+                        style={{
+                          justifyContent: JUSTIFY[c.align ?? 'left'],
+                          gridColumn: `${columnIndex + 1} / span ${colSpan}`,
+                          gridRow: `${i + 1} / span ${rowSpan}`,
+                        }}
+                      >
                         {renderCell(c, row)}
                       </div>
                     ),

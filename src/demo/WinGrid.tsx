@@ -6,6 +6,22 @@ type Person = {
   joined: string; progress: number | null; rating: number;
 };
 
+type SpanRow = { id: string; region: string; item: string; units: number | null; group?: boolean };
+
+const spanRows: SpanRow[] = [
+  { id: 'north-group', region: 'North', item: 'Regional inventory', units: null, group: true },
+  { id: 'north-laptops', region: 'North', item: 'Laptops', units: 12 },
+  { id: 'north-monitors', region: 'North', item: 'Monitors', units: 8 },
+  { id: 'south-group', region: 'South', item: 'Regional inventory', units: null, group: true },
+  { id: 'south-keyboards', region: 'South', item: 'Keyboards', units: 20 },
+  { id: 'south-mice', region: 'South', item: 'Mice', units: 14 },
+];
+const spanColumns: UI.GridColumn<SpanRow>[] = [
+  { field: 'region', header: 'Region', width: 130, rowSpan: (row) => row.group ? 3 : 1 },
+  { field: 'item', header: 'Item', flex: 1, colSpan: (row) => row.group ? 2 : 1 },
+  { field: 'units', header: 'Units', width: 100, align: 'right', render: (value) => value == null ? '' : String(value) },
+];
+
 const roles = [{ value: 'admin', label: 'Admin' }, { value: 'editor', label: 'Editor' }, { value: 'viewer', label: 'Viewer' }];
 const names = ['Ada Lovelace', 'Grace Hopper', 'Alan Turing', 'Edsger Dijkstra', 'Barbara Liskov', 'Donald Knuth',
   'Margaret Hamilton', 'Linus Torvalds', 'Radia Perlman', 'Ken Thompson', 'Frances Allen', 'Tim Berners-Lee'];
@@ -75,6 +91,7 @@ export function WinGrid({ theme }: { theme: UI.Theme }) {
   };
 
   return (
+    <>
     <UI.Window chrome background theme={theme} width={900} padding="12px">
       <div style={{ display: 'flex', gap: 12, alignItems: 'center', marginBottom: 10, flexWrap: 'wrap' }}>
         <UI.Button theme={theme} onClick={addRow}>Add row</UI.Button>
@@ -111,5 +128,19 @@ export function WinGrid({ theme }: { theme: UI.Theme }) {
         }}
       />
     </UI.Window>
+    <UI.Window chrome background theme={theme} width={560} padding="16px">
+      <h3 style={{ margin: '0 0 8px' }}>Data grid cell spans</h3>
+      <p style={{ margin: '0 0 12px', fontSize: 12, color: 'var(--rd-win-muted)' }}>
+        Region cells span three rows; regional inventory cells span two columns.
+      </p>
+      <UI.DataGrid<SpanRow>
+        theme={theme}
+        columns={spanColumns}
+        rows={spanRows}
+        getRowId={(row) => row.id}
+        height={260}
+      />
+    </UI.Window>
+    </>
   );
 }

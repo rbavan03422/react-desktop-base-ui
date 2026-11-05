@@ -15,6 +15,7 @@ export type RowEditorProps<T> = {
   columns: GridColumn<T>[];
   row: T;
   rowIndex: number;
+  displayRow: number;
   draft: Draft;
   errors: Record<string, string>;
   blockError: string | null;
@@ -33,7 +34,7 @@ export type RowEditorProps<T> = {
  * with an Update / Cancel bar beneath it, like Ext.grid.plugin.RowEditing.
  */
 export function RowEditor<T>({
-  theme, columns, row, rowIndex, draft, errors, blockError, focusKey, updateText, cancelText, renderCell, onChange, onUpdate, onCancel,
+  theme, columns, row, rowIndex, displayRow, draft, errors, blockError, focusKey, updateText, cancelText, renderCell, onChange, onUpdate, onCancel,
 }: RowEditorProps<T>) {
   const rootRef = React.useRef<HTMLDivElement>(null);
   const barRef = React.useRef<HTMLDivElement>(null);
@@ -143,6 +144,7 @@ export function RowEditor<T>({
       aria-selected
       aria-label="Edit row"
       className="rd-mac-grid__row rd-mac-grid__row--editing"
+      style={{ gridRow: displayRow }}
       onKeyDown={onKeyDown}
     >
       {columns.map((c) => (

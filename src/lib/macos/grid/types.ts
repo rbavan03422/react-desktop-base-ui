@@ -36,6 +36,10 @@ export interface GridColumn<T = any> {
   /** percent: decimals in the label (default 0). */
   decimals?: number;
   render?: (value: T[keyof T], row: T) => React.ReactNode;
+  /** Number of columns this cell occupies; a callback receives the row and its zero-based index on the current page. */
+  colSpan?: number | ((row: T, rowIndex: number) => number);
+  /** Number of rows this cell occupies; a callback receives the row and its zero-based index on the current page. */
+  rowSpan?: number | ((row: T, rowIndex: number) => number);
   editor?: GridEditor<T>;
 }
 

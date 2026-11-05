@@ -14,16 +14,20 @@
 .rd-mac-grid__headtext { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .rd-mac-grid__sort { flex: none; font-size: 8px; opacity: .7; }
 
-.rd-mac-grid__rows { position: relative; }
-.rd-mac-grid__row { display: grid; grid-template-columns: var(--rd-mac-grid-cols); min-height: var(--rd-mac-grid-row-h); outline: none; cursor: default; }
-.rd-mac-grid__row:nth-child(even) { background: var(--rd-mac-grid-stripe); }
-.rd-mac-grid__row[aria-selected="true"] { background: var(--rd-mac-grid-sel-bg); color: var(--rd-mac-grid-sel-fg); }
+.rd-mac-grid__rows {
+  position: relative; display: grid; grid-template-columns: var(--rd-mac-grid-cols);
+  grid-auto-rows: minmax(var(--rd-mac-grid-row-h), auto); align-items: stretch;
+}
+.rd-mac-grid__row { display: contents; outline: none; cursor: default; }
+.rd-mac-grid__row:nth-child(even) .rd-mac-grid__cell { background: var(--rd-mac-grid-stripe); }
+.rd-mac-grid__row[aria-selected="true"] .rd-mac-grid__cell { background: var(--rd-mac-grid-sel-bg); color: var(--rd-mac-grid-sel-fg); }
 .rd-mac-grid__cell { display: flex; align-items: center; min-width: 0; padding: 0 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.rd-mac-grid__empty { padding: 16px; text-align: center; color: var(--rd-mac-muted); }
+.rd-mac-grid__empty { grid-column: 1 / -1; padding: 16px; text-align: center; color: var(--rd-mac-muted); }
 
 /* the row turns into the floating editor */
 .rd-mac-grid__row.rd-mac-grid__row--editing {
-  position: relative; z-index: 3; background: var(--rd-mac-grid-edit-bg); color: var(--rd-mac-fg);
+  position: relative; z-index: 3; display: grid; grid-column: 1 / -1; grid-template-columns: var(--rd-mac-grid-cols);
+  background: var(--rd-mac-grid-edit-bg); color: var(--rd-mac-fg);
   box-shadow: var(--rd-mac-grid-edit-shadow); outline: 1px solid var(--rd-mac-grid-edit-border); outline-offset: -1px;
 }
 .rd-mac-grid__cell--editor { padding: 2px 4px; overflow: visible; }
@@ -54,7 +58,7 @@
   --rd-mac-grid-edit-shadow: var(--rd-mac-shadow);
 }
 .rd-mac-grid__hcell { font-size: 11px; font-weight: 500; }
-.rd-mac-grid__row:focus-visible { box-shadow: inset 0 0 0 2px rgba(var(--rd-mac-focus), .8); }
+.rd-mac-grid__row:focus-visible .rd-mac-grid__cell { outline: 2px solid rgba(var(--rd-mac-focus), .8); outline-offset: -2px; }
 .rd-mac-grid__input:focus {
   border-color: rgb(var(--rd-mac-focus)); outline: 3px solid rgba(var(--rd-mac-focus), .55); outline-offset: 0;
   animation: rd-mac-focus-in var(--rd-mac-focus-ms) ease-out;
@@ -71,7 +75,7 @@
 .rd-mac-grid__resizer::after { content: ""; position: absolute; top: 20%; bottom: 20%; left: 4px; width: 1px; background: transparent; transition: background-color .12s ease; }
 .rd-mac-grid__resizer:hover::after, .rd-mac-grid__resizer:focus-visible::after { left: 3px; width: 3px; border-radius: 2px; background: var(--rd-mac-accent); }
 .rd-mac-grid[data-resizing], .rd-mac-grid[data-resizing] * { cursor: col-resize !important; user-select: none; }
-.rd-mac-grid__row[data-checked]:not([aria-selected="true"]) { background: var(--rd-mac-grid-check-bg); }
+.rd-mac-grid__row[data-checked]:not([aria-selected="true"]) .rd-mac-grid__cell { background: var(--rd-mac-grid-check-bg); }
 
 /* ───────── percentage bar ───────── */
 .rd-mac-grid__percent { position: relative; width: 100%; height: 14px; }
