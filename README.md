@@ -66,6 +66,7 @@ Beyond the original react-desktop set, these Base UI controls are implemented in
 | OTP Field | yes | yes | `length`, `groupSize`; imported as `OTPField` (renamed from `OTPFieldPreview` in Base UI 1.6) |
 | Preview Card | yes | yes | `href`, `content`; opens on hover or keyboard focus |
 | Radio Group | yes | yes | already available as `RadioGroup` |
+| Tree View | yes | yes | nested items, expansion, single selection, keyboard navigation |
 
 
 Windows components that render popups (Select, Menu, Tooltip, ...) accept `theme` / `color`, because popups are portaled
@@ -134,6 +135,24 @@ const columns: GridColumnItem<Person>[] = [
 - **Paging:** set `pageSize` or `defaultPageSize` to show the toolbar (first, previous, "Page n of N", next, last, rows per page, "Displaying a - b of N"). Control it with `page` / `onPageChange` / `onPageSizeChange`, or pass `total` for server-side paging (then `rows` is the current page and is not sliced).
   Changing page cancels an open editor, and `startEdit` jumps to the row's page. `ref.current.goToPage(n)` is available.
 - **Grouped headers:** groups can be nested to any depth. Leaf headers span the remaining header rows and sorting and resizing only apply to leaf columns.
+
+## Tree view
+`TreeView` is available from both platform entry points. Supply nested `items` with unique `id`s and labels:
+
+```tsx
+<TreeView
+  aria-label="Project files"
+  items={[
+    { id: 'src', label: 'src', children: [{ id: 'app', label: 'App.tsx' }] },
+    { id: 'readme', label: 'README.md' },
+  ]}
+  defaultExpandedIds={['src']}
+  defaultSelectedId="app"
+  onSelectedChange={(id) => setSelectedId(id)}
+/>
+```
+
+Expansion and selection can be controlled with `expandedIds` / `onExpandedChange` and `selectedId` / `onSelectedChange`. Arrow keys navigate and expand/collapse; Home and End move to the first and last visible item. Enter or Space selects the focused item. Items may include nested `children`, decorative `icon` content, and `disabled`.
 
 ## Dark theme
 Both platforms support `theme="light" | "dark"`.

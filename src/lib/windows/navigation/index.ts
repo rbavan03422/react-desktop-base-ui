@@ -5,3 +5,4 @@ export * from './MasterDetailsViewItemDetails';
 export * from './MasterDetailsViewItem';
 export * from './MasterDetailsView';
 export * from './NavigationMenu';
+export * from './TreeView';

@@ -52,6 +52,19 @@ function MacDemo({ theme }: { theme: Mac.Theme }) {
           ))}
           <Mac.ListViewFooter>3 items</Mac.ListViewFooter>
         </Mac.ListView>
+        <Mac.TreeView
+          aria-label="Files"
+          style={{ height: 110 }}
+          defaultExpandedIds={['documents']}
+          defaultSelectedId="projects"
+          items={[
+            { id: 'documents', label: 'Documents', icon: '📁', children: [
+              { id: 'projects', label: 'Projects', icon: '📁' },
+              { id: 'notes', label: 'Notes.txt', icon: '📄' },
+            ] },
+            { id: 'downloads', label: 'Downloads', icon: '📁' },
+          ]}
+        />
       </Mac.View>
       <Mac.Dialog
         theme={theme}
@@ -84,6 +97,19 @@ function WinDemo({ theme }: { theme: Win.Theme }) {
               </Win.RadioGroup>
               <Win.TextInput label="Name" placeholder="Type here" />
               <Win.ProgressCircle />
+              <Win.TreeView
+                aria-label="Project files"
+                style={{ height: 130 }}
+                defaultExpandedIds={['workspace']}
+                defaultSelectedId="readme"
+                items={[
+                  { id: 'workspace', label: 'Workspace', icon: '📁', children: [
+                    { id: 'readme', label: 'README.md', icon: '📄' },
+                    { id: 'src', label: 'src', icon: '📁' },
+                  ] },
+                  { id: 'archive', label: 'Archive', icon: '📁' },
+                ]}
+              />
             </Win.View>
           </Win.NavPaneItem>
           <Win.NavPaneItem title="Master / details" icon="📋">

@@ -76,6 +76,22 @@
 .rd-win-navpane__icon { width: 40px; flex: none; display: inline-flex; justify-content: center; }
 .rd-win-navpane__content { flex: 1; min-width: 0; padding: 12px 16px; overflow: auto; }
 
+/* tree view */
+.rd-win-tree { display: block; min-width: 0; overflow: auto; padding: 4px; background: var(--rd-win-bg); color: var(--rd-win-fg); }
+.rd-win-tree__item { display: block; outline: none; }
+.rd-win-tree__row { display: flex; min-height: 28px; align-items: center; gap: 4px; padding-right: 8px; border-radius: 4px; cursor: default; white-space: nowrap; }
+.rd-win-tree__row:hover { background: var(--rd-win-surface-hover); }
+.rd-win-tree__item[aria-selected="true"] > .rd-win-tree__row { background: var(--rd-win-selection); }
+.rd-win-tree__item:focus-visible > .rd-win-tree__row { outline: 1px dotted var(--rd-win-fg); outline-offset: -2px; }
+.rd-win-tree__item[aria-disabled="true"] > .rd-win-tree__row { opacity: .45; }
+.rd-win-tree__toggle, .rd-win-tree__toggle-spacer { all: unset; box-sizing: border-box; display: inline-flex; flex: none; width: 18px; height: 22px; align-items: center; justify-content: center; }
+.rd-win-tree__toggle { border-radius: 3px; cursor: default; }
+.rd-win-tree__toggle:hover { background: var(--rd-win-hover); }
+.rd-win-tree__toggle svg { transition: transform .12s ease; }
+.rd-win-tree__item[aria-expanded="true"] > .rd-win-tree__row .rd-win-tree__toggle svg { transform: rotate(90deg); }
+.rd-win-tree__icon { display: inline-flex; flex: none; align-items: center; justify-content: center; }
+.rd-win-tree__label { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+
 /* master / details */
 .rd-win-mdv { display: flex; height: 100%; background: var(--rd-win-bg); }
 .rd-win-mdv__masters { flex: none; display: flex; flex-direction: column; width: 320px; background: var(--rd-win-surface); overflow: auto; }
@@ -91,7 +107,7 @@
 :root { --rd-win-focus-ms: 150ms; }
 
 .rd-win-button, .rd-win-checkbox, .rd-win-radio, .rd-win-tb, .rd-win-navpane__toggle,
-.rd-win-navpane__item, .rd-win-mdv__master {
+.rd-win-navpane__item, .rd-win-mdv__master, .rd-win-tree__toggle {
   outline: 1px dotted transparent;
   outline-offset: 6px;
   transition: outline-color var(--rd-win-focus-ms) ease, outline-offset var(--rd-win-focus-ms) ease,
