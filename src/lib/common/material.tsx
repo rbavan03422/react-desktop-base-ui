@@ -328,6 +328,88 @@ export const CardMedia = React.forwardRef<HTMLDivElement, CardMediaProps>(
 );
 CardMedia.displayName = 'CardMedia';
 
+export type ImageListVariant = 'standard' | 'quilted' | 'woven' | 'masonry';
+
+export interface ImageListProps extends React.HTMLAttributes<HTMLUListElement> {
+  cols?: number;
+  rowHeight?: number | string;
+  gap?: number | string;
+  variant?: ImageListVariant;
+}
+
+const cssLength = (value: number | string) => typeof value === 'number' ? `${value}px` : value;
+
+export const ImageList = React.forwardRef<HTMLUListElement, ImageListProps>(
+  ({ cols = 3, rowHeight = 120, gap = 4, variant = 'standard', className, style, ...props }, ref) => (
+    <ul
+      {...props}
+      ref={ref}
+      role="list"
+      data-variant={variant}
+      data-cols={Math.max(1, cols)}
+      className={cx('rd-material-image-list', `rd-material-image-list--${variant}`, className)}
+      style={{
+        ...style,
+        '--rd-material-image-cols': Math.max(1, cols),
+        '--rd-material-image-row-height': cssLength(rowHeight),
+        '--rd-material-image-gap': cssLength(gap),
+      } as React.CSSProperties}
+    />
+  ),
+);
+ImageList.displayName = 'ImageList';
+
+export interface ImageListItemProps extends React.LiHTMLAttributes<HTMLLIElement> {
+  cols?: number;
+  rows?: number;
+}
+
+export const ImageListItem = React.forwardRef<HTMLLIElement, ImageListItemProps>(
+  ({ cols, rows, className, style, ...props }, ref) => (
+    <li
+      {...props}
+      ref={ref}
+      className={cx('rd-material-image-list__item', className)}
+      style={{
+        ...style,
+        ...(cols === undefined ? {} : { '--rd-material-image-item-cols': Math.max(1, cols) }),
+        ...(rows === undefined ? {} : { '--rd-material-image-item-rows': Math.max(1, rows) }),
+      } as React.CSSProperties}
+    />
+  ),
+);
+ImageListItem.displayName = 'ImageListItem';
+
+export interface ImageListItemBarProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
+  title?: React.ReactNode;
+  subtitle?: React.ReactNode;
+  actionIcon?: React.ReactNode;
+  position?: 'top' | 'bottom' | 'below';
+  actionPosition?: 'left' | 'right';
+}
+
+export const ImageListItemBar = React.forwardRef<HTMLDivElement, ImageListItemBarProps>(
+  ({ title, subtitle, actionIcon, position = 'bottom', actionPosition = 'right', className, ...props }, ref) => (
+    <div
+      {...props}
+      ref={ref}
+      className={cx(
+        'rd-material-image-list__bar',
+        `rd-material-image-list__bar--${position}`,
+        `rd-material-image-list__bar--action-${actionPosition}`,
+        className,
+      )}
+    >
+      <div className="rd-material-image-list__bar-text">
+        {title != null && <div className="rd-material-image-list__title">{title}</div>}
+        {subtitle != null && <div className="rd-material-image-list__subtitle">{subtitle}</div>}
+      </div>
+      {actionIcon != null && <div className="rd-material-image-list__action">{actionIcon}</div>}
+    </div>
+  ),
+);
+ImageListItemBar.displayName = 'ImageListItemBar';
+
 export interface BreadcrumbsProps extends React.HTMLAttributes<HTMLElement> {
   separator?: React.ReactNode;
   maxItems?: number;

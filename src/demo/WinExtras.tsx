@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as UI from '../lib/windows';
+import imageListItems from './imageListItems';
 
 const fruits = ['Apple', 'Banana', 'Cherry', 'Grape', 'Mango'];
 const sizes = [{ value: 's', label: 'Small' }, { value: 'm', label: 'Medium' }, { value: 'l', label: 'Large' }];
@@ -18,6 +19,7 @@ export function WinExtras({ theme }: { theme: UI.Theme }) {
   const [volume, setVolume] = React.useState(40);
   const [activeStep, setActiveStep] = React.useState(1);
   const [dialMessage, setDialMessage] = React.useState('');
+  const [imageVariant, setImageVariant] = React.useState<UI.ImageListVariant>('standard');
   return (
     <UI.ToastProvider theme={theme}>
       <UI.Window chrome background theme={theme} width={520} padding="0 0 16px">
@@ -108,6 +110,22 @@ export function WinExtras({ theme }: { theme: UI.Theme }) {
             <UI.CardContent>Card content with an action.</UI.CardContent>
             <UI.CardActions><UI.Button color="primary">Action</UI.Button></UI.CardActions>
           </UI.Card>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <UI.Typography variant="subtitle2">Image List: {imageVariant}</UI.Typography>
+            <div style={row}>
+              {(['standard', 'quilted', 'woven', 'masonry'] as UI.ImageListVariant[]).map((variant) => (
+                <UI.Button key={variant} aria-pressed={imageVariant === variant} onClick={() => setImageVariant(variant)}>{variant}</UI.Button>
+              ))}
+            </div>
+            <UI.ImageList variant={imageVariant} cols={3} rowHeight={72} gap={4} style={{ maxWidth: 340 }}>
+              {imageListItems.map((item) => (
+                <UI.ImageListItem key={item.id} cols={item.cols} rows={item.rows}>
+                  <img src={item.src} alt={item.title} />
+                  <UI.ImageListItemBar title={item.title} position="bottom" />
+                </UI.ImageListItem>
+              ))}
+            </UI.ImageList>
+          </div>
           <UI.Stepper
             activeStep={activeStep}
             nonLinear

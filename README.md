@@ -71,6 +71,7 @@ Beyond the original react-desktop set, these Base UI controls are implemented in
 | Avatar, Badge, Chip | yes | yes | identity, notifications, and compact labels |
 | Divider, Accordion, Card | yes | yes | content structure and expandable panels |
 | Breadcrumbs, Speed Dial, Stepper | yes | yes | navigation, quick actions, and progress |
+| Image List | yes | yes | standard, quilted, woven, and masonry layouts |
 
 
 Windows components that render popups (Select, Menu, Tooltip, ...) accept `theme` / `color`, because popups are portaled
@@ -109,7 +110,21 @@ Both platforms export `Avatar`, `Badge`, `Chip`, `Divider`, `Accordion` / `Accor
 <Stepper activeStep={1} steps={[{ label: 'Details' }, { label: 'Review' }, { label: 'Done' }]} />
 ```
 
-`Accordion` supports controlled (`expanded` / `onChange`) and default expansion. `SpeedDial` takes an `actions` array (`{ name, icon, onClick }`) and supports controlled or default `open` state. `Stepper` takes `steps` and `activeStep`; use `nonLinear` with `onStepClick` to make steps navigable. Breadcrumbs accepts child links/items and collapses long paths at `maxItems`. The two platform demos show examples of all nine components.
+`Accordion` supports controlled (`expanded` / `onChange`) and default expansion. `SpeedDial` takes an `actions` array (`{ name, icon, onClick }`) and supports controlled or default `open` state. `Stepper` takes `steps` and `activeStep`; use `nonLinear` with `onStepClick` to make steps navigable. Breadcrumbs accepts child links/items and collapses long paths at `maxItems`. The two platform demos show examples of these components.
+
+### Image List
+`ImageList`, `ImageListItem`, and `ImageListItemBar` are available from both platform entry points. Set `variant` to `standard`, `quilted`, `woven`, or `masonry`; `cols`, `rowHeight`, and `gap` control the layout. Quilted items accept `cols` and `rows` spans, and item bars support top, bottom, or below-image placement.
+The demos use locally bundled SVG illustrations and do not require a network connection to load Image List images.
+
+```tsx
+<ImageList variant="quilted" cols={3} rowHeight={120} gap={8}>
+  <ImageListItem cols={2} rows={2}>
+    <img src="/images/landscape.jpg" alt="Mountain landscape" />
+    <ImageListItemBar title="Mountain landscape" />
+  </ImageListItem>
+  <ImageListItem><img src="/images/coast.jpg" alt="Coast" /></ImageListItem>
+</ImageList>
+```
 
 ## Data grid with inline row editor
 `DataGrid` (macOS and Windows) is a grid with an editor that works like **Ext.grid.plugin.RowEditing** from ExtJS 4:
