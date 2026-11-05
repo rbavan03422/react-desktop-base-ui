@@ -127,7 +127,7 @@
 .rd-material-speed-dial { position: relative; display: inline-flex; flex-direction: column; align-items: center; }
 .rd-material-speed-dial__fab, .rd-material-speed-dial__action { display: inline-flex; width: 56px; height: 56px; align-items: center; justify-content: center; border: 0; border-radius: 50%; background: var(--rd-win-primary); color: var(--rd-win-primary-fg); box-shadow: 0 3px 8px rgba(0,0,0,.25); font: inherit; cursor: pointer; }
 .rd-material-speed-dial__actions { order: -1; display: flex; flex-direction: column; align-items: center; gap: 12px; max-height: 0; margin-bottom: 0; overflow: hidden; opacity: 0; pointer-events: none; visibility: hidden; transition: max-height .22s ease, max-width .22s ease, margin .22s ease, opacity .16s ease, visibility 0s linear .22s; }
-.rd-material-speed-dial__actions--open { max-height: 1000px; margin-bottom: 12px; opacity: 1; pointer-events: auto; visibility: visible; transition-delay: 0s; }
+.rd-material-speed-dial__actions--open { max-height: 1000px; margin-bottom: 12px; overflow: visible; opacity: 1; pointer-events: auto; visibility: visible; transition-delay: 0s; }
 .rd-material-speed-dial__action { opacity: 0; transform: translateY(12px) scale(.8); transition: opacity .16s ease var(--rd-speed-dial-delay, 0ms), transform .22s ease var(--rd-speed-dial-delay, 0ms); }
 .rd-material-speed-dial__actions--open .rd-material-speed-dial__action { opacity: 1; transform: translate(0) scale(1); }
 .rd-material-speed-dial__action { width: 40px; height: 40px; background: var(--rd-win-surface); color: var(--rd-win-fg); }
