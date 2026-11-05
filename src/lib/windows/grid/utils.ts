@@ -1,9 +1,51 @@
-import type { GridColumn, GridEditor } from './types';
+import type { GridColumn, GridColumnGroup, GridColumnItem, GridEditor } from './types';
 
 export type Draft = Record<string, unknown>;
 
 export const columnName = (c: GridColumn<any>) => c.ariaLabel ?? (typeof c.header === 'string' ? c.header : c.field);
 const editorType = (e: GridEditor) => e.type ?? 'text';
+
+/** Internal leading column used for row checkboxes. */
+export const CHECK_FIELD = '__check';
+export const CHECK_COLUMN: GridColumn<any> = { field: CHECK_FIELD, header: '', width: 40, align: 'center', resizable: false };
+
+export interface HeaderCell {
+  key: string;
+  node: GridColumnItem<any>;
+  /** Set for leaf columns, undefined for group headers. */
+  col?: GridColumn<any>;
+  /** 1-based header row the cell starts in. */
+  level: number;
+  /** Number of header rows the cell spans. */
+  rows: number;
+  /** 0-based first leaf column and number of leaf columns spanned. */
+  start: number;
+  span: number;
+}
+
+const isGroup = (n: GridColumnItem<any>): n is GridColumnGroup<any> => 'columns' in n;
+
+/** Flattens nested column groups into leaf columns and header cells placed on a grid (rows x leaf columns). */
+export function layoutHeader<T>(items: GridColumnItem<T>[]) {
+  const depthOf = (n: GridColumnItem<T>): number => (isGroup(n) ? 1 + Math.max(0, ...n.columns.map(depthOf)) : 1);
+  const depth = Math.max(1, ...items.map(depthOf));
+  const leaves: GridColumn<T>[] = [];
+  const cells: HeaderCell[] = [];
+  const walk = (nodes: GridColumnItem<T>[], level: number) => {
+    for (const n of nodes) {
+      if (isGroup(n)) {
+        const start = leaves.length;
+        walk(n.columns, level + 1);
+        cells.push({ key: `g:${level}:${start}`, node: n, level, rows: 1, start, span: Math.max(1, leaves.length - start) });
+      } else {
+        cells.push({ key: n.field, node: n, col: n, level, rows: depth - level + 1, start: leaves.length, span: 1 });
+        leaves.push(n);
+      }
+    }
+  };
+  walk(items, 1);
+  return { leaves, cells, depth };
+}
 
 /** Starting values for the editor fields (numbers are edited as strings so "1." can be typed). */
 export function initialDraft<T>(columns: GridColumn<T>[], row: T): Draft {
@@ -11,7 +53,8 @@ export function initialDraft<T>(columns: GridColumn<T>[], row: T): Draft {
   for (const c of columns) {
     if (!c.editor) continue;
     const v = (row as any)[c.field];
-    draft[c.field] = editorType(c.editor) === 'boolean' ? !!v : v == null ? '' : String(v);
+    const t = editorType(c.editor);
+    draft[c.field] = t === 'boolean' ? !!v : t === 'rating' ? Number(v) || 0 : v == null ? '' : String(v);
   }
   return draft;
 }
@@ -23,7 +66,11 @@ export function toValues<T>(columns: GridColumn<T>[], draft: Draft): Partial<T> 
     if (!c.editor) continue;
     const raw = draft[c.field];
     const t = editorType(c.editor);
-    out[c.field] = t === 'number' ? (raw === '' ? null : Number(raw)) : t === 'boolean' ? !!raw : String(raw ?? '');
+    out[c.field] =
+      t === 'number' || t === 'percent' ? (raw === '' ? null : Number(raw))
+      : t === 'rating' ? Number(raw) || 0
+      : t === 'boolean' ? !!raw
+      : String(raw ?? '');
   }
   return out as Partial<T>;
 }
@@ -38,13 +85,17 @@ export function computeErrors<T>(columns: GridColumn<T>[], draft: Draft, row: T)
     const name = columnName(c);
     const raw = draft[c.field];
     let err: string | null = null;
-    if (t === 'number') {
+    if (t === 'number' || t === 'percent') {
       const n = raw === '' ? null : Number(raw);
+      const min = t === 'percent' ? 0 : ed.min;
+      const max = t === 'percent' ? (ed.max ?? c.max ?? 100) : ed.max;
       if (n === null) { if (ed.required) err = `${name} is required`; }
       else if (Number.isNaN(n)) err = `${name} must be a number`;
-      else if (ed.min !== undefined && n < ed.min) err = `${name} must be at least ${ed.min}`;
-      else if (ed.max !== undefined && n > ed.max) err = `${name} must be at most ${ed.max}`;
+      else if (min !== undefined && n < min) err = `${name} must be at least ${min}`;
+      else if (max !== undefined && n > max) err = `${name} must be at most ${max}`;
       else { const r = ed.validate?.(n, row); if (typeof r === 'string') err = r; }
+    } else if (t === 'rating') {
+      if (ed.required && !(Number(raw) > 0)) err = `${name} is required`;
     } else if (t !== 'boolean') {
       const s = String(raw ?? '');
       if (s === '') { if (ed.required) err = `${name} is required`; }

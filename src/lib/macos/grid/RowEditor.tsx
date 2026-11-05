@@ -4,10 +4,12 @@ import { cx } from '../../common';
 import type { Themed } from '../shared';
 import { Button, Checkbox } from '../controls';
 import { Select } from '../inputs';
+import { RatingInput } from './RatingInput';
 import type { GridColumn, GridEditor } from './types';
-import { columnName, defaultRender, type Draft } from './utils';
+import { columnName, type Draft } from './utils';
 
 const JUSTIFY = { left: 'flex-start', center: 'center', right: 'flex-end' } as const;
+const TABBABLE = 'input:not([disabled]), button:not([disabled]), [role="combobox"], [role="radio"]';
 
 export type RowEditorProps<T> = {
   columns: GridColumn<T>[];
@@ -19,6 +21,8 @@ export type RowEditorProps<T> = {
   focusKey?: string;
   updateText: string;
   cancelText: string;
+  /** Display content for columns that have no editor. */
+  renderCell: (column: GridColumn<T>, row: T) => React.ReactNode;
   onChange: (field: string, value: unknown) => void;
   onUpdate: () => void;
   onCancel: () => void;
@@ -29,7 +33,7 @@ export type RowEditorProps<T> = {
  * with an Update / Cancel bar beneath it, like Ext.grid.plugin.RowEditing.
  */
 export function RowEditor<T>({
-  theme, columns, row, rowIndex, draft, errors, blockError, focusKey, updateText, cancelText, onChange, onUpdate, onCancel,
+  theme, columns, row, rowIndex, draft, errors, blockError, focusKey, updateText, cancelText, renderCell, onChange, onUpdate, onCancel,
 }: RowEditorProps<T>) {
   const rootRef = React.useRef<HTMLDivElement>(null);
   const barRef = React.useRef<HTMLDivElement>(null);
@@ -40,10 +44,10 @@ export function RowEditor<T>({
   React.useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
-    const within = (col: string) => ['input', 'button', '[role="combobox"]'].map((s) => `[data-col="${CSS.escape(col)}"] ${s}`).join(', ');
+    const within = (col: string) => ['input', 'button', '[role="combobox"]', '[role="radio"]'].map((s) => `[data-col="${CSS.escape(col)}"] ${s}`).join(', ');
     const target =
       (focusKey ? root.querySelector<HTMLElement>(within(focusKey)) : null) ??
-      root.querySelector<HTMLElement>('[data-col] input, [data-col] button, [data-col] [role="combobox"]');
+      root.querySelector<HTMLElement>('[data-col] input:not([aria-hidden]), [data-col] button, [data-col] [role="combobox"], [data-col] [role="radio"]');
     target?.focus();
     if (target instanceof HTMLInputElement) target.select();
     root.scrollIntoView?.({ block: 'nearest' });
@@ -83,7 +87,7 @@ export function RowEditor<T>({
       e.preventDefault();
       onUpdate();
     } else if (e.key === 'Tab') {
-      const items = Array.from(root.querySelectorAll<HTMLElement>('input:not([disabled]), button:not([disabled]), [role="combobox"]'));
+      const items = Array.from(root.querySelectorAll<HTMLElement>(TABBABLE)).filter((el) => el.tabIndex >= 0);
       const first = items[0];
       const last = items[items.length - 1];
       if (!e.shiftKey && target === last) { e.preventDefault(); first?.focus(); }
@@ -106,11 +110,17 @@ export function RowEditor<T>({
     if (type === 'boolean') {
       return <Checkbox aria-label={name} checked={!!draft[key]} onCheckedChange={(v) => onChange(key, v)} />;
     }
-    if (type === 'number') {
-      const e = ed as Extract<GridEditor<T>, { type: 'number' }>;
+    if (type === 'rating') {
+      const e = ed as Extract<GridEditor<T>, { type: 'rating' }>;
+      return <RatingInput label={name} max={e.max ?? c.max ?? 5} value={Number(draft[key]) || 0} onChange={(v) => onChange(key, v)} />;
+    }
+    if (type === 'number' || type === 'percent') {
+      const e = ed as { min?: number; max?: number; step?: number };
+      const pct = type === 'percent';
       return (
         <Input
-          {...common} className="rd-mac-grid__input" type="number" inputMode="decimal" min={e.min} max={e.max} step={e.step}
+          {...common} className="rd-mac-grid__input" type="number" inputMode="decimal"
+          min={pct ? 0 : e.min} max={pct ? (e.max ?? c.max ?? 100) : e.max} step={e.step ?? (pct ? 1 : undefined)}
           value={String(draft[key] ?? '')} onChange={(ev) => onChange(key, ev.target.value)}
         />
       );
@@ -140,10 +150,10 @@ export function RowEditor<T>({
           key={c.field}
           role="gridcell"
           data-col={c.field}
-          className={cx('rd-mac-grid__cell', c.editor && 'rd-mac-grid__cell--editor')}
+          className={cx('rd-mac-grid__cell', c.editor && 'rd-mac-grid__cell--editor', c.field === '__check' && 'rd-mac-grid__cell--check')}
           style={{ justifyContent: JUSTIFY[c.align ?? 'left'] }}
         >
-          {c.editor ? renderField(c, c.editor) : c.render ? c.render((row as any)[c.field], row) : defaultRender((row as any)[c.field])}
+          {c.editor ? renderField(c, c.editor) : renderCell(c, row)}
         </div>
       ))}
       <div ref={barRef} className="rd-mac-grid__editbar" role="group" aria-label="Row editor actions">

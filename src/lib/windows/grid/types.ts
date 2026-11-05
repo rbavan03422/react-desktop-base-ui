@@ -6,6 +6,8 @@ export interface GridOption { value: string; label: React.ReactNode }
 export type GridEditor<T = any> =
   | { type?: 'text'; required?: boolean; placeholder?: string; maxLength?: number; validate?: (value: string, row: T) => true | string }
   | { type: 'number'; required?: boolean; min?: number; max?: number; step?: number; validate?: (value: number | null, row: T) => true | string }
+  | { type: 'percent'; required?: boolean; /** value that equals 100% (default: the column `max`, else 100) */ max?: number; validate?: (value: number | null, row: T) => true | string }
+  | { type: 'rating'; required?: boolean; /** number of stars (default: the column `max`, else 5) */ max?: number }
   | { type: 'date'; required?: boolean; validate?: (value: string, row: T) => true | string }
   | { type: 'select'; options: GridOption[]; required?: boolean }
   | { type: 'boolean' };
@@ -20,12 +22,31 @@ export interface GridColumn<T = any> {
   width?: number;
   flex?: number;
   minWidth?: number;
+  /** Largest width the user can drag the column to. */
+  maxWidth?: number;
+  /** Allow dragging the header edge to resize (default true). */
+  resizable?: boolean;
   align?: 'left' | 'center' | 'right';
   sortable?: boolean;
   sortValue?: (row: T) => string | number | boolean | null | undefined;
+  /** How the cell is displayed: plain text (default), a percentage bar, or a star rating. */
+  type?: 'text' | 'percent' | 'rating';
+  /** percent: the value that equals 100% (default 100). rating: number of stars (default 5). */
+  max?: number;
+  /** percent: decimals in the label (default 0). */
+  decimals?: number;
   render?: (value: T[keyof T], row: T) => React.ReactNode;
   editor?: GridEditor<T>;
 }
+
+/** A header that spans several columns (nest groups for multi-level headers). */
+export interface GridColumnGroup<T = any> {
+  header: React.ReactNode;
+  ariaLabel?: string;
+  columns: GridColumnItem<T>[];
+}
+
+export type GridColumnItem<T = any> = GridColumn<T> | GridColumnGroup<T>;
 
 export type GridSort = { field: string; dir: 'asc' | 'desc' } | null;
 
@@ -43,10 +64,13 @@ export interface GridEditEvent<T> {
 export interface GridCancelEditEvent<T> { rowId: string; row: T }
 
 export interface DataGridHandle {
-  /** Open the row editor (like ExtJS `plugin.startEdit(record, column)`). Returns false if it could not start. */
+  /** Open the row editor (like ExtJS `plugin.startEdit(record, column)`). Moves to the row's page if needed. */
   startEdit(rowId: string, columnKey?: string): boolean;
   /** Validate and commit the open editor. Returns false if it is invalid or rejected. */
   completeEdit(): boolean;
   cancelEdit(): void;
   getEditingId(): string | null;
+  /** Go to a page (1-based); cancels an open editor like ExtJS does when the store reloads. */
+  goToPage(page: number): void;
+  getPage(): number;
 }

@@ -100,7 +100,7 @@ const columns: GridColumn<Person>[] = [
 | `validateedit` | `onValidateEdit` (return `false` or an error message to reject) |
 | `edit` | `onEdit({ rowId, row, originalValues, newValues, changes })` |
 | `canceledit` | `onCancelEdit` |
-| column `editor` | column `editor`: `text`, `number`, `date`, `select`, `boolean` with `required`, `min`/`max`, `validate` |
+| column `editor` | column `editor`: `text`, `number`, `percent`, `rating`, `date`, `select`, `boolean` with `required`, `min`/`max`, `validate` |
 | `plugin.startEdit(record, column)` | `ref.current.startEdit(rowId, field)`; also `completeEdit()`, `cancelEdit()`, `getEditingId()` |
 | `saveBtnText` / `cancelBtnText` | `updateText` / `cancelText` |
 
@@ -108,7 +108,30 @@ Behaviour: **Enter** updates, **Esc** cancels, **Tab** cycles through the fields
 next to the buttons. The buttons move above the row when there is no room below. Columns without an `editor` are shown read-only inside the editor.
 The grid also has sortable headers (click to cycle asc / desc / none), row selection, and arrow-key / Home / End / Enter / F2 navigation.
 The grid does not keep your data: apply `e.changes` to your rows in `onEdit` (see `demo/MacGrid.tsx` for the "Add row" flow that removes a new row if its edit is cancelled).
-Not included: column resizing and row virtualization.
+Not included: row virtualization.
+
+### Column groups, resizing, checkboxes, percent / rating columns, paging
+```tsx
+const columns: GridColumnItem<Person>[] = [
+  { header: 'Person', columns: [                       // group header spanning its columns (nest for more levels)
+      { field: 'name', header: 'Name', flex: 1, sortable: true, editor: { required: true } },
+      { field: 'email', header: 'Email', flex: 1.5 } ] },
+  { header: 'Performance', columns: [
+      { field: 'progress', header: 'Progress', type: 'percent', width: 130, editor: { type: 'percent' } },
+      { field: 'rating', header: 'Rating', type: 'rating', width: 110, editor: { type: 'rating' } } ] },
+  { field: 'joined', header: 'Joined', width: 130 },     // leaf columns span all header rows
+];
+<DataGrid<Person> columns={columns} rows={rows} getRowId={(r) => r.id}
+  checkboxSelection checkedIds={checked} onCheckedChange={setChecked}
+  defaultPageSize={10} pageSizeOptions={[10, 25, 50]} onColumnResize={(field, width) => save(field, width)} />
+```
+- **Resizing:** drag the right edge of a header (or focus it and use Left / Right, Shift for bigger steps; double-click or Home resets). `minWidth` / `maxWidth` limit it and `resizable: false` turns it off. Widths are kept inside the grid; seed them with `defaultColumnWidths` and persist them from `onColumnResize`.
+- **Checkbox column:** `checkboxSelection` adds a leading column with a select-all header (applies to the current page, with an indeterminate state). Space toggles the focused row. Control it with `checkedIds` / `onCheckedChange`.
+- **Percent column:** `type: 'percent'` shows a bar with a centred label; `max` is the value that equals 100% and `decimals` sets label precision. Edit it with `editor: { type: 'percent' }` (0 to max).
+- **Rating column:** `type: 'rating'` shows stars (`max`, default 5). `editor: { type: 'rating' }` is a radio group: arrow keys, click or Space pick a value, and a small × clears it.
+- **Paging:** set `pageSize` or `defaultPageSize` to show the toolbar (first, previous, "Page n of N", next, last, rows per page, "Displaying a - b of N"). Control it with `page` / `onPageChange` / `onPageSizeChange`, or pass `total` for server-side paging (then `rows` is the current page and is not sliced).
+  Changing page cancels an open editor, and `startEdit` jumps to the row's page. `ref.current.goToPage(n)` is available.
+- **Grouped headers:** groups can be nested to any depth. Leaf headers span the remaining header rows and sorting and resizing only apply to leaf columns.
 
 ## Dark theme
 Both platforms support `theme="light" | "dark"`.

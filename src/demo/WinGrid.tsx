@@ -1,31 +1,61 @@
 import * as React from 'react';
 import * as UI from '../lib/windows';
 
-type Person = { id: string; name: string; email: string; age: number | null; role: string; active: boolean; joined: string };
+type Person = {
+  id: string; name: string; email: string; age: number | null; role: string; active: boolean;
+  joined: string; progress: number | null; rating: number;
+};
 
 const roles = [{ value: 'admin', label: 'Admin' }, { value: 'editor', label: 'Editor' }, { value: 'viewer', label: 'Viewer' }];
-const initial: Person[] = [
-  { id: '1', name: 'Ada Lovelace', email: 'ada@example.com', age: 36, role: 'admin', active: true, joined: '2021-03-04' },
-  { id: '2', name: 'Grace Hopper', email: 'grace@example.com', age: 45, role: 'editor', active: true, joined: '2020-11-18' },
-  { id: '3', name: 'Alan Turing', email: 'alan@example.com', age: 41, role: 'editor', active: false, joined: '2019-06-01' },
-  { id: '4', name: 'Edsger Dijkstra', email: 'edsger@example.com', age: 72, role: 'viewer', active: true, joined: '2018-02-27' },
-  { id: '5', name: 'Barbara Liskov', email: 'barbara@example.com', age: 58, role: 'admin', active: true, joined: '2022-09-12' },
-  { id: '6', name: 'Donald Knuth', email: 'donald@example.com', age: 84, role: 'viewer', active: false, joined: '2017-05-30' },
-];
+const names = ['Ada Lovelace', 'Grace Hopper', 'Alan Turing', 'Edsger Dijkstra', 'Barbara Liskov', 'Donald Knuth',
+  'Margaret Hamilton', 'Linus Torvalds', 'Radia Perlman', 'Ken Thompson', 'Frances Allen', 'Tim Berners-Lee'];
+const initial: Person[] = Array.from({ length: 23 }, (_, i) => {
+  const base = names[i % names.length];
+  const round = Math.floor(i / names.length);
+  return {
+    id: String(i + 1),
+    name: round ? `${base} ${round + 1}` : base,
+    email: `${base.toLowerCase().replace(/[^a-z]+/g, '.')}${round ? round + 1 : ''}@example.com`,
+    age: 25 + ((i * 7) % 50),
+    role: roles[i % 3].value,
+    active: i % 4 !== 0,
+    joined: `20${18 + (i % 6)}-0${1 + (i % 9)}-${10 + (i % 18)}`,
+    progress: (i * 37) % 101,
+    rating: i % 6,
+  };
+});
 
-const columns: UI.GridColumn<Person>[] = [
-  { field: 'name', header: 'Name', flex: 1.2, sortable: true, editor: { required: true } },
-  { field: 'email', header: 'Email', flex: 1.6, sortable: true, editor: { required: true, validate: (v) => /^\S+@\S+\.\S+$/.test(v) || 'Email is not valid' } },
-  { field: 'age', header: 'Age', width: 70, align: 'right', sortable: true, editor: { type: 'number', min: 0, max: 120, required: true } },
-  { field: 'role', header: 'Role', width: 120, sortable: true, render: (v) => roles.find((r) => r.value === v)?.label ?? String(v), editor: { type: 'select', options: roles } },
-  { field: 'active', header: 'Active', width: 70, align: 'center', editor: { type: 'boolean' } },
-  { field: 'joined', header: 'Joined', width: 140, sortable: true, editor: { type: 'date', required: true } },
+const columns: UI.GridColumnItem<Person>[] = [
+  {
+    header: 'Person',
+    columns: [
+      { field: 'name', header: 'Name', flex: 1.2, minWidth: 120, sortable: true, editor: { required: true } },
+      { field: 'email', header: 'Email', flex: 1.6, minWidth: 150, sortable: true, editor: { required: true, validate: (v) => /^\S+@\S+\.\S+$/.test(v) || 'Email is not valid' } },
+    ],
+  },
+  {
+    header: 'Details',
+    columns: [
+      { field: 'age', header: 'Age', width: 64, align: 'right', sortable: true, editor: { type: 'number', min: 0, max: 120, required: true } },
+      { field: 'role', header: 'Role', width: 110, sortable: true, render: (v) => roles.find((r) => r.value === v)?.label ?? String(v), editor: { type: 'select', options: roles } },
+      { field: 'active', header: 'Active', width: 64, align: 'center', editor: { type: 'boolean' } },
+    ],
+  },
+  {
+    header: 'Performance',
+    columns: [
+      { field: 'progress', header: 'Progress', type: 'percent', width: 130, sortable: true, editor: { type: 'percent' } },
+      { field: 'rating', header: 'Rating', type: 'rating', width: 110, sortable: true, editor: { type: 'rating' } },
+    ],
+  },
+  { field: 'joined', header: 'Joined', width: 130, sortable: true, editor: { type: 'date', required: true } },
 ];
 
 export function WinGrid({ theme }: { theme: UI.Theme }) {
   const [rows, setRows] = React.useState(initial);
+  const [checked, setChecked] = React.useState<string[]>([]);
   const [pending, setPending] = React.useState<string | null>(null);
-  const [log, setLog] = React.useState('Double-click a row to edit it (Enter = Update, Esc = Cancel).');
+  const [log, setLog] = React.useState('Double-click a row to edit it. Drag a header edge to resize a column.');
   const grid = React.useRef<UI.DataGridHandle>(null);
 
   // A new row is inserted first, then opened in the editor (like ExtJS: store.insert + startEdit).
@@ -35,14 +65,20 @@ export function WinGrid({ theme }: { theme: UI.Theme }) {
 
   const addRow = () => {
     const id = `new-${Date.now()}`;
-    setRows((r) => [{ id, name: '', email: '', age: 30, role: 'viewer', active: true, joined: new Date().toISOString().slice(0, 10) }, ...r]);
+    setRows((r) => [{ id, name: '', email: '', age: 30, role: 'viewer', active: true, joined: new Date().toISOString().slice(0, 10), progress: 0, rating: 0 }, ...r]);
     setPending(id);
+  };
+  const removeChecked = () => {
+    setRows((r) => r.filter((x) => !checked.includes(x.id)));
+    setLog(`Deleted ${checked.length} row(s)`);
+    setChecked([]);
   };
 
   return (
-    <UI.Window chrome background theme={theme} width={760} padding="12px">
-      <div style={{ display: 'flex', gap: 12, alignItems: 'center', marginBottom: 10 }}>
+    <UI.Window chrome background theme={theme} width={900} padding="12px">
+      <div style={{ display: 'flex', gap: 12, alignItems: 'center', marginBottom: 10, flexWrap: 'wrap' }}>
         <UI.Button theme={theme} onClick={addRow}>Add row</UI.Button>
+        <UI.Button theme={theme} disabled={!checked.length} onClick={removeChecked}>Delete selected ({checked.length})</UI.Button>
         <span style={{ fontSize: 12, opacity: 0.75 }}>{log}</span>
       </div>
       <UI.DataGrid<Person>
@@ -51,7 +87,13 @@ export function WinGrid({ theme }: { theme: UI.Theme }) {
         columns={columns}
         rows={rows}
         getRowId={(r) => r.id}
-        height={280}
+        height={400}
+        checkboxSelection
+        checkedIds={checked}
+        onCheckedChange={setChecked}
+        defaultPageSize={8}
+        pageSizeOptions={[5, 8, 15]}
+        onColumnResize={(field, width) => setLog(width === null ? `Column "${field}" reset` : `Column "${field}" resized to ${width}px`)}
         onValidateEdit={(e) =>
           rows.some((r) => r.id !== e.rowId && r.email === e.newValues.email) ? 'That email is already used' : true
         }
