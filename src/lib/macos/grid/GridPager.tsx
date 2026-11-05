@@ -20,12 +20,14 @@ export type GridPagerProps = {
   pageSize: number;
   pageSizeOptions?: number[];
   total: number;
+  pagination?: boolean;
+  subtotals?: { field: string; label: string; value: number }[];
   onPage: (page: number) => void;
   onPageSize?: (size: number) => void;
 } & Themed;
 
 /** Paging toolbar like Ext.toolbar.Paging: first / prev / "Page [n] of N" / next / last, rows per page, range text. */
-export function GridPager({ theme, page, pageCount, pageSize, pageSizeOptions, total, onPage, onPageSize }: GridPagerProps) {
+export function GridPager({ theme, page, pageCount, pageSize, pageSizeOptions, total, pagination = true, subtotals = [], onPage, onPageSize }: GridPagerProps) {
   const [text, setText] = React.useState(String(page));
   React.useEffect(() => { setText(String(page)); }, [page]);
   const commit = () => {
@@ -36,8 +38,8 @@ export function GridPager({ theme, page, pageCount, pageSize, pageSizeOptions, t
   const first = total === 0 ? 0 : (page - 1) * pageSize + 1;
   const last = Math.min(total, page * pageSize);
   return (
-    <div className="rd-mac-grid__footer" role="navigation" aria-label="Pagination">
-      <div className="rd-mac-grid__pager">
+    <div className="rd-mac-grid__footer" role={pagination ? 'navigation' : 'status'} aria-label={pagination ? 'Pagination' : 'Selection subtotal'}>
+      {pagination && <div className="rd-mac-grid__pager">
         <BaseButton className="rd-mac-grid__pagebtn" aria-label="First page" disabled={page <= 1} onClick={() => onPage(1)}>{FIRST}</BaseButton>
         <BaseButton className="rd-mac-grid__pagebtn" aria-label="Previous page" disabled={page <= 1} onClick={() => onPage(page - 1)}>{PREV}</BaseButton>
         <span>Page</span>
@@ -49,8 +51,8 @@ export function GridPager({ theme, page, pageCount, pageSize, pageSizeOptions, t
         <span>of {pageCount}</span>
         <BaseButton className="rd-mac-grid__pagebtn" aria-label="Next page" disabled={page >= pageCount} onClick={() => onPage(page + 1)}>{NEXT}</BaseButton>
         <BaseButton className="rd-mac-grid__pagebtn" aria-label="Last page" disabled={page >= pageCount} onClick={() => onPage(pageCount)}>{LAST}</BaseButton>
-      </div>
-      {pageSizeOptions && onPageSize && (
+      </div>}
+      {pagination && pageSizeOptions && onPageSize && (
         <div className="rd-mac-grid__pagesize">
           <span>Rows</span>
           <Select theme={theme}
@@ -60,7 +62,12 @@ export function GridPager({ theme, page, pageCount, pageSize, pageSizeOptions, t
           />
         </div>
       )}
-      <span className="rd-mac-grid__pageinfo">Displaying {first} - {last} of {total}</span>
+      {subtotals.length > 0 && (
+        <span className="rd-mac-grid__subtotal" aria-live="polite">
+          Subtotal: {subtotals.map((item) => `${item.label} ${new Intl.NumberFormat().format(item.value)}`).join(' · ')}
+        </span>
+      )}
+      {pagination && <span className="rd-mac-grid__pageinfo">Displaying {first} - {last} of {total}</span>}
     </div>
   );
 }

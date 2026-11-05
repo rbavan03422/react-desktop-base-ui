@@ -10,12 +10,14 @@ import type {
   DataGridHandle, GridBeforeEditEvent, GridCancelEditEvent, GridColumn, GridColumnItem, GridEditEvent, GridSort,
 } from './types';
 import {
-  CHECK_COLUMN, CHECK_FIELD, compareValues, computeErrors, initialDraft, layoutHeader, pickChanges, toValues, type Draft,
+  CHECK_COLUMN, CHECK_FIELD, columnName, compareValues, computeErrors, initialDraft, layoutHeader, pickChanges, toValues, type Draft,
 } from './utils';
 
 const JUSTIFY = { left: 'flex-start', center: 'center', right: 'flex-end' } as const;
 
 type CellSpan = { column: GridColumn<any>; columnIndex: number; colSpan: number; rowSpan: number };
+type CellPoint = { row: number; column: number };
+type CellSelection = { anchor: CellPoint; focus: CellPoint };
 
 function spanSize<T>(span: GridColumn<T>['colSpan'] | GridColumn<T>['rowSpan'], row: T, rowIndex: number, name: string, remaining: number) {
   const value = typeof span === 'function' ? span(row, rowIndex) : span ?? 1;
@@ -106,6 +108,8 @@ function DataGridInner<T extends object>(
   const [resizing, setResizing] = React.useState(false);
   const [innerSel, setInnerSel] = React.useState<string | null>(defaultSelectedId);
   const selected = selectedId !== undefined ? selectedId : innerSel;
+  const [cellSelection, setCellSelection] = React.useState<CellSelection | null>(null);
+  const selectingCells = React.useRef(false);
   const [innerChecked, setInnerChecked] = React.useState<string[]>(defaultCheckedIds ?? []);
   const checkedSet = React.useMemo(() => new Set(checkedIds ?? innerChecked), [checkedIds, innerChecked]);
   const [edit, setEdit] = React.useState<EditState<T> | null>(null);
@@ -162,6 +166,7 @@ function DataGridInner<T extends object>(
 
   const setPageValue = (p: number) => {
     const next = Math.min(Math.max(1, p), pageCount);
+    if (next !== page) setCellSelection(null);
     if (pageProp === undefined) setInnerPage(next);
     if (next !== page) onPageChange?.(next);
   };
@@ -224,6 +229,7 @@ function DataGridInner<T extends object>(
       else if (!completeEdit()) return false;
     }
     if (onBeforeEdit?.({ rowId: id, row, columnKey: focusKey }) === false) return false;
+    setCellSelection(null);
     if (paged && !server) {
       const index = sortedRows.findIndex((r) => getRowId(r) === id);
       if (index >= 0) setPageValue(Math.floor(index / size) + 1);
@@ -239,6 +245,7 @@ function DataGridInner<T extends object>(
     setPageValue(p);
   };
   const changePageSize = (n: number) => {
+    setCellSelection(null);
     if (edit) cancelEdit();
     if (pageSizeProp === undefined) setInnerSize(n);
     onPageSizeChange?.(n);
@@ -261,9 +268,14 @@ function DataGridInner<T extends object>(
     if (prevEditing.current && !editingId) rowRefs.current.get(prevEditing.current)?.focus();
     prevEditing.current = editingId;
   }, [editingId]);
+  React.useEffect(() => {
+    setCellSelection(null);
+  }, [page, sort, rows]);
 
-  const onSort = (field: string) =>
+  const onSort = (field: string) => {
+    setCellSelection(null);
     setSort((s) => (s?.field !== field ? { field, dir: 'asc' } : s.dir === 'asc' ? { field, dir: 'desc' } : null));
+  };
 
   const onResize = (field: string, width: number | null, final: boolean) => {
     setWidths((w) => {
@@ -277,6 +289,24 @@ function DataGridInner<T extends object>(
 
   const colFromEvent = (e: React.MouseEvent) =>
     (e.target as HTMLElement).closest('[data-col]')?.getAttribute('data-col') ?? undefined;
+
+  const beginCellSelection = (row: number, column: number, extend: boolean) => {
+    const point = { row, column };
+    setCellSelection((current) => ({ anchor: extend && current ? current.anchor : point, focus: point }));
+    selectingCells.current = !extend;
+  };
+  const extendCellSelection = (row: number, column: number) => {
+    if (!selectingCells.current) return;
+    setCellSelection((current) => current ? { ...current, focus: { row, column } } : current);
+  };
+  const isCellSelected = (row: number, column: number, rowSpan: number, colSpan: number) => {
+    if (!cellSelection) return false;
+    const top = Math.min(cellSelection.anchor.row, cellSelection.focus.row);
+    const bottom = Math.max(cellSelection.anchor.row, cellSelection.focus.row);
+    const left = Math.min(cellSelection.anchor.column, cellSelection.focus.column);
+    const right = Math.max(cellSelection.anchor.column, cellSelection.focus.column);
+    return row <= bottom && row + rowSpan - 1 >= top && column <= right && column + colSpan - 1 >= left;
+  };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (edit || (e.target as HTMLElement).closest('[role="columnheader"], [role="navigation"]')) return;
@@ -306,6 +336,26 @@ function DataGridInner<T extends object>(
     })
     .join(' ');
   const minWidth = columns.reduce((sum, c) => sum + (widths[c.field] ?? c.width ?? c.minWidth ?? 80), 0);
+  const subtotals = React.useMemo(() => {
+    if (!cellSelection) return [];
+    const top = Math.min(cellSelection.anchor.row, cellSelection.focus.row);
+    const bottom = Math.max(cellSelection.anchor.row, cellSelection.focus.row);
+    const left = Math.min(cellSelection.anchor.column, cellSelection.focus.column);
+    const right = Math.max(cellSelection.anchor.column, cellSelection.focus.column);
+    const sums = new Map<string, { label: string; value: number }>();
+    cellSpans.forEach((cells, rowIndex) => {
+      cells.forEach(({ column, columnIndex, colSpan, rowSpan }) => {
+        if (column.field === CHECK_FIELD || rowIndex > bottom || rowIndex + rowSpan - 1 < top ||
+            columnIndex > right || columnIndex + colSpan - 1 < left) return;
+        const value = (visibleRows[rowIndex] as any)[column.field];
+        if (typeof value !== 'number' || !Number.isFinite(value)) return;
+        const current = sums.get(column.field) ?? { label: columnName(column), value: 0 };
+        current.value += value;
+        sums.set(column.field, current);
+      });
+    });
+    return Array.from(sums, ([field, subtotal]) => ({ field, ...subtotal }));
+  }, [cellSelection, cellSpans, visibleRows]);
 
   // display content for the row editor's read-only cells
   const renderDisplay = (c: GridColumn<T>, r: T) =>
@@ -325,6 +375,8 @@ function DataGridInner<T extends object>(
       data-resizing={resizing ? '' : undefined}
       {...themed(theme, color, { height })}
       onKeyDown={onKeyDown}
+      onMouseUp={() => { selectingCells.current = false; }}
+      onMouseLeave={() => { selectingCells.current = false; }}
     >
       <div className="rd-win-grid__scroller">
         <div
@@ -402,12 +454,20 @@ function DataGridInner<T extends object>(
                         data-col={c.field}
                         aria-colspan={colSpan > 1 ? colSpan : undefined}
                         aria-rowspan={rowSpan > 1 ? rowSpan : undefined}
+                        aria-selected={isCellSelected(i, columnIndex, rowSpan, colSpan)}
+                        data-cell-selected={isCellSelected(i, columnIndex, rowSpan, colSpan) ? '' : undefined}
                         className="rd-win-grid__cell"
                         style={{
                           justifyContent: JUSTIFY[c.align ?? 'left'],
                           gridColumn: `${columnIndex + 1} / span ${colSpan}`,
                           gridRow: `${i + 1} / span ${rowSpan}`,
                         }}
+                        onMouseDown={(e) => {
+                          if (e.button !== 0) return;
+                          e.preventDefault();
+                          beginCellSelection(i, columnIndex, e.shiftKey);
+                        }}
+                        onMouseEnter={() => extendCellSelection(i, columnIndex)}
                       >
                         {renderCell(c, row)}
                       </div>
@@ -420,10 +480,10 @@ function DataGridInner<T extends object>(
           </div>
         </div>
       </div>
-      {paged && (
+      {(paged || subtotals.length > 0) && (
         <GridPager
           theme={theme} color={color} page={page} pageCount={pageCount} pageSize={size} pageSizeOptions={pageSizeOptions} total={total}
-          onPage={goToPage} onPageSize={pageSizeOptions ? changePageSize : undefined}
+          onPage={goToPage} onPageSize={pageSizeOptions ? changePageSize : undefined} pagination={paged} subtotals={subtotals}
         />
       )}
     </div>

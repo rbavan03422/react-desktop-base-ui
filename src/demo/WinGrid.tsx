@@ -98,6 +98,9 @@ export function WinGrid({ theme }: { theme: UI.Theme }) {
         <UI.Button theme={theme} disabled={!checked.length} onClick={removeChecked}>Delete selected ({checked.length})</UI.Button>
         <span style={{ fontSize: 12, opacity: 0.75 }}>{log}</span>
       </div>
+      <p style={{ margin: '0 0 8px', fontSize: 12, color: 'var(--rd-win-muted)' }}>
+        Click or drag across cells to select a range; Shift-click extends it. Numeric subtotals appear in the pager.
+      </p>
       <UI.DataGrid<Person>
         ref={grid}
         theme={theme}

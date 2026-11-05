@@ -20,12 +20,14 @@ export type GridPagerProps = {
   pageSize: number;
   pageSizeOptions?: number[];
   total: number;
+  pagination?: boolean;
+  subtotals?: { field: string; label: string; value: number }[];
   onPage: (page: number) => void;
   onPageSize?: (size: number) => void;
 } & Themed;
 
 /** Paging toolbar like Ext.toolbar.Paging: first / prev / "Page [n] of N" / next / last, rows per page, range text. */
-export function GridPager({ theme, color, page, pageCount, pageSize, pageSizeOptions, total, onPage, onPageSize }: GridPagerProps) {
+export function GridPager({ theme, color, page, pageCount, pageSize, pageSizeOptions, total, pagination = true, subtotals = [], onPage, onPageSize }: GridPagerProps) {
   const [text, setText] = React.useState(String(page));
   React.useEffect(() => { setText(String(page)); }, [page]);
   const commit = () => {
@@ -36,21 +38,23 @@ export function GridPager({ theme, color, page, pageCount, pageSize, pageSizeOpt
   const first = total === 0 ? 0 : (page - 1) * pageSize + 1;
   const last = Math.min(total, page * pageSize);
   return (
-    <div className="rd-win-grid__footer" role="navigation" aria-label="Pagination">
-      <div className="rd-win-grid__pager">
-        <BaseButton className="rd-win-grid__pagebtn" aria-label="First page" disabled={page <= 1} onClick={() => onPage(1)}>{FIRST}</BaseButton>
-        <BaseButton className="rd-win-grid__pagebtn" aria-label="Previous page" disabled={page <= 1} onClick={() => onPage(page - 1)}>{PREV}</BaseButton>
-        <span>Page</span>
-        <Input
-          className="rd-win-grid__pageinput" type="number" min={1} max={pageCount} value={text} aria-label="Page number"
-          onChange={(e) => setText(e.target.value)} onBlur={commit}
-          onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); commit(); } }}
-        />
-        <span>of {pageCount}</span>
-        <BaseButton className="rd-win-grid__pagebtn" aria-label="Next page" disabled={page >= pageCount} onClick={() => onPage(page + 1)}>{NEXT}</BaseButton>
-        <BaseButton className="rd-win-grid__pagebtn" aria-label="Last page" disabled={page >= pageCount} onClick={() => onPage(pageCount)}>{LAST}</BaseButton>
-      </div>
-      {pageSizeOptions && onPageSize && (
+    <div className="rd-win-grid__footer" role={pagination ? 'navigation' : 'status'} aria-label={pagination ? 'Pagination' : 'Selection subtotal'}>
+      {pagination && (
+        <div className="rd-win-grid__pager">
+          <BaseButton className="rd-win-grid__pagebtn" aria-label="First page" disabled={page <= 1} onClick={() => onPage(1)}>{FIRST}</BaseButton>
+          <BaseButton className="rd-win-grid__pagebtn" aria-label="Previous page" disabled={page <= 1} onClick={() => onPage(page - 1)}>{PREV}</BaseButton>
+          <span>Page</span>
+          <Input
+            className="rd-win-grid__pageinput" type="number" min={1} max={pageCount} value={text} aria-label="Page number"
+            onChange={(e) => setText(e.target.value)} onBlur={commit}
+            onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); commit(); } }}
+          />
+          <span>of {pageCount}</span>
+          <BaseButton className="rd-win-grid__pagebtn" aria-label="Next page" disabled={page >= pageCount} onClick={() => onPage(page + 1)}>{NEXT}</BaseButton>
+          <BaseButton className="rd-win-grid__pagebtn" aria-label="Last page" disabled={page >= pageCount} onClick={() => onPage(pageCount)}>{LAST}</BaseButton>
+        </div>
+      )}
+      {pagination && pageSizeOptions && onPageSize && (
         <div className="rd-win-grid__pagesize">
           <span>Rows</span>
           <Select theme={theme} color={color}
@@ -60,7 +64,12 @@ export function GridPager({ theme, color, page, pageCount, pageSize, pageSizeOpt
           />
         </div>
       )}
-      <span className="rd-win-grid__pageinfo">Displaying {first} - {last} of {total}</span>
+      {subtotals.length > 0 && (
+        <span className="rd-win-grid__subtotal" aria-live="polite">
+          Subtotal: {subtotals.map((item) => `${item.label} ${new Intl.NumberFormat().format(item.value)}`).join(' · ')}
+        </span>
+      )}
+      {pagination && <span className="rd-win-grid__pageinfo">Displaying {first} - {last} of {total}</span>}
     </div>
   );
 }
