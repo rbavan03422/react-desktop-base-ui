@@ -14,3 +14,4 @@ export * from './overlays';
 export * from './feedback';
 export * from './grid';
 export * from '../common/material';
+export * from '../common/Chart';

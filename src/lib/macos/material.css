@@ -98,6 +98,25 @@
 .rd-material-image-list__title, .rd-material-image-list__subtitle { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .rd-material-image-list__title { font-size: 14px; font-weight: 500; }
 .rd-material-image-list__subtitle { opacity: .8; font-size: 12px; }
+
+.rd-chart { --rd-chart-1: #0a84ff; --rd-chart-2: #bf5af2; --rd-chart-3: #ff453a; --rd-chart-4: #30d158; --rd-chart-5: #ff9f0a; --rd-chart-6: #64d2ff; --rd-chart-bg: #fff; --rd-chart-grid: #d1d1d6; --rd-chart-fg: #1c1c1e; --rd-chart-up: #30a46c; --rd-chart-down: #ff453a; display: block; min-width: 0; color: var(--rd-chart-fg); }
+.rd-chart[data-rd-theme="dark"] { --rd-chart-1: #0a84ff; --rd-chart-2: #bf5af2; --rd-chart-3: #ff453a; --rd-chart-4: #30d158; --rd-chart-5: #ff9f0a; --rd-chart-6: #64d2ff; --rd-chart-bg: #1c1c1e; --rd-chart-grid: #48484a; --rd-chart-fg: #f2f2f7; --rd-chart-up: #30d158; --rd-chart-down: #ff6961; }
+.rd-chart__svg { display: block; width: 100%; height: auto; overflow: visible; color: var(--rd-chart-fg); }
+.rd-chart__grid line, .rd-chart__radar-grid { fill: none; stroke: var(--rd-chart-grid); stroke-width: 1; }
+.rd-chart__bar, .rd-chart__slice { stroke: none; }
+.rd-chart__funnel-segment { stroke: var(--rd-chart-bg); stroke-width: 1.5; }
+.rd-chart__line { fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.rd-chart__area { opacity: .2; stroke: none; }
+.rd-chart__point { stroke: var(--rd-chart-bg); stroke-width: 1.5; }
+.rd-chart__donut-hole { fill: var(--rd-chart-bg); }
+.rd-chart__gauge-track, .rd-chart__gauge-value { fill: none; stroke-width: 12; stroke-linecap: round; }
+.rd-chart__gauge-track { stroke: var(--rd-chart-grid); }
+.rd-chart__gauge-value { stroke: var(--rd-chart-1); }
+.rd-chart__gauge-label { fill: var(--rd-chart-fg); font: 600 20px -apple-system, BlinkMacSystemFont, sans-serif; }
+.rd-chart__radar-area { fill-opacity: .16; stroke-width: 2; }
+.rd-chart__heat-cell { stroke: var(--rd-chart-bg); stroke-width: 1; }
+.rd-chart__candle { stroke-width: 1.5; }
+.rd-chart__candle rect { stroke-width: 1; }
 .rd-material-image-list__action { display: inline-flex; flex: none; }
 .rd-material-image-list__bar--action-left .rd-material-image-list__action { order: -1; }
 .rd-material-breadcrumbs { color: var(--rd-mac-muted); font-size: 14px; }

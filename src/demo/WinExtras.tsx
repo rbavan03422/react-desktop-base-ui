@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as UI from '../lib/windows';
+import { ChartShowcase } from './ChartShowcase';
 import imageListItems from './imageListItems';
 
 const fruits = ['Apple', 'Banana', 'Cherry', 'Grape', 'Mango'];
@@ -110,6 +111,7 @@ export function WinExtras({ theme }: { theme: UI.Theme }) {
             <UI.CardContent>Card content with an action.</UI.CardContent>
             <UI.CardActions><UI.Button color="primary">Action</UI.Button></UI.CardActions>
           </UI.Card>
+          <ChartShowcase theme={theme} />
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             <UI.Typography variant="subtitle2">Image List: {imageVariant}</UI.Typography>
             <div style={row}>

@@ -72,6 +72,7 @@ Beyond the original react-desktop set, these Base UI controls are implemented in
 | Divider, Accordion, Card | yes | yes | content structure and expandable panels |
 | Breadcrumbs, Speed Dial, Stepper | yes | yes | navigation, quick actions, and progress |
 | Image List | yes | yes | standard, quilted, woven, and masonry layouts |
+| Chart | yes | yes | SVG bar, line, area, donut, scatter, sparkline, gauge, radar, heatmap, funnel, pyramid, range bar, and candlestick charts |
 
 
 Windows components that render popups (Select, Menu, Tooltip, ...) accept `theme` / `color`, because popups are portaled
@@ -124,6 +125,20 @@ The demos use locally bundled SVG illustrations and do not require a network con
   </ImageListItem>
   <ImageListItem><img src="/images/coast.jpg" alt="Coast" /></ImageListItem>
 </ImageList>
+```
+
+### Charts
+Both platform entry points export an SVG-based `Chart`. Choose a `type` and supply either a simple `data` array or named `series`; charts use the platform palette and support the optional `theme`, `width`, `height`, `min`, `max`, `value`, `labels`, `colors`, and `showGrid` props. `ChartDatum` points accept `x`, `y` or `value`, and a `label`. Range bars use `low` / `high`; candlesticks use `open`, `close`, `low`, and `high`. Heatmaps accept a 2D numeric `data` array. The demo gallery shows all supported chart types.
+
+```tsx
+<Chart type="bar" series={[
+  { label: 'This year', data: [18, 30, 23] },
+  { label: 'Last year', data: [12, 21, 28] },
+]} height={200} />
+<Chart type="candlestick" data={[
+  { low: 12, high: 34, open: 18, close: 28 },
+  { low: 16, high: 38, open: 30, close: 21 },
+]} />
 ```
 
 ## Data grid with inline row editor

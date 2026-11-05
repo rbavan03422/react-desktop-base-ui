@@ -14,3 +14,4 @@ export * from './feedback';
 export type { Theme } from './shared';
 export * from './grid';
 export * from '../common/material';
+export * from '../common/Chart';

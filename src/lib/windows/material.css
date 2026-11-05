@@ -98,6 +98,25 @@
 .rd-material-image-list__title, .rd-material-image-list__subtitle { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .rd-material-image-list__title { font-size: 14px; font-weight: 500; }
 .rd-material-image-list__subtitle { opacity: .8; font-size: 12px; }
+
+.rd-chart { --rd-chart-1: #0067c0; --rd-chart-2: #8764b8; --rd-chart-3: #e74856; --rd-chart-4: #498205; --rd-chart-5: #ca5010; --rd-chart-6: #038387; --rd-chart-bg: #fff; --rd-chart-grid: #d8d8d8; --rd-chart-fg: #242424; --rd-chart-up: #107c10; --rd-chart-down: #d13438; display: block; min-width: 0; color: var(--rd-chart-fg); }
+.rd-chart[data-rd-theme="dark"] { --rd-chart-1: #60cdff; --rd-chart-2: #c9a0ff; --rd-chart-3: #ff99a4; --rd-chart-4: #6ccb5f; --rd-chart-5: #f7630c; --rd-chart-6: #4cc2ff; --rd-chart-bg: #202020; --rd-chart-grid: #454545; --rd-chart-fg: #f3f3f3; --rd-chart-up: #6ccb5f; --rd-chart-down: #ff99a4; }
+.rd-chart__svg { display: block; width: 100%; height: auto; overflow: visible; color: var(--rd-chart-fg); }
+.rd-chart__grid line, .rd-chart__radar-grid { fill: none; stroke: var(--rd-chart-grid); stroke-width: 1; }
+.rd-chart__bar, .rd-chart__slice { stroke: none; }
+.rd-chart__funnel-segment { stroke: var(--rd-chart-bg); stroke-width: 1.5; }
+.rd-chart__line { fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.rd-chart__area { opacity: .2; stroke: none; }
+.rd-chart__point { stroke: var(--rd-chart-bg); stroke-width: 1.5; }
+.rd-chart__donut-hole { fill: var(--rd-chart-bg); }
+.rd-chart__gauge-track, .rd-chart__gauge-value { fill: none; stroke-width: 12; stroke-linecap: round; }
+.rd-chart__gauge-track { stroke: var(--rd-chart-grid); }
+.rd-chart__gauge-value { stroke: var(--rd-chart-1); }
+.rd-chart__gauge-label { fill: var(--rd-chart-fg); font: 600 20px "Segoe UI Variable", "Segoe UI", system-ui, sans-serif; }
+.rd-chart__radar-area { fill-opacity: .16; stroke-width: 2; }
+.rd-chart__heat-cell { stroke: var(--rd-chart-bg); stroke-width: 1; }
+.rd-chart__candle { stroke-width: 1.5; }
+.rd-chart__candle rect { stroke-width: 1; }
 .rd-material-image-list__action { display: inline-flex; flex: none; }
 .rd-material-image-list__bar--action-left .rd-material-image-list__action { order: -1; }
 .rd-material-breadcrumbs { color: var(--rd-win-muted); font-size: 14px; }
