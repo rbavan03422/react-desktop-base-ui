@@ -15,9 +15,21 @@
 /* button */
 .rd-mac-button { padding: 3px 14px; min-height: 22px; border: 1px solid var(--rd-mac-btn-border); border-radius: 5px; background: var(--rd-mac-ctl-bg); box-shadow: 0 1px 1px rgba(0,0,0,.08); cursor: default; color: inherit; }
 .rd-mac-button:active, .rd-mac-button[data-push] { background: var(--rd-mac-btn-active); }
-.rd-mac-button[data-color="blue"] { color: #fff; border-color: #1767c9; background: linear-gradient(#6fb1ff, #1a7bff); }
-.rd-mac-button[data-color="blue"]:active, .rd-mac-button[data-color="blue"][data-push] { background: linear-gradient(#3b8bf0, #0f62d8); }
-.rd-mac-button[data-color="red"] { color: #fff; border-color: #b12a2a; background: linear-gradient(#ff7b72, #e5453b); }
+.rd-mac-button[data-color="primary"], .rd-mac-button[data-color="secondary"], .rd-mac-button[data-color="warning"],
+.rd-mac-button[data-color="error"], .rd-mac-button[data-color="info"], .rd-mac-button[data-color="success"] {
+  border-color: color-mix(in srgb, var(--rd-mac-button-color) 82%, #000);
+  background: linear-gradient(color-mix(in srgb, var(--rd-mac-button-color) 78%, #fff), var(--rd-mac-button-color));
+  color: var(--rd-mac-button-fg);
+}
+.rd-mac-button[data-color="primary"] { --rd-mac-button-color: var(--rd-mac-primary); --rd-mac-button-fg: var(--rd-mac-primary-fg); }
+.rd-mac-button[data-color="secondary"] { --rd-mac-button-color: var(--rd-mac-secondary); --rd-mac-button-fg: var(--rd-mac-secondary-fg); }
+.rd-mac-button[data-color="warning"] { --rd-mac-button-color: var(--rd-mac-warning); --rd-mac-button-fg: var(--rd-mac-warning-fg); }
+.rd-mac-button[data-color="error"] { --rd-mac-button-color: var(--rd-mac-error); --rd-mac-button-fg: var(--rd-mac-error-fg); }
+.rd-mac-button[data-color="info"] { --rd-mac-button-color: var(--rd-mac-info); --rd-mac-button-fg: var(--rd-mac-info-fg); }
+.rd-mac-button[data-color="success"] { --rd-mac-button-color: var(--rd-mac-success); --rd-mac-button-fg: var(--rd-mac-success-fg); }
+.rd-mac-button[data-color]:active, .rd-mac-button[data-color][data-push] {
+  background: linear-gradient(color-mix(in srgb, var(--rd-mac-button-color) 82%, #000), color-mix(in srgb, var(--rd-mac-button-color) 68%, #000));
+}
 .rd-mac-button[data-disabled], .rd-mac-button:disabled { opacity: .5; pointer-events: none; }
 
 /* checkbox + radio */

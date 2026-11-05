@@ -37,6 +37,14 @@ export function MacExtras({ theme }: { theme: UI.Theme }) {
         </UI.Toolbar>
         <div style={{ padding: '14px 16px 0' }}><UI.Meter theme={theme} value={72} warning={60} critical={90} label="Battery" showValue /></div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14, padding: '14px 16px 0' }}>
+          <div style={row} aria-label="Semantic button colors">
+            <UI.Button theme={theme} color="primary">Primary</UI.Button>
+            <UI.Button theme={theme} color="secondary">Secondary</UI.Button>
+            <UI.Button theme={theme} color="warning">Warning</UI.Button>
+            <UI.Button theme={theme} color="error">Error</UI.Button>
+            <UI.Button theme={theme} color="info">Info</UI.Button>
+            <UI.Button theme={theme} color="success">Success</UI.Button>
+          </div>
           <div style={row}>
             <UI.Switch theme={theme} label="Wi-Fi" defaultChecked />
             <UI.ToggleButton theme={theme}>Bold</UI.ToggleButton>

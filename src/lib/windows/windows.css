@@ -4,12 +4,24 @@
   --rd-win-border: #d1d1d1; --rd-win-muted: #616161; --rd-win-accent: #0067c0;
   --rd-win-selection: #e8f1fb; --rd-win-window-border: rgba(0,0,0,.14);
   --rd-win-accent-fg: #fff; --rd-win-window-shadow: 0 8px 24px rgba(0,0,0,.16);
+  --rd-win-primary: var(--rd-win-accent); --rd-win-primary-fg: var(--rd-win-accent-fg);
+  --rd-win-secondary: #6b6b6b; --rd-win-secondary-fg: #fff;
+  --rd-win-warning: #8a4b00; --rd-win-warning-fg: #fff;
+  --rd-win-error: #ba1a1a; --rd-win-error-fg: #fff;
+  --rd-win-info: #006b7a; --rd-win-info-fg: #fff;
+  --rd-win-success: #146c2e; --rd-win-success-fg: #fff;
 }
 [data-rd-theme="dark"] {
   --rd-win-fg: #f3f3f3; --rd-win-bg: #202020; --rd-win-surface: #424242; --rd-win-surface-hover: #4d4d4d;
   --rd-win-border: #707070; --rd-win-muted: #bdbdbd; --rd-win-accent: #60cdff;
   --rd-win-selection: #383838; --rd-win-window-border: rgba(255,255,255,.14);
   --rd-win-accent-fg: #003e5c; --rd-win-window-shadow: 0 8px 24px rgba(0,0,0,.5);
+  --rd-win-primary: var(--rd-win-accent); --rd-win-primary-fg: var(--rd-win-accent-fg);
+  --rd-win-secondary: #a0a0a0; --rd-win-secondary-fg: #1b1b1b;
+  --rd-win-warning: #ffb74d; --rd-win-warning-fg: #332000;
+  --rd-win-error: #ffb4ab; --rd-win-error-fg: #410002;
+  --rd-win-info: #80deea; --rd-win-info-fg: #00363d;
+  --rd-win-success: #8fdaa0; --rd-win-success-fg: #00391a;
 }
 .rd-win { font: 14px/1.4 "Segoe UI Variable", "Segoe UI", system-ui, sans-serif; color: var(--rd-win-fg); }
 .rd-win, .rd-win *, .rd-win *::before, .rd-win *::after { box-sizing: border-box; }
@@ -29,6 +41,15 @@
 .rd-win-button:hover { background: var(--rd-win-surface-hover); }
 .rd-win-button:active, .rd-win-button[data-push] { background: var(--rd-win-surface-hover); }
 .rd-win-button[data-accent] { background: var(--rd-win-accent); color: var(--rd-win-accent-fg); }
+.rd-win-button[data-color] { background: var(--rd-win-button-color); border-color: var(--rd-win-button-color); color: var(--rd-win-button-fg); }
+.rd-win-button[data-color]:hover { filter: brightness(1.08); }
+.rd-win-button[data-color]:active, .rd-win-button[data-color][data-push] { filter: brightness(.92); }
+.rd-win-button[data-color="primary"] { --rd-win-button-color: var(--rd-win-primary); --rd-win-button-fg: var(--rd-win-primary-fg); }
+.rd-win-button[data-color="secondary"] { --rd-win-button-color: var(--rd-win-secondary); --rd-win-button-fg: var(--rd-win-secondary-fg); }
+.rd-win-button[data-color="warning"] { --rd-win-button-color: var(--rd-win-warning); --rd-win-button-fg: var(--rd-win-warning-fg); }
+.rd-win-button[data-color="error"] { --rd-win-button-color: var(--rd-win-error); --rd-win-button-fg: var(--rd-win-error-fg); }
+.rd-win-button[data-color="info"] { --rd-win-button-color: var(--rd-win-info); --rd-win-button-fg: var(--rd-win-info-fg); }
+.rd-win-button[data-color="success"] { --rd-win-button-color: var(--rd-win-success); --rd-win-button-fg: var(--rd-win-success-fg); }
 .rd-win-button[data-disabled], .rd-win-button:disabled { opacity: .4; pointer-events: none; }
 
 /* checkbox + radio */

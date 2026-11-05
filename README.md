@@ -165,6 +165,20 @@ import { Window, Select, Menu } from './lib/macos';   // or './lib/windows'
 - Components that render in a **portal** (Dialog, Select, Combobox, Autocomplete, Menu, ContextMenu, Menubar, Tooltip, Popover, Drawer, Preview Card, Toast) take their own `theme` prop, because the popup lives outside the window in the DOM. Pass the same value.
 - Colours are tokens: `--rd-mac-*` (macOS) and `--rd-win-*` (Windows). Override them globally, or under `[data-rd-theme="dark"]` for dark only.
 
+## Semantic button colors
+Both `Button` components accept `color="primary" | "secondary" | "warning" | "error" | "info" | "success"`.
+The same semantic names use platform-specific styling: Windows uses solid Windows 11 buttons, while macOS keeps its classic gradient button treatment. The default button remains neutral.
+
+```tsx
+import { Button as WinButton } from './lib/windows';
+import { Button as MacButton } from './lib/macos';
+
+<WinButton color="primary">Save</WinButton>
+<MacButton color="success">Saved</MacButton>
+```
+
+The palette can be customized with `--rd-win-primary`, `--rd-win-secondary`, `--rd-win-warning`, `--rd-win-error`, `--rd-win-info`, `--rd-win-success` (and matching `--rd-mac-*` tokens). Each color has a companion `-fg` token for its foreground, such as `--rd-win-primary-fg`. Windows `Button` also continues to accept a CSS color string for a custom accent; macOS `blue` and `red` remain aliases for `primary` and `error`.
+
 ## Focus animation
 Every interactive control animates on keyboard focus (`:focus-visible`; text fields on any focus), in plain CSS.
 - **macOS:** the blue focus ring pops in and settles. Tune with `--rd-mac-focus` (`r, g, b`) and `--rd-mac-focus-ms`.

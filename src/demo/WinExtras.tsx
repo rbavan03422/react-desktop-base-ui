@@ -37,6 +37,14 @@ export function WinExtras({ theme }: { theme: UI.Theme }) {
         </UI.Toolbar>
         <UI.NavigationMenu theme={theme} items={[{ label: 'Home', href: '#' }, { label: 'Docs', links: [{ label: 'Guide', href: '#', description: 'Get started' }, { label: 'API', href: '#' }] }]} />
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14, padding: '14px 16px 0' }}>
+          <div style={row} aria-label="Semantic button colors">
+            <UI.Button theme={theme} color="primary">Primary</UI.Button>
+            <UI.Button theme={theme} color="secondary">Secondary</UI.Button>
+            <UI.Button theme={theme} color="warning">Warning</UI.Button>
+            <UI.Button theme={theme} color="error">Error</UI.Button>
+            <UI.Button theme={theme} color="info">Info</UI.Button>
+            <UI.Button theme={theme} color="success">Success</UI.Button>
+          </div>
           <div style={row}>
             <UI.Switch theme={theme} label="Wi-Fi" defaultChecked />
             <UI.ToggleButton theme={theme}>Bold</UI.ToggleButton>

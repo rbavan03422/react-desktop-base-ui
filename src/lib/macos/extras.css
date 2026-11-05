@@ -23,6 +23,12 @@
   --rd-mac-sl-thumb-radius: 50%; --rd-mac-sl-thumb-bg: #fff; --rd-mac-sl-thumb-shadow: 0 0 0 1px rgba(0,0,0,.2), 0 1px 3px rgba(0,0,0,.3);
   --rd-mac-pb-h: 6px; --rd-mac-pb-radius: 3px; --rd-mac-pb-track: #dcdcdc;
   --rd-mac-sb-w: 8px; --rd-mac-sb-radius: 4px; --rd-mac-sb-thumb: rgba(0,0,0,.4); --rd-mac-sb-idle: 0;
+  --rd-mac-primary: #1a7bff; --rd-mac-primary-fg: #fff;
+  --rd-mac-secondary: #6c757d; --rd-mac-secondary-fg: #fff;
+  --rd-mac-warning: #ffc107; --rd-mac-warning-fg: #262626;
+  --rd-mac-error: #dc3545; --rd-mac-error-fg: #fff;
+  --rd-mac-info: #0dcaf0; --rd-mac-info-fg: #262626;
+  --rd-mac-success: #198754; --rd-mac-success-fg: #fff;
 }
 
 /* Dark theme: only the theme-dependent tokens are redefined. */
