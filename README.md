@@ -63,9 +63,10 @@ Beyond the original react-desktop set, these Base UI controls are implemented in
 | Popover, Tooltip, Drawer | yes | yes | |
 | Toast (`ToastProvider` + `useToast`) | yes | yes | |
 | Field, Fieldset, Form, Separator, Scroll Area | yes | yes | `FieldControl` wires an input into `Field` |
+| OTP Field | yes | yes | `length`, `groupSize`; imported as `OTPField` (renamed from `OTPFieldPreview` in Base UI 1.6) |
+| Preview Card | yes | yes | `href`, `content`; opens on hover or keyboard focus |
 | Radio Group | yes | yes | already available as `RadioGroup` |
 
-Not implemented: **OTP Field** and **Preview Card** (no native macOS or Windows desktop control).
 
 Windows components that render popups (Select, Menu, Tooltip, ...) accept `theme` / `color`, because popups are portaled
 outside the themed `Window`.
@@ -76,6 +77,49 @@ import { ToastProvider, useToast, Menu, Button } from './lib/windows';
 // useToast().add({ title: 'Saved', description: 'Done' });
 // <Menu trigger={<Button>File</Button>} items={[{ label: 'New', shortcut: 'Ctrl+N' }, { type: 'separator' }]} />
 ```
+
+## Data grid with inline row editor
+`DataGrid` (macOS and Windows) is a grid with an editor that works like **Ext.grid.plugin.RowEditing** from ExtJS 4:
+double-click a row and it turns into an editor (one field per column) with **Update / Cancel** buttons floating under it.
+
+```tsx
+const columns: GridColumn<Person>[] = [
+  { field: 'name', header: 'Name', flex: 1, sortable: true, editor: { required: true } },
+  { field: 'age', header: 'Age', width: 70, align: 'right', editor: { type: 'number', min: 0, max: 120 } },
+  { field: 'role', header: 'Role', width: 120, editor: { type: 'select', options: roles } },
+  { field: 'active', header: 'Active', width: 70, editor: { type: 'boolean' } },
+];
+<DataGrid<Person> ref={grid} columns={columns} rows={rows} getRowId={(r) => r.id} height={280}
+  onEdit={(e) => setRows((rs) => rs.map((r) => (r.id === e.rowId ? { ...r, ...e.changes } : r)))} />
+```
+| ExtJS 4 | here |
+|---|---|
+| `clicksToEdit` | `clicksToEdit` (1 or 2, default 2) |
+| `autoCancel` | `autoCancel` (default true) |
+| `beforeedit` | `onBeforeEdit` (return `false` to prevent) |
+| `validateedit` | `onValidateEdit` (return `false` or an error message to reject) |
+| `edit` | `onEdit({ rowId, row, originalValues, newValues, changes })` |
+| `canceledit` | `onCancelEdit` |
+| column `editor` | column `editor`: `text`, `number`, `date`, `select`, `boolean` with `required`, `min`/`max`, `validate` |
+| `plugin.startEdit(record, column)` | `ref.current.startEdit(rowId, field)`; also `completeEdit()`, `cancelEdit()`, `getEditingId()` |
+| `saveBtnText` / `cancelBtnText` | `updateText` / `cancelText` |
+
+Behaviour: **Enter** updates, **Esc** cancels, **Tab** cycles through the fields and buttons. Invalid fields are outlined, Update is disabled and an error summary appears
+next to the buttons. The buttons move above the row when there is no room below. Columns without an `editor` are shown read-only inside the editor.
+The grid also has sortable headers (click to cycle asc / desc / none), row selection, and arrow-key / Home / End / Enter / F2 navigation.
+The grid does not keep your data: apply `e.changes` to your rows in `onEdit` (see `demo/MacGrid.tsx` for the "Add row" flow that removes a new row if its edit is cancelled).
+Not included: column resizing and row virtualization.
+
+## Dark theme
+Both platforms support `theme="light" | "dark"`.
+
+```tsx
+import { Window, Select, Menu } from './lib/macos';   // or './lib/windows'
+<Window theme="dark" chrome> ... </Window>
+```
+- Everything inside a themed `Window` (or `View`) inherits the theme through CSS variables, so only the container needs the prop.
+- Components that render in a **portal** (Dialog, Select, Combobox, Autocomplete, Menu, ContextMenu, Menubar, Tooltip, Popover, Drawer, Preview Card, Toast) take their own `theme` prop, because the popup lives outside the window in the DOM. Pass the same value.
+- Colours are tokens: `--rd-mac-*` (macOS) and `--rd-win-*` (Windows). Override them globally, or under `[data-rd-theme="dark"]` for dark only.
 
 ## Focus animation
 Every interactive control animates on keyboard focus (`:focus-visible`; text fields on any focus), in plain CSS.
