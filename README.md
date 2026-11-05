@@ -68,6 +68,9 @@ Beyond the original react-desktop set, these Base UI controls are implemented in
 | Radio Group | yes | yes | already available as `RadioGroup` |
 | Tree View | yes | yes | nested items, expansion, single selection, keyboard navigation |
 | Typography | yes | yes | MUI v4 variants, alignment, semantic color, and paragraph helpers |
+| Avatar, Badge, Chip | yes | yes | identity, notifications, and compact labels |
+| Divider, Accordion, Card | yes | yes | content structure and expandable panels |
+| Breadcrumbs, Speed Dial, Stepper | yes | yes | navigation, quick actions, and progress |
 
 
 Windows components that render popups (Select, Menu, Tooltip, ...) accept `theme` / `color`, because popups are portaled
@@ -92,6 +95,21 @@ Both platforms export `Typography` with the MUI v4 variant scale: `h1`–`h6`, `
 ```
 
 By default, heading variants render as headings, body variants as paragraphs, and `button`, `caption`, and `overline` as spans. Set `component` or `variantMapping` to customize the element. `align`, `display`, `noWrap`, `gutterBottom`, and `paragraph` provide MUI-style layout helpers; `color` accepts `primary`, `secondary`, `textPrimary`, `textSecondary`, `error`, `warning`, `info`, `success`, `inherit`, `initial`, or a CSS color. Typography uses the Roboto / Helvetica / Arial font stack; Roboto is not downloaded by the library.
+
+## Material-style components
+Both platforms export `Avatar`, `Badge`, `Chip`, `Divider`, `Accordion` / `AccordionSummary` / `AccordionDetails`, `Card` / `CardHeader` / `CardContent` / `CardActions` / `CardMedia`, `Breadcrumbs`, `SpeedDial`, and `Stepper`.
+
+```tsx
+<Badge badgeContent={4} color="primary"><Avatar alt="Ada">A</Avatar></Badge>
+<Chip label="Completed" color="success" onDelete={removeChip} />
+<Accordion>
+  <AccordionSummary>Details</AccordionSummary>
+  <AccordionDetails>Expandable content.</AccordionDetails>
+</Accordion>
+<Stepper activeStep={1} steps={[{ label: 'Details' }, { label: 'Review' }, { label: 'Done' }]} />
+```
+
+`Accordion` supports controlled (`expanded` / `onChange`) and default expansion. `SpeedDial` takes an `actions` array (`{ name, icon, onClick }`) and supports controlled or default `open` state. `Stepper` takes `steps` and `activeStep`; use `nonLinear` with `onStepClick` to make steps navigable. Breadcrumbs accepts child links/items and collapses long paths at `maxItems`. The two platform demos show examples of all nine components.
 
 ## Data grid with inline row editor
 `DataGrid` (macOS and Windows) is a grid with an editor that works like **Ext.grid.plugin.RowEditing** from ExtJS 4:

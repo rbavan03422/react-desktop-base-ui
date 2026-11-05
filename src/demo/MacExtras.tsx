@@ -16,6 +16,8 @@ function ToastButton() {
 
 export function MacExtras({ theme }: { theme: UI.Theme }) {
   const [volume, setVolume] = React.useState(40);
+  const [activeStep, setActiveStep] = React.useState(1);
+  const [dialMessage, setDialMessage] = React.useState('');
   return (
     <UI.ToastProvider theme={theme}>
       <UI.Window chrome theme={theme} width={520} padding="0 0 16px">
@@ -87,6 +89,41 @@ export function MacExtras({ theme }: { theme: UI.Theme }) {
           </UI.Fieldset>
           <UI.OTPField theme={theme} label="Verification code" groupSize={3} />
           <p style={{ margin: 0 }}>Read the <UI.PreviewCard theme={theme} href="https://base-ui.com" content="Base UI is an unstyled React component library.">Base UI docs</UI.PreviewCard> for details.</p>
+          <UI.Divider>Components</UI.Divider>
+          <div style={row}>
+            <UI.Badge badgeContent={4} color="primary"><UI.Avatar>AB</UI.Avatar></UI.Badge>
+            <UI.Badge variant="dot" color="success"><UI.Button>Notifications</UI.Button></UI.Badge>
+            <UI.Chip label="Chip" color="primary" />
+            <UI.Chip label="Deletable" variant="outlined" onDelete={() => setDialMessage('Chip removed')} />
+          </div>
+          <UI.Breadcrumbs aria-label="Breadcrumb">
+            <a href="#home">Home</a><a href="#library">Library</a><span>Data</span>
+          </UI.Breadcrumbs>
+          <UI.Accordion defaultExpanded>
+            <UI.AccordionSummary>Accordion</UI.AccordionSummary>
+            <UI.AccordionDetails>Expandable content.</UI.AccordionDetails>
+          </UI.Accordion>
+          <UI.Card variant="outlined">
+            <UI.CardHeader avatar={<UI.Avatar> M </UI.Avatar>} title="Card title" subheader="Card subheader" />
+            <UI.CardContent>Card content with an action.</UI.CardContent>
+            <UI.CardActions><UI.Button color="blue">Action</UI.Button></UI.CardActions>
+          </UI.Card>
+          <UI.Stepper
+            activeStep={activeStep}
+            nonLinear
+            onStepClick={(_, step) => setActiveStep(step)}
+            steps={[{ label: 'Details' }, { label: 'Review' }, { label: 'Complete' }]}
+          />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <UI.SpeedDial
+              ariaLabel="Quick actions"
+              actions={[
+                { name: 'Create', icon: <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden focusable="false"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>, onClick: () => setDialMessage('Create selected') },
+                { name: 'Search', icon: <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden focusable="false"><circle cx="10.8" cy="10.8" r="6.3" fill="none" stroke="currentColor" strokeWidth="2" /><path d="m15.5 15.5 4 4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>, onClick: () => setDialMessage('Search selected') },
+              ]}
+            />
+            <span>{dialMessage}</span>
+          </div>
           <UI.Separator theme={theme} />
           <UI.ContextMenu theme={theme} items={[{ label: 'Back' }, { label: 'Reload' }, { type: 'submenu', label: 'More', items: [{ label: 'Inspect' }] }]}>
             <div style={{ padding: 16, border: '1px dashed currentColor', opacity: .8 }}>Right-click here</div>

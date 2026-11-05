@@ -1,6 +1,7 @@
 import './windows.css';
 import './extras.css';
 import './grid.css';
+import './material.css';
 export * from './layout';
 export * from './controls';
 export * from './chrome';
@@ -12,3 +13,4 @@ export * from './menus';
 export * from './overlays';
 export * from './feedback';
 export * from './grid';
+export * from '../common/material';
