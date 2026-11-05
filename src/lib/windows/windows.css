@@ -35,6 +35,43 @@
 .rd-win-view--chrome { border: 1px solid var(--rd-win-border); border-radius: 6px; }
 .rd-win-text, .rd-win-label { color: var(--rd-win-fg); }
 .rd-win-label { font-size: 12px; }
+.rd-win-typography {
+  margin: 0; font-family: Roboto, "Helvetica", "Arial", sans-serif; color: var(--rd-win-fg);
+}
+.rd-win-typography[data-variant="h1"] { font-size: 6rem; font-weight: 300; line-height: 1.167; letter-spacing: -.01562em; }
+.rd-win-typography[data-variant="h2"] { font-size: 3.75rem; font-weight: 300; line-height: 1.2; letter-spacing: -.00833em; }
+.rd-win-typography[data-variant="h3"] { font-size: 3rem; font-weight: 400; line-height: 1.167; letter-spacing: 0; }
+.rd-win-typography[data-variant="h4"] { font-size: 2.125rem; font-weight: 400; line-height: 1.235; letter-spacing: .00735em; }
+.rd-win-typography[data-variant="h5"] { font-size: 1.5rem; font-weight: 400; line-height: 1.334; letter-spacing: 0; }
+.rd-win-typography[data-variant="h6"] { font-size: 1.25rem; font-weight: 500; line-height: 1.6; letter-spacing: .0075em; }
+.rd-win-typography[data-variant="subtitle1"] { font-size: 1rem; font-weight: 400; line-height: 1.75; letter-spacing: .00938em; }
+.rd-win-typography[data-variant="subtitle2"] { font-size: .875rem; font-weight: 500; line-height: 1.57; letter-spacing: .00714em; }
+.rd-win-typography[data-variant="body1"] { font-size: 1rem; font-weight: 400; line-height: 1.5; letter-spacing: .00938em; }
+.rd-win-typography[data-variant="body2"] { font-size: .875rem; font-weight: 400; line-height: 1.43; letter-spacing: .01071em; }
+.rd-win-typography[data-variant="button"] { font-size: .875rem; font-weight: 500; line-height: 1.75; letter-spacing: .02857em; text-transform: uppercase; }
+.rd-win-typography[data-variant="caption"] { font-size: .75rem; font-weight: 400; line-height: 1.66; letter-spacing: .03333em; }
+.rd-win-typography[data-variant="overline"] { font-size: .75rem; font-weight: 400; line-height: 2.66; letter-spacing: .08333em; text-transform: uppercase; }
+.rd-win-typography[data-variant="inherit"] { font: inherit; letter-spacing: inherit; }
+.rd-win-typography[data-color="initial"] { color: initial; }
+.rd-win-typography[data-color="inherit"] { color: inherit; }
+.rd-win-typography[data-color="primary"] { color: var(--rd-win-primary); }
+.rd-win-typography[data-color="secondary"] { color: var(--rd-win-secondary); }
+.rd-win-typography[data-color="textPrimary"] { color: var(--rd-win-fg); }
+.rd-win-typography[data-color="textSecondary"] { color: var(--rd-win-muted); }
+.rd-win-typography[data-color="error"] { color: var(--rd-win-error); }
+.rd-win-typography[data-color="warning"] { color: var(--rd-win-warning); }
+.rd-win-typography[data-color="info"] { color: var(--rd-win-info); }
+.rd-win-typography[data-color="success"] { color: var(--rd-win-success); }
+.rd-win-typography[data-align="left"] { text-align: left; }
+.rd-win-typography[data-align="center"] { text-align: center; }
+.rd-win-typography[data-align="right"] { text-align: right; }
+.rd-win-typography[data-align="justify"] { text-align: justify; }
+.rd-win-typography[data-display="block"] { display: block; }
+.rd-win-typography[data-display="inline"] { display: inline; }
+.rd-win-typography[data-display="initial"] { display: initial; }
+.rd-win-typography[data-gutter-bottom], .rd-win-typography[data-paragraph] { margin-bottom: .35em; }
+.rd-win-typography[data-paragraph] { margin-bottom: 16px; }
+.rd-win-typography[data-nowrap] { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* button */
 .rd-win-button { all: unset; box-sizing: border-box; display: inline-block; min-width: 90px; padding: 6px 16px; text-align: center; border: 1px solid var(--rd-win-border); border-radius: 4px; background: var(--rd-win-surface); color: var(--rd-win-fg); font: inherit; cursor: default; }

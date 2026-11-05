@@ -36,6 +36,15 @@ export function WinExtras({ theme }: { theme: UI.Theme }) {
           <UI.ToolbarGroup><UI.ToolbarButton>Left</UI.ToolbarButton><UI.ToolbarButton>Right</UI.ToolbarButton></UI.ToolbarGroup>
         </UI.Toolbar>
         <UI.NavigationMenu theme={theme} items={[{ label: 'Home', href: '#' }, { label: 'Docs', links: [{ label: 'Guide', href: '#', description: 'Get started' }, { label: 'API', href: '#' }] }]} />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 2, padding: '12px 16px 0' }}>
+          <UI.Typography theme={theme} variant="h5">Typography</UI.Typography>
+          <UI.Typography theme={theme} variant="h6">h6. Heading</UI.Typography>
+          <UI.Typography theme={theme} variant="subtitle1">subtitle1. Subheading</UI.Typography>
+          <UI.Typography theme={theme} variant="body1">body1. The quick brown fox jumps over the lazy dog.</UI.Typography>
+          <UI.Typography theme={theme} variant="body2">body2. Secondary body text.</UI.Typography>
+          <UI.Typography theme={theme} variant="caption" color="textSecondary">caption. Supporting text</UI.Typography>
+          <UI.Typography theme={theme} variant="overline" color="primary">overline</UI.Typography>
+        </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14, padding: '14px 16px 0' }}>
           <div style={row} aria-label="Semantic button colors">
             <UI.Button theme={theme} color="primary">Primary</UI.Button>

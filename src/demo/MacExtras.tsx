@@ -35,15 +35,24 @@ export function MacExtras({ theme }: { theme: UI.Theme }) {
           <UI.ToolbarSeparator />
           <UI.ToolbarGroup><UI.ToolbarButton>Left</UI.ToolbarButton><UI.ToolbarButton>Right</UI.ToolbarButton></UI.ToolbarGroup>
         </UI.Toolbar>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 2, padding: '12px 16px 0' }}>
+          <UI.Typography variant="h5">Typography</UI.Typography>
+          <UI.Typography variant="h6">h6. Heading</UI.Typography>
+          <UI.Typography variant="subtitle1">subtitle1. Subheading</UI.Typography>
+          <UI.Typography variant="body1">body1. The quick brown fox jumps over the lazy dog.</UI.Typography>
+          <UI.Typography variant="body2">body2. Secondary body text.</UI.Typography>
+          <UI.Typography variant="caption" color="textSecondary">caption. Supporting text</UI.Typography>
+          <UI.Typography variant="overline" color="primary">overline</UI.Typography>
+        </div>
         <div style={{ padding: '14px 16px 0' }}><UI.Meter theme={theme} value={72} warning={60} critical={90} label="Battery" showValue /></div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14, padding: '14px 16px 0' }}>
           <div style={row} aria-label="Semantic button colors">
-            <UI.Button theme={theme} color="primary">Primary</UI.Button>
-            <UI.Button theme={theme} color="secondary">Secondary</UI.Button>
-            <UI.Button theme={theme} color="warning">Warning</UI.Button>
-            <UI.Button theme={theme} color="error">Error</UI.Button>
-            <UI.Button theme={theme} color="info">Info</UI.Button>
-            <UI.Button theme={theme} color="success">Success</UI.Button>
+            <UI.Button color="primary">Primary</UI.Button>
+            <UI.Button color="secondary">Secondary</UI.Button>
+            <UI.Button color="warning">Warning</UI.Button>
+            <UI.Button color="error">Error</UI.Button>
+            <UI.Button color="info">Info</UI.Button>
+            <UI.Button color="success">Success</UI.Button>
           </div>
           <div style={row}>
             <UI.Switch theme={theme} label="Wi-Fi" defaultChecked />

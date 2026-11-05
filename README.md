@@ -67,6 +67,7 @@ Beyond the original react-desktop set, these Base UI controls are implemented in
 | Preview Card | yes | yes | `href`, `content`; opens on hover or keyboard focus |
 | Radio Group | yes | yes | already available as `RadioGroup` |
 | Tree View | yes | yes | nested items, expansion, single selection, keyboard navigation |
+| Typography | yes | yes | MUI v4 variants, alignment, semantic color, and paragraph helpers |
 
 
 Windows components that render popups (Select, Menu, Tooltip, ...) accept `theme` / `color`, because popups are portaled
@@ -78,6 +79,19 @@ import { ToastProvider, useToast, Menu, Button } from './lib/windows';
 // useToast().add({ title: 'Saved', description: 'Done' });
 // <Menu trigger={<Button>File</Button>} items={[{ label: 'New', shortcut: 'Ctrl+N' }, { type: 'separator' }]} />
 ```
+
+## Typography
+Both platforms export `Typography` with the MUI v4 variant scale: `h1`–`h6`, `subtitle1`, `subtitle2`, `body1`, `body2`, `button`, `caption`, `overline`, and `inherit`.
+
+```tsx
+<Typography variant="h4" gutterBottom>Page title</Typography>
+<Typography variant="body2" color="textSecondary" paragraph>
+  Supporting text using the same scale on Windows and macOS.
+</Typography>
+<Typography variant="button" component="span" color="primary">Action label</Typography>
+```
+
+By default, heading variants render as headings, body variants as paragraphs, and `button`, `caption`, and `overline` as spans. Set `component` or `variantMapping` to customize the element. `align`, `display`, `noWrap`, `gutterBottom`, and `paragraph` provide MUI-style layout helpers; `color` accepts `primary`, `secondary`, `textPrimary`, `textSecondary`, `error`, `warning`, `info`, `success`, `inherit`, `initial`, or a CSS color. Typography uses the Roboto / Helvetica / Arial font stack; Roboto is not downloaded by the library.
 
 ## Data grid with inline row editor
 `DataGrid` (macOS and Windows) is a grid with an editor that works like **Ext.grid.plugin.RowEditing** from ExtJS 4:

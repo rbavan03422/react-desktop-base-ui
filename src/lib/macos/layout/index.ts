@@ -2,6 +2,7 @@ export * from './Window';
 export * from './View';
 export * from './Box';
 export * from './Text';
+export * from './Typography';
 export * from './Label';
 export * from './Link';
 export * from './Pin';
