@@ -14,7 +14,7 @@ export function PercentCell({ value, max = 100, decimals = 0, label }: {
   return (
     <Progress.Root value={pct} aria-label={label} className="rd-win-grid__percent">
       <Progress.Track className="rd-win-grid__percenttrack">
-        <Progress.Indicator className="rd-win-grid__percentbar" />
+        <Progress.Indicator className="rd-win-grid__percentbar" style={{ width: `${pct}%`, height: '100%' }} />
       </Progress.Track>
       <span className="rd-win-grid__percentlabel">{has ? `${pct.toFixed(decimals)}%` : ''}</span>
     </Progress.Root>
