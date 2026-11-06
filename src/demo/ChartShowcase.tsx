@@ -38,11 +38,11 @@ const chartSamples: Array<{
 export function ChartShowcase({ theme }: { theme: 'light' | 'dark' }) {
   return (
     <section aria-label="Chart examples" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-      <strong>Charts</strong>
+      <strong style={{ fontSize: 13, fontWeight: 600 }}>Charts</strong>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))', gap: 12 }}>
         {chartSamples.map(({ type, title, ...props }) => (
-          <div key={type} style={{ minWidth: 0, padding: 8, border: '1px solid currentColor', borderRadius: 8 }}>
-            <div style={{ marginBottom: 4, fontSize: 13 }}>{title}</div>
+          <div key={type} style={{ minWidth: 0, padding: '10px 12px 8px', border: '1px solid color-mix(in srgb, currentColor 14%, transparent)', borderRadius: 8, background: 'color-mix(in srgb, currentColor 3%, transparent)' }}>
+            <div style={{ marginBottom: 6, fontSize: 12, fontWeight: 600, opacity: .75 }}>{title}</div>
             <Chart {...props} type={type} theme={theme} width={300} height={130} aria-label={`${title} chart example`} />
           </div>
         ))}
