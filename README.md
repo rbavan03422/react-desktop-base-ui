@@ -234,7 +234,7 @@ Expansion and selection can be controlled with `expandedIds` / `onExpandedChange
 | `/rooms/:roomId/video` | Video call with camera preview via `getUserMedia` |
 | `/settings` | Profile, message and notification options, sign out |
 
-State, seed data and media hooks are shared in `src/lib/common/chat`; the pages and CSS live per theme. The data is in memory with a simulated peer, so replace `ChatProvider` to connect a real backend. Microphone and camera access fail soft when the browser blocks them.
+The app itself is shared: `src/lib/common/chat` holds `ChatApp` (router, titlebar, Navbar), all six pages, state, mock data and media hooks. Each platform's `ChatWidget` is a thin wrapper that hands `ChatApp` a `ChatKit` (its `Window`, `TitleBar`, `Button`, `TextInput`, `Switch` and `Slider`). The look is in `common/chat/macos.css` and `common/chat/windows.css`, scoped to `.rd-mac-chat` / `.rd-win-chat` and imported by each platform's `chat/index.ts`. The data is in memory with a simulated peer, so replace `ChatProvider` to connect a real backend. Microphone and camera access fail soft when the browser blocks them.
 
 ## Dark theme
 Both platforms support `theme="light" | "dark"`.
