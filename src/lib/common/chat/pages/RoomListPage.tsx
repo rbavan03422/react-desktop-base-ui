@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChatList } from 'react-chat-elements';
-import { TextInput } from '../controls/TextInput';
-import { useChat } from '../../common/chat';
+import { useChat } from '../ChatProvider';
+import { useChatKit } from '../ChatKit';
 
 export function RoomListPage() {
+  const { TextInput } = useChatKit();
   const chat = useChat();
   const navigate = useNavigate();
   const [query, setQuery] = React.useState('');

@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import { Button as RceButton, Input as RceInput, MessageList } from 'react-chat-elements';
-import { SendIcon, useChat } from '../../common/chat';
+import { SendIcon } from '../icons';
+import { useChat } from '../ChatProvider';
 
 export function ChatPage() {
   const { roomId } = useParams();

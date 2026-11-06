@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { Avatar as RceAvatar } from 'react-chat-elements';
-import { HangUpIcon, MicIcon, MicOffIcon, VideoIcon, VideoOffIcon, useCallTimer, useChat, useLocalMedia } from '../../common/chat';
+import { HangUpIcon, MicIcon, MicOffIcon, VideoIcon, VideoOffIcon } from '../icons';
+import { useCallTimer, useLocalMedia } from '../useLocalMedia';
+import { useChat } from '../ChatProvider';
 
 export function VideoCallPage() {
   const { roomId } = useParams();

@@ -1,19 +1,20 @@
 import * as React from 'react';
 import { MemoryRouter, Navigate, Route, Routes, matchPath, useLocation, useNavigate } from 'react-router-dom';
 import { Navbar } from 'react-chat-elements';
-import { ChatProvider, useChat, BackIcon, GearIcon, PhoneIcon, VideoIcon } from '../../common/chat';
-import { Window } from '../layout/Window';
-import { TitleBar } from '../chrome/TitleBar';
-import type { Theme } from '../shared';
-import { LoginPage } from './LoginPage';
-import { RoomListPage } from './RoomListPage';
-import { ChatPage } from './ChatPage';
-import { VoiceCallPage } from './VoiceCallPage';
-import { VideoCallPage } from './VideoCallPage';
-import { SettingsPage } from './SettingsPage';
+import { ChatProvider, useChat } from './ChatProvider';
+import { ChatKitProvider, useChatKit } from './ChatKit';
+import type { ChatKit } from './ChatKit';
+import { BackIcon, GearIcon, PhoneIcon, VideoIcon } from './icons';
+import { LoginPage } from './pages/LoginPage';
+import { RoomListPage } from './pages/RoomListPage';
+import { ChatPage } from './pages/ChatPage';
+import { VoiceCallPage } from './pages/VoiceCallPage';
+import { VideoCallPage } from './pages/VideoCallPage';
+import { SettingsPage } from './pages/SettingsPage';
 
-export interface ChatWidgetProps {
-  theme?: Theme;
+export interface ChatAppProps {
+  kit: ChatKit;
+  theme?: 'light' | 'dark';
   width?: number | string;
   height?: number | string;
   /** Initial route of the widget's in-memory router. */
@@ -23,22 +24,23 @@ export interface ChatWidgetProps {
 interface View { title: string; back?: string; chatId?: string; settings?: boolean }
 
 /** Maps the current route to the titlebar title and the toolbar actions. */
-function useView(): View {
+function useView(appTitle: string): View {
   const { pathname, state } = useLocation();
   const chat = useChat();
-  const room = (id?: string) => chat.getRoom(id)?.title ?? 'Chat';
+  const room = (id?: string) => chat.getRoom(id)?.title ?? appTitle;
   let m;
-  if (matchPath('/login', pathname)) return { title: 'Chat' };
-  if (matchPath('/rooms', pathname)) return { title: 'Chat', settings: true };
+  if (matchPath('/login', pathname)) return { title: appTitle };
+  if (matchPath('/rooms', pathname)) return { title: appTitle, settings: true };
   if ((m = matchPath('/rooms/:roomId/voice', pathname))) return { title: `Voice call · ${room(m.params.roomId)}` };
   if ((m = matchPath('/rooms/:roomId/video', pathname))) return { title: `Video call · ${room(m.params.roomId)}` };
   if ((m = matchPath('/rooms/:roomId', pathname))) return { title: room(m.params.roomId), back: '/rooms', chatId: m.params.roomId, settings: true };
   if (matchPath('/settings', pathname)) return { title: 'Settings', back: (state as { from?: string } | null)?.from ?? '/rooms' };
-  return { title: 'Chat' };
+  return { title: appTitle };
 }
 
 function Chrome() {
-  const view = useView();
+  const { variant, appTitle, TitleBar } = useChatKit();
+  const view = useView(appTitle);
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const showBar = !matchPath('/login', pathname);
@@ -54,18 +56,25 @@ function Chrome() {
     </div>
   );
 
-  return (
+  // macOS centres the title in a toolbar that is inset into the titlebar (Finder);
+  // Windows puts the title next to the back button in a command bar below it (Settings).
+  const mac = variant === 'mac';
+  const navbar = showBar && (
+    <Navbar
+      type="light"
+      className="rd-chat__navbar"
+      left={<div className="rd-chat__navgroup">{back}{!mac && <span className="rd-chat__navtitle">{view.title}</span>}</div>}
+      center={mac ? <span className="rd-chat__navtitle">{view.title}</span> : <span />}
+      right={actions}
+    />
+  );
+
+  return mac ? (
+    <TitleBar title={appTitle} controls inset>{navbar}</TitleBar>
+  ) : (
     <>
-      <TitleBar title="Chat" controls />
-      {showBar && (
-        <Navbar
-          type="light"
-          className="rd-chat__navbar"
-          left={<div className="rd-chat__navgroup">{back}<span className="rd-chat__navtitle">{view.title}</span></div>}
-          center={<span />}
-          right={actions}
-        />
-      )}
+      <TitleBar title={appTitle} controls />
+      {navbar}
     </>
   );
 }
@@ -93,16 +102,20 @@ function ChatRoutes() {
 /**
  * Self-contained chat app: a window with a native-style titlebar and an in-memory router
  * (login, room list, chat, voice call, video call and settings pages).
+ * Platform differences come entirely from `kit`; see `macos/chat` and `windows/chat`.
  */
-export function ChatWidget({ theme = 'light', width = 380, height = 640, initialPath = '/login' }: ChatWidgetProps) {
+export function ChatApp({ kit, theme = 'light', width = 380, height = 640, initialPath = '/login' }: ChatAppProps) {
+  const { Window, variant } = kit;
   return (
-    <MemoryRouter initialEntries={[initialPath]}>
-      <ChatProvider>
-        <Window chrome background theme={theme} width={width} height={height} className="rd-win-chat">
-          <Chrome />
-          <div className="rd-chat__body"><ChatRoutes /></div>
-        </Window>
-      </ChatProvider>
-    </MemoryRouter>
+    <ChatKitProvider value={kit}>
+      <MemoryRouter initialEntries={[initialPath]}>
+        <ChatProvider>
+          <Window chrome {...(variant === 'win' ? { background: true } : null)} theme={theme} width={width} height={height} className={`rd-${variant}-chat`}>
+            <Chrome />
+            <div className="rd-chat__body"><ChatRoutes /></div>
+          </Window>
+        </ChatProvider>
+      </MemoryRouter>
+    </ChatKitProvider>
   );
 }

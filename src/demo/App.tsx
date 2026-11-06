@@ -1,4 +1,5 @@
 import * as React from 'react';
+import 'react-chat-elements/dist/main.css';
 import * as Mac from '../lib/macos';
 import * as Win from '../lib/windows';
 import { MacExtras } from './MacExtras';

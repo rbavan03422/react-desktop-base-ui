@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '../controls/Button';
-import { TextInput } from '../controls/TextInput';
-import { LogoIcon, useChat } from '../../common/chat';
+import { LogoIcon } from '../icons';
+import { useChat } from '../ChatProvider';
+import { useChatKit } from '../ChatKit';
 
 export function LoginPage() {
+  const { Button, TextInput } = useChatKit();
   const chat = useChat();
   const navigate = useNavigate();
   const [name, setName] = React.useState('');

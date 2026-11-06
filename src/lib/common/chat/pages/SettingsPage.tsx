@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Avatar as RceAvatar } from 'react-chat-elements';
-import { Button } from '../controls/Button';
-import { TextInput } from '../controls/TextInput';
-import { Switch } from '../inputs/Switch';
-import { Slider } from '../inputs/Slider';
-import { useChat } from '../../common/chat';
+import { useChat } from '../ChatProvider';
+import { useChatKit } from '../ChatKit';
 
 export function SettingsPage() {
+  const { Button, TextInput, Switch, Slider } = useChatKit();
   const chat = useChat();
   const navigate = useNavigate();
   const { settings } = chat;
