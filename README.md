@@ -216,6 +216,26 @@ const columns: GridColumnItem<Person>[] = [
 
 Expansion and selection can be controlled with `expandedIds` / `onExpandedChange` and `selectedId` / `onSelectedChange`. Arrow keys navigate and expand/collapse; Home and End move to the first and last visible item. Enter or Space selects the focused item. Items may include nested `children`, decorative `icon` content, and `disabled`.
 
+## Chat widget
+
+`Mac.ChatWidget` and `Win.ChatWidget` (in `src/lib/macos/chat` and `src/lib/windows/chat`) are complete chat apps built from [react-chat-elements](https://github.com/Detaysoft/react-chat-elements) and themed with the macOS / Windows 11 tokens. Each has a native titlebar (macOS inset toolbar like Finder, Windows titlebar plus command bar like Settings) and an in-memory `react-router-dom` router, so it never touches the host page URL.
+
+```tsx
+<Mac.ChatWidget theme="dark" width={380} height={640} />
+<Win.ChatWidget initialPath="/rooms" />
+```
+
+| Route | Page |
+| --- | --- |
+| `/login` | Sign in (any name and password in the demo) |
+| `/rooms` | Room list with search |
+| `/rooms/:roomId` | Conversation, Enter to send, Shift+Enter for a new line |
+| `/rooms/:roomId/voice` | Voice call (mute, speaker, switch to video, end) |
+| `/rooms/:roomId/video` | Video call with camera preview via `getUserMedia` |
+| `/settings` | Profile, message and notification options, sign out |
+
+State, seed data and media hooks are shared in `src/lib/common/chat`; the pages and CSS live per theme. The data is in memory with a simulated peer, so replace `ChatProvider` to connect a real backend. Microphone and camera access fail soft when the browser blocks them.
+
 ## Dark theme
 Both platforms support `theme="light" | "dark"`.
 

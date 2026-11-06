@@ -1,0 +1,118 @@
+/* Windows 11 chat widget: layout, pages and react-chat-elements (rce-*) theming. */
+.rd-win-chat { font-family: "Segoe UI Variable", "Segoe UI", system-ui, sans-serif; color: var(--rd-win-fg); }
+.rd-win-chat .rd-chat__body { position: relative; display: flex; flex: 1; min-height: 0; flex-direction: column; overflow: hidden; background: var(--rd-win-bg); }
+.rd-win-chat .rd-chat__page { display: flex; flex: 1; min-height: 0; flex-direction: column; }
+.rd-win-chat .rd-chat__heading { margin: 0 0 4px; font-size: 20px; font-weight: 600; letter-spacing: -.01em; }
+.rd-win-chat .rd-chat__muted, .rd-win-chat .rd-chat__hint { margin: 0; color: var(--rd-win-muted); font-size: 13px; }
+.rd-win-chat .rd-chat__hint { font-size: 11.5px; }
+.rd-win-chat .rd-chat__empty { padding: 24px 16px; color: var(--rd-win-muted); text-align: center; font-size: 13px; }
+
+/* login */
+.rd-win-chat .rd-chat__login { align-items: center; justify-content: center; gap: 18px; padding: 24px 32px; text-align: center; overflow: auto; }
+.rd-win-chat .rd-chat__logo { display: grid; width: 68px; height: 68px; place-items: center; border-radius: 12px; background: var(--rd-win-primary); color: var(--rd-win-primary-fg); box-shadow: 0 6px 16px color-mix(in srgb, var(--rd-win-primary) 40%, transparent); }
+.rd-win-chat .rd-chat__form { display: flex; width: 100%; max-width: 280px; flex-direction: column; gap: 12px; text-align: left; }
+.rd-win-chat .rd-chat__form label { width: 100%; }
+.rd-win-chat .rd-chat__form input { width: 100%; }
+.rd-win-chat .rd-chat__error { color: var(--rd-win-error); font-size: 12px; }
+
+/* room list */
+.rd-win-chat .rd-chat__search { padding: 10px 12px 6px; }
+.rd-win-chat .rd-chat__search label, .rd-win-chat .rd-chat__search .rd-win-inputwrap, .rd-win-chat .rd-chat__search input { width: 100%; }
+.rd-win-chat .rd-chat__list { flex: 1; min-height: 0; overflow-y: auto; padding: 4px 0 8px; }
+.rd-win-chat .rce-container-clist { width: 100%; }
+.rd-win-chat .rce-container-citem { padding: 0 6px; }
+.rd-win-chat .rce-citem { height: 64px; border-radius: 6px; background: transparent; cursor: default; transition: background-color .12s ease; }
+.rd-win-chat .rce-citem:hover { background: var(--rd-win-hover); }
+.rd-win-chat .rce-citem:active { background: color-mix(in srgb, var(--rd-win-fg) 12%, var(--rd-win-bg)); }
+.rd-win-chat .rce-citem-avatar { padding: 0 10px 0 8px; }
+.rd-win-chat .rce-citem-avatar .rce-avatar-container { width: 44px; height: 44px; }
+.rd-win-chat .rce-citem-body { border-top: 0; padding: 8px 8px 8px 0; }
+.rd-win-chat .rce-citem-body--top-title { color: var(--rd-win-fg); font-size: 14px; font-weight: 600; }
+.rd-win-chat .rce-citem-body--top-time { color: var(--rd-win-muted); font-size: 11.5px; }
+.rd-win-chat .rce-citem-body--bottom-title { color: var(--rd-win-muted); font-size: 12.5px; }
+.rd-win-chat .rce-citem-body--bottom-status span { min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--rd-win-primary); color: var(--rd-win-primary-fg); font-size: 11px; font-weight: 600; line-height: 18px; text-align: center; }
+
+/* conversation */
+.rd-win-chat .rd-chat__messages { position: relative; flex: 1; min-height: 0; background: var(--rd-win-bg); }
+.rd-win-chat .rd-chat__messages .rce-container-mlist, .rd-win-chat .rd-chat__messages .rce-mlist { height: 100%; }
+.rd-win-chat .rce-mlist { padding: 8px 10px; overflow-y: auto; background: transparent; }
+.rd-win-chat .rce-container-mbox { margin: 0; }
+.rd-win-chat .rce-mbox { min-width: 0; max-width: 78%; margin: 2px 0; padding: 8px 12px 6px; border-radius: 8px; background: color-mix(in srgb, var(--rd-win-fg) 8%, var(--rd-win-bg)); color: var(--rd-win-fg); box-shadow: none; font-size: 13.5px; line-height: 1.38; }
+.rd-win-chat .rce-mbox.rce-mbox-right { background: color-mix(in srgb, var(--rd-win-primary) 16%, var(--rd-win-bg)); color: var(--rd-win-fg); }
+.rd-win-chat .rce-mbox-left-notch, .rd-win-chat .rce-mbox-right-notch { display: none; }
+.rd-win-chat .rce-mbox-title { margin-bottom: 2px; }
+.rd-win-chat .rce-mbox-title span { color: var(--rd-win-muted) !important; font-size: 11.5px; font-weight: 600; }
+.rd-win-chat .rce-mbox-right .rce-mbox-title span { color: inherit !important; opacity: .8; }
+.rd-win-chat .rce-mbox-text { color: inherit; }
+.rd-win-chat .rce-mbox-time { color: inherit; opacity: .6; font-size: 10.5px; }
+.rd-win-chat .rce-mbox-status { color: inherit; }
+.rd-win-chat .rce-container-smsg { margin: 8px 0; background: transparent; }
+.rd-win-chat .rce-container-smsg .rce-smsg { background: transparent; box-shadow: none; border: 0; }
+.rd-win-chat .rce-container-smsg .rce-smsg-text { padding: 3px 10px; border-radius: 999px; background: var(--rd-win-surface); color: var(--rd-win-muted); font-size: 11.5px; box-shadow: none; }
+.rd-win-chat .rce-mlist-down-button { background: var(--rd-win-bg); color: var(--rd-win-fg); box-shadow: 0 1px 4px rgba(0,0,0,.25); }
+.rd-win-chat .rd-chat__typing { min-height: 18px; padding: 0 14px 4px; color: var(--rd-win-muted); font-size: 11.5px; }
+.rd-win-chat .rd-chat__composer { padding: 8px 10px 10px; border-top: 1px solid color-mix(in srgb, var(--rd-win-fg) 14%, transparent); background: var(--rd-win-bg); }
+.rd-win-chat .rce-container-input { background: transparent; }
+.rd-win-chat .rce-input { min-height: 32px; padding: 6px 10px; border: 1px solid var(--rd-win-border); border-radius: 4px; border-bottom-color: var(--rd-win-muted); background: var(--rd-win-bg); color: var(--rd-win-fg); font: 13.5px/1.35 "Segoe UI Variable", "Segoe UI", system-ui, sans-serif; outline: none; transition: box-shadow .15s ease, border-color .15s ease; }
+.rd-win-chat .rce-input::placeholder { color: var(--rd-win-muted); }
+.rd-win-chat .rce-input:focus { border-bottom: 2px solid var(--rd-win-accent); padding-bottom: 5px; }
+.rd-win-chat .rce-input-buttons { margin-left: 8px; }
+.rd-win-chat .rce-button { min-width: 64px; height: 32px; padding: 0 14px; border: 0; border-radius: 4px; background: var(--rd-win-primary); color: var(--rd-win-primary-fg); font: 600 13px "Segoe UI Variable", "Segoe UI", system-ui, sans-serif; cursor: default; transition: filter .12s ease; }
+.rd-win-chat .rce-button:hover { filter: brightness(1.08); }
+.rd-win-chat .rce-button:active { filter: brightness(.92); }
+.rd-win-chat .rce-button:focus-visible { outline: 2px solid var(--rd-win-accent); outline-offset: 2px; }
+.rd-win-chat .rce-button:disabled { opacity: .45; }
+
+/* shared call surfaces (always dark, like FaceTime / Teams calls) */
+.rd-win-chat .rd-chat__call, .rd-win-chat .rd-chat__video { position: relative; color: #fff; background: radial-gradient(120% 90% at 50% 0%, #2c4a7c 0%, #16233f 55%, #0b1120 100%); }
+.rd-win-chat .rd-chat__call-main { display: flex; flex: 1; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 24px; text-align: center; }
+.rd-win-chat .rd-chat__call .rce-avatar-container.xlarge, .rd-win-chat .rd-chat__remote .rce-avatar-container.xlarge { width: 112px; height: 112px; box-shadow: 0 0 0 4px rgba(255,255,255,.18); }
+.rd-win-chat .rd-chat__pulse { border-radius: 50%; }
+.rd-win-chat .rd-chat__pulse--on { animation: rd-chat-pulse 2.4s ease-out infinite; }
+@keyframes rd-chat-pulse { 0% { box-shadow: 0 0 0 0 rgba(255,255,255,.28); } 100% { box-shadow: 0 0 0 28px rgba(255,255,255,0); } }
+.rd-win-chat .rd-chat__call-name { margin: 12px 0 0; color: #fff; font-size: 22px; font-weight: 600; }
+.rd-win-chat .rd-chat__call-status { margin: 0; color: rgba(255,255,255,.72); font-size: 14px; font-variant-numeric: tabular-nums; }
+.rd-win-chat .rd-chat__call-note { max-width: 260px; margin: 12px 0 0; color: rgba(255,255,255,.6); font-size: 11.5px; }
+.rd-win-chat .rd-chat__call-controls { display: flex; justify-content: center; gap: 18px; padding: 18px 12px 26px; }
+.rd-win-chat .rd-chat__roundwrap { display: flex; flex-direction: column; align-items: center; gap: 6px; color: rgba(255,255,255,.75); font-size: 11px; }
+.rd-win-chat .rd-chat__round { all: unset; box-sizing: border-box; display: grid; width: 54px; height: 54px; place-items: center; border-radius: 50%; background: rgba(255,255,255,.16); color: #fff; cursor: default; transition: background-color .15s ease, transform .1s ease; }
+.rd-win-chat .rd-chat__round:hover { background: rgba(255,255,255,.26); }
+.rd-win-chat .rd-chat__round:active { transform: scale(.94); }
+.rd-win-chat .rd-chat__round[aria-pressed="true"] { background: #fff; color: #16233f; }
+.rd-win-chat .rd-chat__round:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.rd-win-chat .rd-chat__round--danger, .rd-win-chat .rd-chat__round--danger:hover { background: #ff3b30; }
+.rd-win-chat .rd-chat__round--danger:hover { filter: brightness(1.1); }
+
+/* video call */
+.rd-win-chat .rd-chat__remote { display: flex; flex: 1; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
+.rd-win-chat .rd-chat__local { position: absolute; top: 12px; right: 12px; display: grid; width: 96px; height: 128px; place-items: center; overflow: hidden; border-radius: 8px; background: #0b1120; box-shadow: 0 0 0 1px rgba(255,255,255,.25), 0 6px 18px rgba(0,0,0,.4); color: rgba(255,255,255,.7); font-size: 11px; text-align: center; }
+.rd-win-chat .rd-chat__local video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+.rd-win-chat .rd-chat__local .rd-chat__local-off { visibility: hidden; }
+.rd-win-chat .rd-chat__call-controls--overlay { position: absolute; right: 0; bottom: 0; left: 0; background: linear-gradient(transparent, rgba(0,0,0,.45)); }
+
+/* settings */
+.rd-win-chat .rd-chat__settings { gap: 14px; padding: 16px; overflow-y: auto; background: var(--rd-win-surface); }
+.rd-win-chat .rd-chat__group { padding: 10px 14px; border: 1px solid color-mix(in srgb, var(--rd-win-fg) 14%, transparent); border-radius: 8px; background: var(--rd-win-bg); }
+.rd-win-chat .rd-chat__group-title { margin: 2px 0 4px; color: var(--rd-win-muted); font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+.rd-win-chat .rd-chat__profile { display: flex; align-items: flex-end; gap: 12px; }
+.rd-win-chat .rd-chat__profile label { flex: 1; }
+.rd-win-chat .rd-chat__profile input { width: 100%; }
+.rd-win-chat .rd-chat__row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; }
+.rd-win-chat .rd-chat__row + .rd-chat__row { border-top: 1px solid color-mix(in srgb, var(--rd-win-fg) 14%, transparent); }
+.rd-win-chat .rd-chat__row--stack { flex-direction: column; align-items: stretch; gap: 8px; }
+.rd-win-chat .rd-chat__row-label { font-size: 13px; }
+.rd-win-chat .rd-chat__settings > button { align-self: flex-start; }
+@media (prefers-reduced-motion: reduce) { .rd-win-chat .rd-chat__pulse--on { animation: none; } }
+
+/* navbar (react-chat-elements Navbar) */
+.rd-win-chat .rce-navbar.rd-chat__navbar { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px; width: 100%; min-height: 48px; box-sizing: border-box; margin: 0; padding: 0 10px; border: 0; border-bottom: 1px solid color-mix(in srgb, var(--rd-win-fg) 14%, transparent); background: var(--rd-win-bg); color: var(--rd-win-fg); box-shadow: none; }
+.rd-win-chat .rd-chat__navbar > * { display: flex; flex: none; align-items: center; min-width: 0; margin: 0; padding: 0; }
+.rd-win-chat .rd-chat__navbar > *:nth-child(2) { justify-content: center; display: none; }
+.rd-win-chat .rd-chat__navbar > *:last-child { justify-content: flex-end; }
+.rd-win-chat .rd-chat__navgroup { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.rd-win-chat .rd-chat__navgroup--end { gap: 2px; }
+.rd-win-chat .rd-chat__navtitle { overflow: hidden; color: var(--rd-win-fg); font: 600 15px "Segoe UI Variable", "Segoe UI", system-ui, sans-serif; text-overflow: ellipsis; white-space: nowrap; padding-left: 4px; }
+.rd-win-chat .rd-chat__navbtn { all: unset; box-sizing: border-box; display: grid; width: 34px; height: 34px; place-items: center; border-radius: 4px; color: var(--rd-win-fg); cursor: default; transition: background-color .12s ease; }
+.rd-win-chat .rd-chat__navbtn:hover { background: var(--rd-win-hover); }
+.rd-win-chat .rd-chat__navbtn:active { background: color-mix(in srgb, var(--rd-win-fg) 14%, transparent); }
+.rd-win-chat .rd-chat__navbtn:focus-visible { outline: 2px solid var(--rd-win-accent); outline-offset: 1px; }

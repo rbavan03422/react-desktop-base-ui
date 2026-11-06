@@ -138,6 +138,7 @@ export function App() {
         <MacDemo theme={theme} />
         <MacExtras theme={theme} />
         <MacGrid theme={theme} />
+        <Mac.ChatWidget theme={theme} />
       </div>
       <div>
         <button onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')} style={{ marginBottom: 12 }}>
@@ -148,6 +149,8 @@ export function App() {
         <WinExtras theme={theme} />
         <div style={{ height: 32 }} />
         <WinGrid theme={theme} />
+        <div style={{ height: 32 }} />
+        <Win.ChatWidget theme={theme} />
       </div>
     </div>
   );
